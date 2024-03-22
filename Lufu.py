@@ -10,7 +10,7 @@ import streamlit as st
 st.title("Spirometrische Analyse")
 
 
-# In[113]:
+# In[9]:
 
 
 import streamlit as st
@@ -296,6 +296,89 @@ def Bodyplethysmographie_Residualvolumen():
     st.markdown(befund_text_bodyspleth)
 
 
+
+    
+def Bodyplethysmographie_Fluss_Druck_Kurve():
+    st.header("Bodyplethysmographie - Fluss-Druck-Kurve")
+    
+    st.write('Zur Bestimmung des Widerstandes wird der Munddruck gemessen. Dieser wird dann graphisch in der Fluss-Druck-Kurve (= Atemschleife) dargestellt. Es werden Fluss und Munddruck gegen das Verschiebevolumen aufgetragen, wodurch zwei Schleifen entstehen.')
+
+    # Erster Informationstext in einem ausklappbaren Bereich
+    with st.expander("Basisinformationen:"):
+        st.write("""
+        - Wichtig. Die Differenzierung von obstruktiver Ventilationsstörungen mittels FEV1, FEV1/VC (Spirometrie), Residualvolumen und Atemwegswiderstand.
+        - Messung von Residualvolumen und Atemwegswiderstand exklusiv durch Bodyplethysmographie.
+        - Widerstandsbestimmung über Munddruckmessung, visualisiert in der Fluss-Druck-Kurve (Atemschleife) durch Auftragung gegen Verschiebevolumen.
+        - Diagnosekriterium für Obstruktion: Schnittpunkt der Schleifen bei >90°; bei Gesunden oder restriktiven Störungen <90°.
+        - Emphysem induziert eine charakteristische Keulenform der Atemschleife.
+        """)
+
+    # Zweiter Informationstext in einem ausklappbaren Bereich
+    with st.expander("Erweitert:"):
+        st.write("""
+        - Einatmung und Ausatmung in der Fluss-Druck-Kurve gegenläufig zur Fluss-Volumen-Kurve dargestellt.
+        - Gerade durch Schleifen bei Gesunden steil (kleiner Schnittwinkel), bei Obstruktiven flach (großer Schnittwinkel), bedingt durch den höheren Widerstand bei Obstruktion.
+        - Notwendigkeit eines größeren Drucks bei Obstruktion, um gleichen Atemfluss zu erzeugen, entsprechend dem physikalischen Gesetz: Widerstand = Druck / Atemstrom.
+        - Emphysem und Air Trapping führen zu endexspiratorischem Bronchiolenkollaps, erhöhtem notwendigen Atmungsdruck und Residualvolumen.
+        - Graphische Darstellung als Keulenform der Kurve in der Exspiration, erweiterte untere Schleife, die x-Achse an unterschiedlichen Punkten schneidet.
+        """)
+
+
+    # Bilder als Platzhalter für interaktive Auswahl
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        if st.button('Normale Atemflusskurve'):
+            st.session_state.selected_curve = 'Normal'
+    with col2:
+        if st.button('Emphysematöse Atemflusskurve'):
+            st.session_state.selected_curve = 'Emphysem'
+    with col3:
+        if st.button('Obstruktion'):
+            st.session_state.selected_curve = 'Obstruktion'
+    with col4:
+        if st.button('Reversible Obstruktion'):
+            st.session_state.selected_curve = 'Reversible Obstruktion'
+
+    # Logik zur Anzeige der Erklärung basierend auf der Auswahl
+    if 'selected_curve' in st.session_state:
+        if st.session_state.selected_curve == 'Normal':
+            st.write("In der Schleife geht die Einatmung nach oben, die Ausatmung nach unten (umgekehrt der Fluss-Volumen-Kurve). Die Gerade durch die Schleifen ist beim Gesunden steil (hierdurch kleiner Schnittwinkel)")
+            st.image("Atemschleife_normal.jpg")
+        elif st.session_state.selected_curve == 'Emphysem':
+            st.write("Befund Schnittwinkel der Schleifen > 90° als Zeichen der Obstruktion. Ausgeprägte Keulenform als Zeichen eines Emphysems. Kaum ein Unterschied vor (blau) und nach (rot) Broncholyse.")
+            st.image("Emphysem_verschiebevolumen.jpg")
+        elif st.session_state.selected_curve == 'Obstruktion':
+            st.write("Schnittwinkel der Schleifen > 90° als Zeichen der Obstruktion. Keulenform als Zeichen eines Emphysems. Unter Broncholyse geringe Verkleinerung des Winkels mit leichter Verschmälerung der Keulenform als Hinweis auf ein geringes Air Trapping.")
+            st.image("Obstruktion_flussvolumenkurve.jpg")
+        elif st.session_state.selected_curve == 'Reversible Obstruktion':
+            st.write("Schnittwinkel der Schleifen > 90° als Zeichen der Obstruktion. Geringe Keulenform als Zeichen eines erhöhten Residualvolumens. Unter Broncholyse (rot) normale Atemschleife als Zeichen einer reversiblen Obstruktion und eines Air Trappings.")
+            st.image("Reversible_Obstruktion.jpg")
+
+# Visuelle Bewertungsfragen
+    frage1 = st.radio("Schneiden sich die Schleifen der Atemkurve in einem Winkel größer als 90°?", ('Ja', 'Nein'))
+    frage2 = st.radio("Zeigt die Atemschleife eine Keulenform?", ('Ja', 'Nein'))
+    frage3 = st.radio("Ist die Steigung der Schleife während der Ausatmung deutlich flacher im Vergleich zur Einatmung?", ('Ja', 'Nein'))
+    frage4 = st.radio("Endet die exspiratorische Schleife auf einem höheren Niveau als sie begonnen hat?", ('Ja', 'Nein'))
+
+    # Analyse und automatisierter Befund basierend auf visueller Bewertung
+    if frage1 == 'Ja':
+        st.write("Befund: Ein Winkel größer als 90° deutet auf eine obstruktive Ventilationsstörung hin.")
+    else:
+        st.write("Befund: Ein Winkel kleiner als 90° spricht gegen eine ausgeprägte obstruktive Ventilationsstörung.")
+
+    if frage2 == 'Ja':
+        st.write("Zusatzbefund: Eine Keulenform der Atemschleife weist auf das Vorliegen eines Emphysems oder Air Trapping hin.")
+
+    if frage3 == 'Ja':
+        st.write("Hinweis: Eine flachere Steigung während der Ausatmung im Vergleich zur Einatmung signalisiert einen erhöhten exspiratorischen Widerstand.")
+
+    if frage4 == 'Ja':
+        st.write("Weiterer Befund: Ein höheres Ende der exspiratorischen Schleife deutet auf ein erhöhtes Residualvolumen hin, was typisch für Emphysem oder Air Trapping ist.")
+
+    st.write("Bitte beachten: Diese Analyse ersetzt nicht die umfassende Bewertung durch einen Facharzt. Weitere Untersuchungen könnten erforderlich sein, um eine abschließende Diagnose zu stellen.")
+            
+### Abschnitt Ende
+
 def main():
     st.sidebar.title("Analysebereiche")
     analyse_bereich = st.sidebar.radio(
@@ -312,6 +395,8 @@ def main():
         tiffeneau_index_berechnung()
     elif analyse_bereich == "Bodyplethysmographie - Residualvolumen":
         Bodyplethysmographie_Residualvolumen()
+    elif analyse_bereich == "Bodyplethysmographie - Fluss-Druck-Kurve":
+        Bodyplethysmographie_Fluss_Druck_Kurve()
 
 if __name__ == "__main__":
     main()
