@@ -118,7 +118,7 @@ def tiffeneau_index_berechnung():
     st.header("Lungenfunktionsprüfung - Detaillierter Befundbericht")
 
     # Erster Informationstext in einem ausklappbaren Bereich
-    with st.expander("Informationstext 1 anzeigen"):
+    with st.expander("Basisinformation"):
         st.write("""
         **Spirometrie: Tiffeneau-Manöver** umfasst vollständige Ausatmung, maximale Einatmung, schnelle Ausatmung.
         - **Messungen:** FEV1, Vitalkapazität, Atemstromstärke.
@@ -129,7 +129,7 @@ def tiffeneau_index_berechnung():
         """)
     
     # Zweiter Informationstext in einem ausklappbaren Bereich
-    with st.expander("Informationstext 2 anzeigen"):
+    with st.expander("Erweiterte Informationen"):
         st.write("""
         **Atemfluss:** negativ bei Einatmung (Inspiration nach unten), positiv bei Ausatmung (Exspiration nach oben).
         - **Kurvenform:** Inspiration steigt an, fällt ab (bauchförmig nach unten); forcierte Exspiration erreicht schnell maximalen Atemstrom (peak flow), linearer Abfall.
@@ -380,13 +380,53 @@ def Bodyplethysmographie_Fluss_Druck_Kurve():
 ### Abschnitt Ende
 
 def main():
-    st.sidebar.title("Analysebereiche")
+    st.sidebar.title("Analysebereiche - Lungenfunktion")
     analyse_bereich = st.sidebar.radio(
         "",
         ("Spirometrie qualitativ", "Spirometrie quantitativ", "Bodyplethysmographie - Residualvolumen", 
          "Bodyplethysmographie - Fluss-Druck-Kurve", "Funktionstests - Broncholyse", "Funktionstests - Provokation", 
-         "Gasaustausch - Transferfaktor", "Gasaustausch - Blutgasanalyse"),
+         "Gasaustausch - Transferfaktor", "Gasaustausch - Blutgasanalyse","P0-Atemkraftmessung"),
         key="analysebereich_radio"
+    )
+
+    if analyse_bereich == "Spirometrie qualitativ":
+        spirometrie_qualitativ()
+    elif analyse_bereich == "Spirometrie quantitativ":
+        tiffeneau_index_berechnung()
+    elif analyse_bereich == "Bodyplethysmographie - Residualvolumen":
+        Bodyplethysmographie_Residualvolumen()
+    elif analyse_bereich == "Bodyplethysmographie - Fluss-Druck-Kurve":
+        Bodyplethysmographie_Fluss_Druck_Kurve()
+
+if __name__ == "__main__":
+    main()
+    
+def main():
+    st.sidebar.title("Analysebereiche - Spiroergometrie")
+    analyse_bereich = st.sidebar.radio(
+        "",
+        ("noch in Arbeit","xxx"),
+        key="analysebereich_Spiroergometrie"
+    )
+
+    if analyse_bereich == "Spirometrie qualitativ":
+        spirometrie_qualitativ()
+    elif analyse_bereich == "Spirometrie quantitativ":
+        tiffeneau_index_berechnung()
+    elif analyse_bereich == "Bodyplethysmographie - Residualvolumen":
+        Bodyplethysmographie_Residualvolumen()
+    elif analyse_bereich == "Bodyplethysmographie - Fluss-Druck-Kurve":
+        Bodyplethysmographie_Fluss_Druck_Kurve()
+
+if __name__ == "__main__":
+    main()
+    
+def main():
+    st.sidebar.title("Analysebereiche - Rechtsherzkatheter")
+    analyse_bereich = st.sidebar.radio(
+        "",
+        ("noch in Arbeit", "xxx"),
+        key="analysebereich_Rechtsherzkatheter"
     )
 
     if analyse_bereich == "Spirometrie qualitativ":
