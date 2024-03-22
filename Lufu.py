@@ -10,16 +10,18 @@ import streamlit as st
 st.title("Spirometrische Analyse")
 
 
-# In[81]:
+# In[113]:
 
 
 import streamlit as st
 
 def spirometrie_qualitativ():
     st.header("Spirometrie qualitativ")
+    
+    st.write('Bei der Spirometrie führt der Patient ein Tiffeneau-Manöver durch: Nach vollständiger Ausatmung atmet er so tief wie möglich ein und anschließend so schnell wie möglich aus. Diese Prozedur ermöglicht die Messung von FEV1, Vitalkapazität und weiteren Werten. Die dabei entstehende Fluss-Volumen-Kurve ist ein zentrales Instrument zur Beurteilung der Lungenfunktion.Die Form dieser Kurve und ihre Reaktion auf Bronchodilatatoren geben Aufschluss über obstruktive und restriktive Lungenkrankheiten sowie das Vorhandensein eines Emphysems.')
 
     # Erster Informationstext in einem ausklappbaren Bereich
-    with st.expander("Informationstext 1 anzeigen"):
+    with st.expander("Basisinformationen:"):
         st.write("""
         **Spirometrie: Tiffeneau-Manöver** umfasst vollständige Ausatmung, maximale Einatmung, schnelle Ausatmung.
         - **Messungen:** FEV1, Vitalkapazität, Atemstromstärke.
@@ -30,22 +32,15 @@ def spirometrie_qualitativ():
         """)
 
     # Zweiter Informationstext in einem ausklappbaren Bereich
-    with st.expander("Informationstext 2 anzeigen"):
+    with st.expander("Erweitert:"):
         st.write("""
         **Atemfluss:** negativ bei Einatmung (Inspiration nach unten), positiv bei Ausatmung (Exspiration nach oben).
         - **Kurvenform:** Inspiration steigt an, fällt ab (bauchförmig nach unten); forcierte Exspiration erreicht schnell maximalen Atemstrom (peak flow), linearer Abfall.
         - **Restriktion:** Verminderte Vitalkapazität, Atemfluss wenig beeinflusst (außer niedrigerer peak flow). Kurve verschmälert auf Volumen-Achse, kaum gestaucht auf Fluss-Achse → Eiform.
         - **Obstruktion:** Veränderter Atemfluss durch erhöhten Widerstand in Bronchien. Vitalkapazität nur bei Emphysem mit erhöhtem Residualvolumen verändert. Typische Sesselform durch Stauchung auf Fluss-Achse.
         - **Emphysem:** Mögliche normale/erhöhte Vitalkapazität trotz erhöhtem Residualvolumen. Verlust elastischer Fasern → reduzierte Retraktionskraft und Lungenkapazität, normalisiert Vitalkapazität. Elastische Fasern wichtig für Bronchienstabilität bei Ausatmung, deren Verlust führt zu Obstruktion.
-        "")
-        
-        
-    **Einleitung zur Spirometrie qualitativ**
+        """)
 
-    Bei der Spirometrie führt der Patient ein Tiffeneau-Manöver durch: Nach vollständiger Ausatmung atmet er so tief wie möglich ein und anschließend so schnell wie möglich aus. Diese Prozedur ermöglicht die Messung von FEV1, Vitalkapazität und weiteren Werten. Die dabei entstehende Fluss-Volumen-Kurve ist ein zentrales Instrument zur Beurteilung der Lungenfunktion.
-
-    Die Form dieser Kurve und ihre Reaktion auf Bronchodilatatoren geben Aufschluss über obstruktive und restriktive Lungenkrankheiten sowie das Vorhandensein eines Emphysems.
-    """)
 
     # Bilder als Platzhalter für interaktive Auswahl
     col1, col2, col3 = st.columns(3)
@@ -71,6 +66,7 @@ def spirometrie_qualitativ():
             st.write("Erklärung für Emphysem...")
             st.image("emphysem.jpg")
 
+### Abschnitt Spiro Quantitativ
 
 
 def graduiere_fev1_vc(fev1_prozent, vc_prozent):
@@ -111,16 +107,50 @@ def graduiere_awr(awr_post_broncholyse):
         return "II (mittelschwer)"
     else:
         return "III (schwer)"
+    
+# Korrektur im Kontext der Befunderstellung
+def befunderstellung(fev1_prozent, vc_prozent, awr_post_broncholyse):
+    tiffeneau_index_vor = (fev1_prozent / vc_prozent) * 100
+    grad_fev1, grad_vc = graduiere_fev1_vc(fev1_prozent, vc_prozent)
+    grad_awr = graduiere_awr(awr_post_broncholyse)  # korrekte Zuweisung
 
 def tiffeneau_index_berechnung():
     st.header("Lungenfunktionsprüfung - Detaillierter Befundbericht")
 
+    # Erster Informationstext in einem ausklappbaren Bereich
+    with st.expander("Informationstext 1 anzeigen"):
+        st.write("""
+        **Spirometrie: Tiffeneau-Manöver** umfasst vollständige Ausatmung, maximale Einatmung, schnelle Ausatmung.
+        - **Messungen:** FEV1, Vitalkapazität, Atemstromstärke.
+        - **Fluss-Volumen-Schleife:** Atemvolumen vs. Atemstromstärke.
+        - **Einatmung:** bauchförmige Kurve, rechts nach links.
+        - **Ausatmung:** steiler Anstieg, langsamer Abfall.
+        - **Ventilationsstörungen:** Eiform (Restriktion), Sesselform (Obstruktion, Emphysem), Bockwurstform (Trachealstenose).
+        """)
+    
+    # Zweiter Informationstext in einem ausklappbaren Bereich
+    with st.expander("Informationstext 2 anzeigen"):
+        st.write("""
+        **Atemfluss:** negativ bei Einatmung (Inspiration nach unten), positiv bei Ausatmung (Exspiration nach oben).
+        - **Kurvenform:** Inspiration steigt an, fällt ab (bauchförmig nach unten); forcierte Exspiration erreicht schnell maximalen Atemstrom (peak flow), linearer Abfall.
+        - **Restriktion:** Verminderte Vitalkapazität, Atemfluss wenig beeinflusst (außer niedrigerer peak flow). Kurve verschmälert auf Volumen-Achse, kaum gestaucht auf Fluss-Achse → Eiform.
+        - **Obstruktion:** Veränderter Atemfluss durch erhöhten Widerstand in Bronchien. Vitalkapazität nur bei Emphysem mit erhöhtem Residualvolumen verändert. Typische Sesselform durch Stauchung auf Fluss-Achse.
+        - **Emphysem:** Mögliche normale/erhöhte Vitalkapazität trotz erhöhtem Residualvolumen. Verlust elastischer Fasern → reduzierte Retraktionskraft und Lungenkapazität, normalisiert Vitalkapazität. Elastische Fasern wichtig für Bronchienstabilität bei Ausatmung, deren Verlust führt zu Obstruktion.
+        """)
+    
     # Eingabe der Werte durch den Nutzer
     fev1_prozent = st.number_input("FEV1 (% vom Sollwert) vor Broncholyse:", value=100.0, format="%.2f")
     vc_prozent = st.number_input("Vitalkapazität (% vom Sollwert):", value=100.0, format="%.2f")
     fev1_prozent_post_broncholyse = st.number_input("FEV1 (% vom Sollwert) nach Broncholyse (optional):", value=0.0, format="%.2f")
     awr_post_broncholyse = st.number_input("Atemwegswiderstand nach Broncholyse (optional, in Pa/s):", value=0.0, format="%.2f")
     mef_25_prozent = st.number_input("MEF 25 (% vom Sollwert):", value=100.0, format="%.2f")
+
+    # Speichern der Werte im Session State
+    st.session_state['fev1_prozent'] = fev1_prozent
+    st.session_state['vc_prozent'] = vc_prozent
+    st.session_state['fev1_prozent_post_broncholyse'] = fev1_prozent_post_broncholyse
+    st.session_state['awr_post_broncholyse'] = awr_post_broncholyse
+    st.session_state['mef_25_prozent'] = mef_25_prozent
 
     # Berechnungen und initiale Befundung
     tiffeneau_index_vor = (fev1_prozent / vc_prozent) * 100
@@ -138,6 +168,7 @@ def tiffeneau_index_berechnung():
             befund_text += "im Tiffeneau-Index, was auf "
             befund_text += "eine reversible " if tiffeneau_index_post > tiffeneau_index_vor else "eine potenziell chronische "
             befund_text += "Obstruktion hindeutet. "
+            befund_text += f"Graduierung des AWR nach Broncholyse: {awr_post_broncholyse}. "
     else:
         befund_text += "Es liegt keine Obstruktion vor. Die normwertigen Tiffeneau-Index-Werte können auf eine Restriktion hinweisen, falls die VC vermindert ist. "
 
@@ -147,7 +178,8 @@ def tiffeneau_index_berechnung():
 
     # Graduierungen und weitere Diagnostik
     befund_text += f"\n**Graduierung von FEV1:** {grad_fev1}\n**Graduierung von VC:** {grad_vc}\n"
-
+    
+    
     befund_text += "\n### Weiterführende Empfehlungen:\n"
     if "Obstruktion" in befund_text:
         befund_text += "- Eine detaillierte Analyse mittels Spirometrie nach Broncholyse ist empfohlen, um das Ausmaß der Reversibilität zu bestimmen. "
@@ -155,11 +187,23 @@ def tiffeneau_index_berechnung():
             befund_text += "- Langwirksame Bronchodilatatoren könnten zur Behandlung in Betracht gezogen werden. "
         if "chronische" in befund_text:
             befund_text += "- Eine Überprüfung auf chronisch obstruktive Lungenerkrankung (COPD) ist angezeigt. "
+
+        else:
+            befund_text += "- Intensive Untersuchung auf chronisch obstruktive Lungenerkrankung (COPD) und mögliche schwerwiegende Obstruktionen. "
     if "Restriktion" in befund_text:
         befund_text += "- Eine Bodyplethysmografie kann zur Bestätigung einer restriktiven Lungenerkrankung und zur Beurteilung des Lungenvolumens hilfreich sein. "
     if "kleine Atemwege" in befund_text:
         befund_text += "- Eine hochauflösende Computertomographie (HRCT) der Lunge kann zur Untersuchung der kleinen Atemwege und zum Ausschluss weiterer Pathologien dienen. "
 
+        
+     # Verwendung von grad_awr im Kontext der Befunderstellung
+    if fev1_prozent_post_broncholyse > 0 and fev1_prozent_post_broncholyse != fev1_prozent:
+        # [Logik zur Verwendung von grad_awr]
+        if awr_post_broncholyse == "I (leicht)" or awr_post_broncholyse == "II (mittelschwer)":
+            befund_text += "- Überprüfung der Effektivität von Bronchodilatatoren zur Senkung des AWR. "
+        else:
+            befund_text += "- Intensive Untersuchung auf chronisch obstruktive Lungenerkrankung (COPD) und mögliche schwerwiegende Obstruktionen. "
+    
     st.markdown(befund_text)
 
 
@@ -167,11 +211,39 @@ def tiffeneau_index_berechnung():
 def Bodyplethysmographie_Residualvolumen():
     st.header("Bodyplethysmographie - Residualvolumen")
     
+     # Erster Informationstext in einem ausklappbaren Bereich
+    with st.expander("Basiswissen anzeigen"):
+        st.write("""
+        **Spirometrie erfasst ein- und ausatembare Volumina, nicht jedoch das Residualvolumen (RV).
+        - **RV = Residualvolumen, das auch nach maximaler Ausatmung in der Lunge bleibt, ist nur durch Bodyplethysmographie messbar.
+        - **Totale Lungenkapazität (TLC), funktionelle Residualkapazität (FRC), und thorakales Gasvolumen (TGV) inkludieren RV und werden ebenfalls nur mit Bodyplethysmographie bestimmt.
+        - **Ein erhöhtes RV ist typisch für Emphysem (irreversibel) und Air Trapping (unter Broncholyse reversibel).
+        - **Ein erniedrigtes RV weist auf Restriktion hin, bei der alle Volumina vermindert sind.
+        - **„Kapazität“ bezeichnet ein aus verschiedenen Volumina zusammengesetztes Volumen, z.B. setzt sich die Vitalkapazität (VC) aus Atemzugvolumen, inspiratorischem Reservevolumen und exspiratorischem Reservevolumen zusammen. 
+        """)
+    
+    # Zweiter Informationstext in einem ausklappbaren Bereich
+    with st.expander("Informationstext 2 anzeigen"):
+        st.write("""
+        **Emphysem und Air Trapping führen oft zu erhöhtem Residualvolumen auf Kosten der Vitalkapazität.
+        - **Die totale Lungenkapazität (TLC) ist bei Emphysem oft nur gering erhöht.
+        - **Zur Bestimmung des Emphysemausmaßes wird der RV/TLC Quotient herangezogen.
+        - **Eine Obstruktion und typische Sesselform in der Spirometrie deuten auf Emphysem hin; bestätigt durch Bodyplethysmographie.
+        - **Bei erhöhtem Residualvolumen ist eine Broncholyse zur Unterscheidung zwischen Emphysem und Air Trapping indiziert, unabhängig von Obstruktion.
+        - **Die funktionelle Residualkapazität (FRC) entspricht RV + ERV; sie bleibt bei normaler Atmung im Thorax und steht für den Gasaustausch zur Verfügung.
+        """)
+    
     # Erläuterung der Bodyplethysmographie
     st.write("""
     Die Bodyplethysmographie ermöglicht es uns, präzise das Residualvolumen (RV), die totale Lungenkapazität (TLC) und das thorakale Gasvolumen (TGV) zu messen. Diese Messungen sind entscheidend, um das Vorhandensein und das Ausmaß von Zuständen wie Emphysem und Air Trapping zu beurteilen.
     """)
 
+    # Nutzung der zuvor eingegebenen Werte aus dem Session State, falls vorhanden
+    fev1_prozent = st.session_state.get('fev1_prozent', 100.0)
+    fev1_prozent_post_broncholyse = st.session_state.get('fev1_prozent_post_broncholyse', 0.0)
+    awr_post_broncholyse = st.session_state.get('awr_post_broncholyse', 0.0)
+    mef_25_prozent = st.session_state.get('mef_25_prozent', 100.0)
+    
     # Eingabefelder für die Messwerte
     fev1_prozent = st.number_input("FEV1 (% vom Sollwert):", value=100.0, min_value=0.0, format="%.1f", key="fev1_prozent_2")
     rv = st.number_input("Residualvolumen (RV) in Prozent vom Sollwert:", value=100.0, min_value=0.0, format="%.1f")
