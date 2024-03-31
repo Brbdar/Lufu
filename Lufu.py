@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[16]:
+# In[192]:
 
 
 import streamlit as st
@@ -72,47 +72,12 @@ def spirometrie_qualitativ():
             
 
 
-# In[31]:
+# In[114]:
 
 
 ### Abschnitt Spiro Quantitativ
 
-
-def graduiere_fev1_vc(fev1_prozent, vc_prozent):
-    """
-    Graduiert FEV1 und Vitalkapazität (VC) basierend auf den gegebenen Prozentwerten.
-    """
-    if fev1_prozent >= 70:
-        grad_fev1 = "I (leicht)"
-    elif 60 <= fev1_prozent < 70:
-        grad_fev1 = "II (mäßig)"
-    elif 50 <= fev1_prozent < 60:
-        grad_fev1 = "III (mittelschwer)"
-    elif 35 <= fev1_prozent < 50:
-        grad_fev1 = "IV (schwer)"
-    else:
-        grad_fev1 = "Sehr schwer"
-
-    if vc_prozent >= 70:
-        grad_vc = "I (leicht)"
-    elif 60 <= vc_prozent < 70:
-        grad_vc = "II (mäßig)"
-    elif 50 <= vc_prozent < 60:
-        grad_vc = "III (mittelschwer)"
-    elif 35 <= vc_prozent < 50:
-        grad_vc = "IV (schwer)"
-    else:
-        grad_vc = "Sehr schwer"
-
-    return grad_fev1, grad_vc
-
-    
-# Korrektur im Kontext der Befunderstellung
-def befunderstellung(fev1_prozent, vc_prozent, awr_post_broncholyse):
-    tiffeneau_index_vor = (fev1_prozent / vc_prozent) * 100
-    grad_fev1, grad_vc = graduiere_fev1_vc(fev1_prozent, vc_prozent)
-
-def tiffeneau_index_berechnung():
+def tiffeneau_index_berechnung1():
     st.header("Lungenfunktionsprüfung - Detaillierter Befundbericht")
 
     # Erster Informationstext in einem ausklappbaren Bereich
@@ -149,96 +114,173 @@ def tiffeneau_index_berechnung():
         - **Obstruktion:** Veränderter Atemfluss durch erhöhten Widerstand in Bronchien. Vitalkapazität nur bei Emphysem mit erhöhtem Residualvolumen verändert. Typische Sesselform durch Stauchung auf Fluss-Achse.
         - **Emphysem:** Mögliche normale/erhöhte Vitalkapazität trotz erhöhtem Residualvolumen. Verlust elastischer Fasern → reduzierte Retraktionskraft und Lungenkapazität, normalisiert Vitalkapazität. Elastische Fasern wichtig für Bronchienstabilität bei Ausatmung, deren Verlust führt zu Obstruktion.
         """)
-        
-    
-    # Eingabe der Werte durch den Nutzer
-    fev1_prozent = st.number_input("FEV1 (% vom Sollwert) vor Broncholyse:", value=100.0, format="%.2f")
-    vc_prozent = st.number_input("Vitalkapazität (% vom Sollwert):", value=100.0, format="%.2f")
-    fev1_prozent_post_broncholyse = st.number_input("FEV1 (% vom Sollwert) nach Broncholyse (optional):", value=0.0, format="%.2f")
-    mef_25_prozent = st.number_input("MEF 25 (% vom Sollwert):", value=100.0, format="%.2f")
-    mef_50_prozent = st.number_input("MEF 50 (% vom Sollwert):", value=100.0, format="%.2f")
 
-    # Speichern der Werte im Session State
-    st.session_state['fev1_prozent'] = fev1_prozent
-    st.session_state['vc_prozent'] = vc_prozent
-    st.session_state['fev1_prozent_post_broncholyse'] = fev1_prozent_post_broncholyse
-    st.session_state['mef_25_prozent'] = mef_25_prozent
-    st.session_state['mef_50_prozent'] = mef_25_prozent
 
-    # Berechnungen und initiale Befundung
-    tiffeneau_index_vor = (fev1_prozent / vc_prozent) * 100
-    grad_fev1, grad_vc = graduiere_fev1_vc(fev1_prozent, vc_prozent)
-
-    # Berechnung der Differenz zwischen MEF 25% und MEF 50%
-    mef_25_50_differenz = mef_25_prozent - mef_50_prozent
-    
-    befund_text = "### Befund:\n"
-    
-    # Unterscheidung zwischen Obstruktion und Restriktion
-    if tiffeneau_index_vor < 80:
-        befund_text += "Es liegt eine Obstruktion vor. Dies deutet auf eine Verengung der Atemwege hin, die den Luftstrom behindert und zu einer Einschränkung der ventilatorischen Flussreserven führt. "
-        if fev1_prozent_post_broncholyse > 0 and fev1_prozent_post_broncholyse != fev1_prozent:
-            tiffeneau_index_post = (fev1_prozent_post_broncholyse / vc_prozent) * 100
-            befund_text += "Nach Broncholyse zeigt sich "
-            befund_text += "eine signifikante Verbesserung " if tiffeneau_index_post > tiffeneau_index_vor else "keine signifikante Veränderung "
-            befund_text += "im Tiffeneau-Index, was auf "
-            befund_text += "eine reversible " if tiffeneau_index_post > tiffeneau_index_vor else "eine potenziell chronische "
-            befund_text += "Obstruktion hindeutet. "
-            befund_text += f"Graduierung des AWR nach Broncholyse: {awr_post_broncholyse}. "
-    else:
-        befund_text += "Es liegt keine Obstruktion vor. Die normwertigen Tiffeneau-Index-Werte können auf eine Restriktion hinweisen, falls die VC vermindert ist. "
-
-    # Spezifische Bedingungen und Empfehlungen
-    if mef_25_prozent < 70 and fev1_prozent >= 70:
-        befund_text += "Eine isolierte Erniedrigung des MEF 25 deutet auf eine Obstruktion der kleinen Atemwege hin, was spezifische Behandlungsansätze erfordern könnte. "
-
-    # Spezifische Bedingungen und Empfehlungen basierend auf MEF 25-50 Differenz
-    if mef_25_50_differenz > 20:
-        befund_text += "Eine erhöhte Differenz zwischen MEF 25 und MEF 50 deutet auf eine Beeinträchtigung der kleinen Atemwege hin (Small Airways Disease), was ein Anzeichen für frühe Funktionsstörungen, insbesondere bei Zigarettenrauchern sein könnte. "
-
-    if mef_25_prozent < 70 and fev1_prozent >= 70:
-        befund_text += "Eine isolierte Erniedrigung des MEF 25 deutet auf eine Obstruktion der kleinen Atemwege hin, was spezifische Behandlungsansätze erfordern könnte. "
-
-        
-        
-    # Graduierungen und weitere Diagnostik
-    befund_text += f"\n**Graduierung von FEV1:** {grad_fev1}\n**Graduierung von VC:** {grad_vc}\n"
-    
-    
-    befund_text += "\n### Weiterführende Empfehlungen:\n"
-    if "Obstruktion" in befund_text:
-        befund_text += "- Eine detaillierte Analyse mittels Spirometrie nach Broncholyse ist empfohlen, um das Ausmaß der Reversibilität zu bestimmen. "
-        if "reversible" in befund_text:
-            befund_text += "- Langwirksame Bronchodilatatoren könnten zur Behandlung in Betracht gezogen werden. "
-        if "chronische" in befund_text:
-            befund_text += "- Eine Überprüfung auf chronisch obstruktive Lungenerkrankung (COPD) ist angezeigt. "
-
+   # Bewertungsfunktionen
+    def grade_obstruction(percent):
+        if percent >= 70:
+            return "eine leichte Obstruktion"
+        elif 60 <= percent < 70:
+            return "eine moderate Obstruktion"
+        elif 50 <= percent < 60:
+            return "eine mittelschwere Obstruktion"
         else:
-            befund_text += "- Intensive Untersuchung auf chronisch obstruktive Lungenerkrankung (COPD) und mögliche schwerwiegende Obstruktionen. "
-    if "Restriktion" in befund_text:
-        befund_text += "- Eine Bodyplethysmografie kann zur Bestätigung einer restriktiven Lungenerkrankung und zur Beurteilung des Lungenvolumens hilfreich sein. "
-    if "kleine Atemwege" in befund_text:
-        befund_text += "- Eine hochauflösende Computertomographie (HRCT) der Lunge kann zur Untersuchung der kleinen Atemwege und zum Ausschluss weiterer Pathologien dienen. "
+            return "eine schwere Obstruktion"
 
-    # Nachdem der Befundbericht erstellt wurde und der Lungenfunktionstyp bestimmt wurde
-    # Beispielhafte Festlegung des Lungenfunktionstyps basierend auf der Befundung
-    if "Obstruktion" in befund_text:
-        lungenfunktionstyp = "Obstruktion"
-    elif "Restriktion" in befund_text:
-        lungenfunktionstyp = "Restriktion"
-    else:
-        lungenfunktionstyp = "Normal"
-
-    # Speichern des Lungenfunktionstyps im Session State für späteren Zugriff
-    st.session_state['lungenfunktionstyp'] = lungenfunktionstyp
-
-    # Optional: Anzeigen des gespeicherten Lungenfunktionstyps als Bestätigung
-    st.write(f"Gespeicherter Lungenfunktionstyp: {st.session_state['lungenfunktionstyp']}")
-
-  
-    st.markdown(befund_text)
+    def vc_grade(percent):
+        if percent >= 70:
+            return "eine leichte Obstruktion"
+        elif 60 <= percent < 70:
+            return "eine moderate Obstruktion"
+        elif 50 <= percent < 60:
+            return "eine mittelschwere Obstruktion"
+        else:
+            return "eine schwere Obstruktion"
     
+    def graduiere_fev1_vc(prozent):
+        if prozent >= 70:
+            return "I (leicht)"
+        elif 60 <= prozent < 70:
+            return "II (mäßig)"
+        elif 50 <= prozent < 60:
+            return "III (mittelschwer)"
+        elif 35 <= prozent < 50:
+            return "IV (schwer)"
+        else:
+            return "V (sehr schwer)"
+
+    def assess_rv(percent):
+        if percent < 140:
+            return "leicht erhöht"
+        elif 140 <= percent <= 170:
+            return "mittel"
+        else:
+            return "schwer"
+
+    def assess_tlc(percent):
+        if percent >101:
+            return "leicht erhöht"
+        elif 50 <= percent <= 100:
+            return "niedrig bis normal"
+        elif 130 <= percent <= 150:
+            return "mittel"
+        else:
+            return "schwer"
+
+    def grade_emphysema(rv, tlc):
+        quotient = rv / tlc
+        if quotient >= 0.6:
+            return "ein schweres Emphysem"
+        elif quotient >= 0.5:
+            return "ein mittelschweres Emphysem"
+        elif quotient >= 0.4:
+            return "ein leichtes Emphysem"
+        else:
+            return "kein Emphysem"
+        
+    def classify_copd(fev1_percent):
+        if fev1_percent >= 80:
+            return "GOLD 1: Leichte COPD"
+        elif fev1_percent >= 50:
+            return "GOLD 2: Mittelschwere COPD"
+        elif fev1_percent >= 30:
+            return "GOLD 3: Schwere COPD"
+        else:
+            return "GOLD 4: Sehr schwere COPD"
+
+    # Benutzereingaben über Streamlit Widgets
+    fev1_percent = st.number_input("FEV1 (% vom Sollwert) vor Broncholyse:", value=100.0)
+    fvc_percent = st.number_input("Forcierte Vitalkapazität (% vom Sollwert):", value=100.0)
+
+    # Berechnung des Tiffeneau-Index
+    tiffeneau_index = (fev1_percent / fvc_percent) * 100
+
+    # Initialisierung von Variablen
+    report = ""
+    tlc_percent = 100  # Standardwert, um den UnboundLocalError zu vermeiden
+
     
+    # Logik für den Bericht
+    if tiffeneau_index < 80:
+        obstruction_grade = grade_obstruction(fev1_percent)
+        grad_vc = graduiere_fev1_vc(fvc_percent)
+        
+        report += f"Der Tiffeneau-Index beträgt {tiffeneau_index:.2f}%, was auf {obstruction_grade} hinweist. "
+        report += f"Die Vitalkapazität ist als {grad_vc} klassifiziert. "
+
+        if fvc_percent < 80:
+            tlc_percent = st.number_input("Totale Lungenkapazität (TLC) in Prozent vom Sollwert bei Obstruktion:", value=100.0)
+            tlc_grade = assess_tlc(tlc_percent)
+            report += f"Die Totale Lungenkapazität (TLC) ist {tlc_grade}, was die Diagnose eines Überlappungssyndroms unterstützt. "
+        else:
+            report += "Es liegt ein reines obstruktives Syndrom vor. "
+            dlco_sb_percent = st.number_input("DLCO_SB in Prozent vom Sollwert bei normaler VC und reduzierter FEV1:", value=100.0)
+            if dlco_sb_percent > 80:
+                report += " Mögliche Diagnose: Asthma Bronchiale - obstruktiv -> Funktionstest Broncholyse. "
+            else:
+                report += " Mögliche Diagnose: COPD "
+                
+        # Zusätzliche Informationen, wenn der Tiffeneau-Index unter 71 liegt und DLCO erniedrigt ist
+        if tiffeneau_index < 71 and dlco_sb_percent < 80:
+            report += "\n\nZusatzinformation: Der Tiffeneau-Index unter 0,71 zusammen mit einer erniedrigten DLCO weist auf eine signifikante Atemwegsobstruktion hin, die mit einem erhöhten Risiko für Hospitalisierung oder Tod bei COPD-Patienten assoziiert ist. Dies unterstreicht die Bedeutung einer gründlichen Diagnostik und Überwachung des Zustands."
+        # Anpassung der Berichtslogik
+        if tiffeneau_index < 71 and dlco_sb_percent < 80:
+            copd_classification = classify_copd(fev1_percent)
+            report += f"\n\nBasierend auf der GOLD-Klassifikation wird der COPD-Schweregrad als {copd_classification} eingestuft."
+    
+        # Überprüfung, ob FEV1 > 80%
+    if fev1_percent > 80:
+        # MEF 25-Abfrage, wenn FEV1 > 80%
+        mef_25 = st.number_input("MEF 25 (% vom Sollwert):", value=100.0)
+        
+        # Bewertung und Berichtserstellung basierend auf MEF 25
+        if mef_25 < 75:
+            report += ("Es liegt eine isolierte Erniedrigung des MEF 25 vor, was auf eine Obstruktion der kleinen Atemwege hinweist. "
+                       "Pathophysiologisch kann dies auf Veränderungen in den Bronchiolen zurückgeführt werden, "
+                       "wie sie bei Erkrankungen wie COPD oder fortgeschrittenem Asthma auftreten können. ")
+        else:
+            report += "Der MEF 25-Wert liegt im normalen Bereich, was gegen eine isolierte Obstruktion der kleinen Atemwege spricht. "
+        
+    if tiffeneau_index >= 80:
+        
+        if fvc_percent < 80:
+                dlco_sb_percent = st.number_input("DLCO_SB in Prozent vom Sollwert ohne Restriktion:", value=100.0)
+                if dlco_sb_percent < 80:
+                    report += "was auf eine Lungengefäßerkrankung, beginnende Lungenfibrose oder isoliertes Emphysem hindeutet. "
+                else:
+                    report += "was eine normale Lungenfunktion nahelegt. "
+        else:
+            tlc_percent = st.number_input("Totale Lungenkapazität (TLC) in Prozent vom Sollwert bei normaler VC:", value=100.0)
+            if tlc_percent >= 80:
+                rv_percent = st.number_input("Residualvolumen (RV) in Prozent vom Sollwert:", value=100.0)
+                rv_grade = assess_rv(rv_percent)
+                if rv_percent > 101:
+                    emphysem_grad = grade_emphysema(rv_percent, tlc_percent)
+                    report += f"Gas Trapping - Blässchen, Emphyseme a.e.: {emphysem_grad} hin. "
+                else:
+                    report += "Es liegen keine Anzeichen von Emphysem vor. "
+            else:
+                dlco_sb_percent = st.number_input("DLCO_SB in Prozent vom Sollwert bei normaler VC und reduzierter TLC:", value=100.0)
+                if dlco_sb_percent < 80:
+                    report += "Restriktives Syndrom mit Hinweis auf Lungenfibrosen. "
+                else:
+                    report += "Restriktives Syndrom mit Hinweis auf eine extrapulmonale Restriktion (Neuromuslkuläre Erkrankung? Kyphoskoliose, Adipositas?)"
+   
+    # Button zur Bestätigung der Berichtsanzeige
+    if st.button('Bericht anzeigen'):
+        st.write("### Befundbericht")
+        st.write(report)
+   
+
+    with st.columns(1)[0]:  # Direkter Zugriff auf das erste Element der Liste
+        if st.button('Algorithmus'):
+            st.session_state.selected_curve = 'Algorithmus'
+
+    # Logik zur Anzeige der Erklärung basierend auf der Auswahl
+    if 'selected_curve' in st.session_state:
+        if st.session_state.selected_curve == 'Algorithmus':
+            st.write("Befundungsalgorithmus...")
+            st.image("algorithmus.jpg") 
 
 
 # In[33]:
@@ -477,6 +519,175 @@ def Bodyplethysmographie_Fluss_Druck_Kurve():
     st.write("Bitte beachten: Diese Analyse ersetzt nicht die umfassende Bewertung durch einen Facharzt. Weitere Untersuchungen könnten erforderlich sein, um eine abschließende Diagnose zu stellen.")
             
 ### Abschnitt Ende
+
+
+# In[ ]:
+
+
+def Funktionstests_Broncholyse():
+    st.header("Funktionstests - Broncholyse")
+    
+    st.write("XX")
+    
+    with st.expander("XX"):
+        st.write("""
+        - XX.
+        - XX
+        - XX
+        - XX
+        - XX
+        """)
+
+    with st.expander("XX"):
+        st.write("""
+        - XX
+        - XX
+        - XX
+        """)
+
+
+# In[ ]:
+
+
+def Funktionstests_Provokation():
+    st.header("Funktionstests - Provokation")
+    
+    st.write("XX")
+    
+    with st.expander("XX"):
+        st.write("""
+        - XX.
+        - XX
+        - XX
+        - XX
+        - XX
+        """)
+
+    with st.expander("XX"):
+        st.write("""
+        - XX
+        - XX
+        - XX
+        """)
+
+
+# In[186]:
+
+
+def P0_Atemkraftmessung():
+    st.header("P0_Atemkraftmessung")
+    
+    st.write("Die P0.1-Messung dient der Überprüfung der Atemmuskulatur, um festzustellen, ob diese ausreichend Luft in die Lungen befördert. Sie ist wichtig für die Diagnose von Atemschwäche und die Entscheidung über den Beginn einer Heimbeatmung. Diese Messung betrifft sowohl das Zwerchfell als auch unterstützende Muskeln. Eine ungenügende Atemleistung kann zu einem Anstieg des Kohlendioxidgehalts im Blut führen. Funktionsstörungen der Atempumpe können durch zentrale Nervensystemprobleme, neuromuskuläre Erkrankungen, Skelettdeformitäten oder Lungenerkrankungen verursacht werden.")
+    
+    with st.expander("Durchführung der Messung - Last der Atemmuskulatur = P0.1-Wert"):
+        st.write("""
+        - Elektromagnetisches Ventil verschließt Atemweg direkt nach Einatmung für 0,15 Sekunden..
+        - Inspirationsdruck wird nach 100 Millisekunden (0,1s) gemessen.
+        - Druck am Mund zeigt den Unterdruck in Alveolen und somit Krafteinsatz der Atemmuskulatur.
+        - Kurze Atmungsunterbrechung, vom Patienten unbemerkt, beeinflusst Atmung nicht.
+        - Messung erfolgt etwa 10-mal zu zufälligen Zeiten, Mittelwertbildung.
+        - P0.1-Wert (kPa) reflektiert Atemmuskulaturbelastung bei Ruheatmung.
+        - P0.1-Messung allein zeigt keine atemmuskuläre Schwäche auf.
+        - Es gilt ein geschlechtsunabhängiger Grenzwert von ≤ 0,3 kPa als normal.
+        """)
+
+    with st.expander("Die Maximale Atemmuskelkraft"):
+        st.write("""
+        - Patient atmet vollständig aus und inhaliert dann maximal gegen geschlossenes Ventil.
+        - Ventil bleibt für 3–5 Sekunden geschlossen, mindestens bis maximaler Druck erreicht ist.
+        - Manöver wird 6-mal wiederholt.
+        - Höchster ermittelter Druck definiert als Pimax (maximale Atemmuskelkraft).
+        """)
+        
+    with st.expander("Indikationen"):
+        st.write("""
+        - Bewertung der Atemmuskelfunktion bei Verdacht auf Muskelschwäche.
+        - Diagnose und Überwachung von Atemwegserkrankungen wie COPD und Asthma.
+        - Einschätzung von Atemantriebsstörungen, z.B. bei Hypoventilationssyndromen.
+        - Beurteilung der Effektivität therapeutischer Interventionen.
+        - Langzeitüberwachung von Patienten mit neuromuskulären Erkrankungen.
+        """)
+        
+    with st.expander("Maßnahmen"):
+        st.write("""
+        - Physiotherapie und Atemübungen: Stärkung der Atemmuskulatur, Verbesserung der Atemeffizienz.
+        - Nicht-invasive Beatmung (NIV): Reduktion der Atemarbeit, Normalisierung der Blutgase.
+        - Medikamentöse Therapieanpassung: Verringerung der Atemwegsobstruktion, Erleichterung der Atmung.
+        - Lebensstiländerungen: Gewichtsabnahme, Raucherentwöhnung zur Verbesserung der Lungenfunktion.
+        - Invasive Beatmung: Bei akutem respiratorischem Versagen oder schweren neuromuskulären Erkrankungen.
+        - Chirurgische Maßnahmen: Z.B. Lungenvolumenreduktion bei schwerer COPD.
+        """)
+
+    st.write("""
+        Dieses Tool hilft bei der Interpretation von Schlüsselparametern zur Beurteilung der Atemmuskulatur:
+        - **P0.1 (kPa):** Misst die Last der Atemmuskulatur bei Ruheatmung.
+        - **PImax (kPa):** Gibt die maximale inspiratorische Atemmuskelkraft an.
+        Der Quotient **P0.1/PImax** reflektiert die prozentuale Beanspruchung der Atemmuskulatur, was Aufschlüsse über die respiratorische Kapazität gibt.
+    """)
+
+
+
+    # Funktion zur Interpretation des P0.1-Werts
+    def interpret_p01(p01_value):
+        if p01_value < 0.3:
+            return "Der P0.1-Wert liegt im Normbereich."
+        else:
+            return "Der P0.1-Wert überschreitet den Normbereich und könnte auf eine erhöhte Atemlast hinweisen."
+
+    def interpret_pimax(pimax_value, gender, age):
+        st.write("Interpretiert den PImax-Wert basierend auf Alter, Geschlecht und den gegebenen Interpretationsrichtlinien")
+    
+    
+        # Normwerte für PImax basierend auf Alter und Geschlecht
+        normwerte = {
+            'm': [(40, 6.2), (60, 5.4), (80, 4.6), (float('inf'), 4.1)],
+            'f': [(40, 5.7), (60, 4.9), (80, 4.2), (float('inf'), 3.7)]
+        }
+
+        # Ermitteln der entsprechenden Normwerte
+        for age_threshold, pimax_norm in normwerte[gender]:
+            if age <= age_threshold:
+                pimax_norm_value = pimax_norm
+                break
+
+        # Interpretation basierend auf dem Vergleich des gemessenen Werts mit dem Normwert
+        if pimax_value >= pimax_norm_value:
+            return f"Der PImax-Wert von {pimax_value} kPa liegt im Normbereich oder darüber (Normwert für Ihre Altersgruppe: {pimax_norm_value} kPa)."
+        else:
+            return f"Der PImax-Wert von {pimax_value} kPa ist niedriger als der Normwert für Ihre Altersgruppe ({pimax_norm_value} kPa) und könnte auf eine Schwäche der Inspirationsmuskulatur hinweisen."
+
+    # Funktion zur Berechnung und Interpretation des P0.1/PImax-Quotienten
+    def calculate_and_interpret_p01_pimax_ratio(p01_value, pimax_value):
+        if pimax_value == 0:
+            return "PImax darf nicht 0 sein."
+        ratio = (p01_value / pimax_value) * 100
+        if ratio < 4:
+            return f"Mit einem Quotienten von {ratio:.2f}% liegt die Beanspruchung im normalen Bereich."
+        elif 4 <= ratio < 10:
+            return f"Mit einem Quotienten von {ratio:.2f}% liegt eine leicht erhöhte Beanspruchung vor."
+        elif 10 <= ratio < 15:
+            return f"Mit einem Quotienten von {ratio:.2f}% liegt eine mittelgradig erhöhte Beanspruchung vor."
+        elif 15 <= ratio <= 20:
+            return f"Mit einem Quotienten von {ratio:.2f}% liegt eine schwergradig erhöhte Beanspruchung vor."
+        else:
+            return f"Mit einem Quotienten von {ratio:.2f}% wird von einer Erschöpfung der Atempumpe ausgegangen."
+
+    # Geschlechts- und Altersauswahl hinzufügen
+    gender = st.radio("Geschlecht:", ('m', 'f'), key='gender_select')
+    age = st.number_input("Alter (Jahre):", min_value=0, max_value=120, step=1, format="%d")
+
+    # P0.1-Wert Eingabe und Interpretation
+    p01_value = st.number_input("Geben Sie den P0.1-Wert ein (in kPa):", min_value=0.0, max_value=1.0, step=0.01, format="%.2f")
+
+    # PImax-Wert Eingabe
+    pimax_value = st.number_input("Geben Sie den PImax-Wert ein (in kPa):", min_value=0.0, max_value=20.0, step=0.1, key='pimax_input')
+
+    # Sofortige Interpretation der P0.1 und PImax Werte
+    st.write(interpret_p01(p01_value))
+    st.write(interpret_pimax(pimax_value, gender, age))
+
+    # Interpretation des P0.1/PImax-Quotienten
+    st.write(calculate_and_interpret_p01_pimax_ratio(p01_value, pimax_value))
 
 
 # In[97]:
@@ -776,7 +987,7 @@ def beurteile_compliance(eingabe_compliance):
     st.markdown("[Mehr Informationen zur Compliance](https://www.ncbi.nlm.nih.gov/books/NBK538324/)")
 
 
-# In[129]:
+# In[191]:
 
 
 def main():
@@ -807,15 +1018,21 @@ def main():
     if analyse_bereich == "Spirometrie qualitativ":
         spirometrie_qualitativ()
     elif analyse_bereich == "Spirometrie quantitativ":
-        tiffeneau_index_berechnung()
+        tiffeneau_index_berechnung1()
     elif analyse_bereich == "Bodyplethysmographie - Residualvolumen":
         Bodyplethysmographie_Residualvolumen()
     elif analyse_bereich == "Bodyplethysmographie - Fluss-Druck-Kurve":
         Bodyplethysmographie_Fluss_Druck_Kurve()
+    elif analyse_bereich == "Funktionstests - Broncholyse":
+        Funktionstests_Broncholyse()
+    elif analyse_bereich == "Funktionstests - Provokation":
+        Funktionstests_Provokation()
     elif analyse_bereich == "Gasaustausch - Transferfaktor":
         Gasaustausch_Transferfaktor()
     elif analyse_bereich == "Gasaustausch - Blutgasanalyse":
         Gasaustausch_Blutgasanalyse()
+    elif analyse_bereich == "P0-Atemkraftmessung":
+        P0_Atemkraftmessung()    
     elif analyse_bereich == "Compliancemessung":
         Compliancemessung()
 
@@ -857,6 +1074,6 @@ if __name__ == "__main__":
     
    # Versionsnummer und Datum in der Sidebar
     st.sidebar.markdown("---")
-    st.sidebar.markdown("**Version:** 1.5")
-    st.sidebar.markdown("**Datum:** 2024-03-24")
+    st.sidebar.markdown("**Version:** 1.6")
+    st.sidebar.markdown("**Datum:** 2024-03-31")
 
