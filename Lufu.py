@@ -79,7 +79,7 @@ def spirometrie_qualitativ():
             
 
 
-# In[196]:
+# In[274]:
 
 
 ### Abschnitt Spiro Quantitativ
@@ -282,7 +282,7 @@ def tiffeneau_index_berechnung1():
                     report += "Restriktives Syndrom mit Hinweis auf Lungenfibrosen. "
                 else:
                     report += "Restriktives Syndrom mit Hinweis auf eine extrapulmonale Restriktion (Neuromuslkuläre Erkrankung? Kyphoskoliose, Adipositas?)"
-        if tlc < 80:
+        if tlc_percent < 80:
             copd_classification = classify_copd(fev1_percent)
             report += f"\n\nBasierend auf der GOLD-Klassifikation wird der COPD-Schweregrad als {copd_classification} eingestuft."
 
