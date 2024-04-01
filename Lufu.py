@@ -42,6 +42,13 @@ def spirometrie_qualitativ():
         - **Obstruktion:** Veränderter Atemfluss durch erhöhten Widerstand in Bronchien. Vitalkapazität nur bei Emphysem mit erhöhtem Residualvolumen verändert. Typische Sesselform durch Stauchung auf Fluss-Achse.
         - **Emphysem:** Mögliche normale/erhöhte Vitalkapazität trotz erhöhtem Residualvolumen. Verlust elastischer Fasern → reduzierte Retraktionskraft und Lungenkapazität, normalisiert Vitalkapazität. Elastische Fasern wichtig für Bronchienstabilität bei Ausatmung, deren Verlust führt zu Obstruktion.
         """)
+        
+    with st.expander("Kriterien für richtige Mitarbeit - Die Spirometrie verlangt vom Patienten maximale Kooperation, was leicht zu Anleitungsmissverständnissen und suboptimalen Atemmanövern führen kann, insbesondere bei der forcierten Exspiration."):
+        st.write("""
+        - Ein Peak Flow, der später als 0,12 Sekunden erreicht wird, deutet stets auf ungenügende Mitarbeit hin.
+        - Ein abrupter Flow-Abfall am Ende der Exspiration (Kurve B) weist auf einen vorzeitigen Abbruch der Ausatmung hin.
+        - Nichterreichen der totalen Lungenkapazität (TLC) bei der Inspiration signalisiert mangelnde Kooperation.
+        """)
 
 
     # Bilder als Platzhalter für interaktive Auswahl
@@ -72,7 +79,7 @@ def spirometrie_qualitativ():
             
 
 
-# In[114]:
+# In[196]:
 
 
 ### Abschnitt Spiro Quantitativ
@@ -118,7 +125,7 @@ def tiffeneau_index_berechnung1():
 
    # Bewertungsfunktionen
     def grade_obstruction(percent):
-        if percent >= 70:
+        if percent < 80:
             return "eine leichte Obstruktion"
         elif 60 <= percent < 70:
             return "eine moderate Obstruktion"
@@ -187,6 +194,15 @@ def tiffeneau_index_berechnung1():
             return "GOLD 3: Schwere COPD"
         else:
             return "GOLD 4: Sehr schwere COPD"
+        
+    def classify_restriktion(fvc_percent):
+        if fvc_percent >= 60:
+            return "I Schweregrad: leichte Restriktion"
+        elif 40 <= fvc_percent <= 60:
+            return "II Schweregrad: mittelschwere Restriktion"
+        else:
+            return "III Schweregrad: schwere Restriktion"
+        
 
     # Benutzereingaben über Streamlit Widgets
     fev1_percent = st.number_input("FEV1 (% vom Sollwert) vor Broncholyse:", value=100.0)
@@ -223,6 +239,7 @@ def tiffeneau_index_berechnung1():
         # Zusätzliche Informationen, wenn der Tiffeneau-Index unter 71 liegt und DLCO erniedrigt ist
         if tiffeneau_index < 71 and dlco_sb_percent < 80:
             report += "\n\nZusatzinformation: Der Tiffeneau-Index unter 0,71 zusammen mit einer erniedrigten DLCO weist auf eine signifikante Atemwegsobstruktion hin, die mit einem erhöhten Risiko für Hospitalisierung oder Tod bei COPD-Patienten assoziiert ist. Dies unterstreicht die Bedeutung einer gründlichen Diagnostik und Überwachung des Zustands."
+            report += "Tiffeneau-Index < LLN = Voraussetzung für Obstruktion"
         # Anpassung der Berichtslogik
         if tiffeneau_index < 71 and dlco_sb_percent < 80:
             copd_classification = classify_copd(fev1_percent)
@@ -265,7 +282,11 @@ def tiffeneau_index_berechnung1():
                     report += "Restriktives Syndrom mit Hinweis auf Lungenfibrosen. "
                 else:
                     report += "Restriktives Syndrom mit Hinweis auf eine extrapulmonale Restriktion (Neuromuslkuläre Erkrankung? Kyphoskoliose, Adipositas?)"
-   
+        if tlc < 80:
+            copd_classification = classify_copd(fev1_percent)
+            report += f"\n\nBasierend auf der GOLD-Klassifikation wird der COPD-Schweregrad als {copd_classification} eingestuft."
+
+
     # Button zur Bestätigung der Berichtsanzeige
     if st.button('Bericht anzeigen'):
         st.write("### Befundbericht")
@@ -283,7 +304,7 @@ def tiffeneau_index_berechnung1():
             st.image("algorithmus.jpg") 
 
 
-# In[33]:
+# In[253]:
 
 
 def Bodyplethysmographie_Residualvolumen():
@@ -311,79 +332,82 @@ def Bodyplethysmographie_Residualvolumen():
         - Die funktionelle Residualkapazität (FRC) entspricht RV + ERV; sie bleibt bei normaler Atmung im Thorax und steht für den Gasaustausch zur Verfügung.
         - Der Atemwegswiderstand korreliert gut mit der Atemarbeit, die es brauch um visköse Widerstände zu überwinden
         """)
-    
-    # Erläuterung der Bodyplethysmographie
+        
+    # Zweiter Informationstext in einem ausklappbaren Bereich
+    with st.expander("Fehlermöglichkeiten bei Beurteilung"):
+        st.write("""
+        - Lungenfibrose: sReff normal, vermindertes FRCpleth führt zu numerisch hohem Reff, suggeriert fälschlich Obstruktion.
+        - Adipöse Patienten: Atemmittellage nahe RV, vorzeitiger Verschluss kleiner Atemwege bei Exspiration, erhöhter Reff, „dreieckige“ Form der Atemschleife. Anhebung zur TLC normalisiert Widerstand.
+        - Lungenemphysem: sReff stark erhöht, hohes FRCpleth lässt Reff niedrig oder normal erscheinen, täuscht Normalität vor.
+        """)
+
+
     st.write("""
     Die Bodyplethysmographie ermöglicht es uns, präzise das Residualvolumen (RV), die totale Lungenkapazität (TLC) und das thorakale Gasvolumen (TGV) zu messen. Diese Messungen sind entscheidend, um das Vorhandensein und das Ausmaß von Zuständen wie Emphysem und Air Trapping zu beurteilen.
     """)
 
-        # Nutzung der zuvor eingegebenen Werte aus dem Session State, falls vorhanden
-    fev1_prozent = st.session_state.get('fev1_prozent', 100.0)
-    fev1_prozent_post_broncholyse = st.session_state.get('fev1_prozent_post_broncholyse', 0.0)
-    awr_post_broncholyse = st.session_state.get('awr_post_broncholyse', 0.0)
-    mef_25_prozent = st.session_state.get('mef_25_prozent', 100.0)
+    # Benutzereingaben für Verdachtsmomente
+    fibrose_verdacht = st.checkbox("Verdacht auf Lungenfibrose?")
+    adipositas_verdacht = st.checkbox("Verdacht auf Adipositas?")
+    emphysem_verdacht = st.checkbox("Verdacht auf Lungenemphysem?")
 
-    # Nutzung der zuvor eingegebenen Werte aus dem Session State
-    fev1_prozent = st.session_state.get('fev1_prozent', 100.0)
+    # Interpretation des Atemwegswiderstands
+    def interpretiere_reff(fibrose_verdacht, adipositas_verdacht, emphysem_verdacht):
+        interpretationen = []
+        if fibrose_verdacht:
+            interpretationen.append("Achtung: Normaler sReff bei Lungenfibrose könnte eine Obstruktion vortäuschen.")
+        if adipositas_verdacht:
+            interpretationen.append("Achtung: Erhöhter Reff bei Adipositas könnte einen vorzeitigen Verschluss kleiner Atemwege anzeigen.")
+        if emphysem_verdacht:
+            interpretationen.append("Achtung: Ein normaler oder niedriger Reff bei Lungenemphysem täuscht eine nicht vorhandene Normalität vor.")
+        if not interpretationen:
+            interpretationen.append("Keine spezifischen Risiken identifiziert.")
+        return " ".join(interpretationen)
 
-    # Bestimmung von Obstruktion oder Restriktion basierend auf FEV1%
-    if fev1_prozent >= 80:
-        lungenfunktion_typ = "Normal"
-    elif fev1_prozent < 80:
-        lungenfunktion_typ = "Obstruktion"
-
-    # Graduierung der Obstruktion basierend auf FEV1%
-    if lungenfunktion_typ == "Obstruktion":
-        if fev1_prozent >= 70:
-            grad = "Leichte Obstruktion"
-        elif 60 <= fev1_prozent < 70:
-            grad = "Moderate Obstruktion"
-        elif 50 <= fev1_prozent < 60:
-            grad = "Mittelschwere Obstruktion"
+    # Funktion zur Bewertung des Atemwegswiderstands und möglicher Hindernisse
+    def bewerte_awr_und_hindernisse(Reff_post_broncholyse):
+        if Reff_post_broncholyse < 170:
+            return "Normal", "Kein Hinweis auf signifikantes Strömungshindernis."
+        elif 170 <= Reff_post_broncholyse <= 350:
+            return "Erhöht", "Möglicherweise intrathorakales Strömungshindernis."
         else:
-            grad = "Schwere Obstruktion"
-    else:
-        grad = "Normal"
+            return "Deutlich erhöht", "Möglicherweise extrathorakales Strömungshindernis."
+
+    # Funktion zur Bewertung des Schweregrads basierend auf Prozentwerten
+    def grad_bewertung(wert, niedrig, mittel):
+        if wert < niedrig:
+            return "leicht erhöht"
+        elif niedrig <= wert <= mittel:
+            return "mittel"
+        else:
+            return "schwer"
+
+    # Berechnung der prozentualen Veränderung
+    def berechne_prozentuale_veraenderung(vorher, nachher):
+        if vorher == 0:
+            return 0  # Verhindert Division durch Null
+        return ((nachher - vorher) / vorher) * 100
 
     # Eingabefelder für die Messwerte
+    FRCpleth = st.number_input("Funktionelle Residualkapazität in Prozent vom Sollwert (FRCpleth):", value=100.0, min_value=0.0, format="%.1f")
+    Reff_vor_broncholyse = st.number_input("Atemwegswiderstand (Reff in Pa/s):", value=0.0, format="%.2f")
+    tlc_absolut = st.number_input("Totale Lungenkapazität (TLC in Liter):", value=6.0, min_value=0.0, format="%.1f")
+    rv_absolut = st.number_input("Residualvolumen (RV in Liter):", value=1.5, min_value=0.0, format="%.1f")
     rv = st.number_input("Residualvolumen (RV) in Prozent vom Sollwert:", value=100.0, min_value=0.0, format="%.1f")
     tlc = st.number_input("Totale Lungenkapazität (TLC) in Prozent vom Sollwert:", value=100.0, min_value=0.0, format="%.1f")
     tgv = st.number_input("Thorakales Gasvolumen (TGV) in Prozent vom Sollwert:", value=100.0, min_value=0.0, format="%.1f")
-    awr_post_broncholyse = st.number_input("Atemwegswiderstand nach Broncholyse (optional, in Pa/s):", value=0.0, format="%.2f")
-    
-    rv_absolut = st.number_input("Residualvolumen (RV in Liter):", value=1.5, min_value=0.0, format="%.1f")
-    tlc_absolut = st.number_input("Residualvolumen (RV in Liter):", value=6.0, min_value=0.0, format="%.1f")
-    befund_text_bodyspleth = "### Befundbericht:\n"
+    FEV1_pre = st.number_input("FEV1 vor Broncholyse (optional, in Pa/s):", value=100.0, min_value=0.0, format="%.1f")
+    FEV1_post = st.number_input("FEV1 nach Broncholyse (optional, in Pa/s):", value=100.0, min_value=0.0, format="%.1f")
+    Reff_post_broncholyse = st.number_input("Atemwegswiderstand nach Broncholyse (optional, in Pa/s):", value=0.0, format="%.2f")
 
-
-
-    # RV-Bewertung und Graduierung
-    rv_bewertung = "leicht erhöht" if rv < 140 else "mittel" if 140 <= rv <= 170 else "schwer"
-
-    # TLC-Bewertung und Graduierung
-    tlc_bewertung = "leicht erhöht" if tlc < 130 else "mittel" if 130 <= tlc <= 150 else "schwer"
-
-    # TGV-Bewertung und Graduierung
-    tgv_bewertung = "leicht erhöht" if rv < 140 else "mittel" if 140 <= rv <= 170 else "schwer" 
-
-    # Funktion zur Bewertung des AWR und Unterscheidung zwischen Strömungshindernissen
-    def bewerte_awr_und_hindernisse(awr_post_broncholyse):
-        if awr_post_broncholyse < 170:
-            awr_bewertung = "Normal"
-            hindernis_typ = "Kein Hinweis auf signifikantes Strömungshindernis"
-        elif 170 <= awr_post_broncholyse <= 350:
-            awr_bewertung = "Erhöht"
-            hindernis_typ = "Möglicherweise intrathorakales Strömungshindernis"
-        else:
-            awr_bewertung = "Deutlich erhöht"
-            hindernis_typ = "Möglicherweise extrathorakales Strömungshindernis"
-        return awr_bewertung, hindernis_typ
-
-    awr_bewertung, hindernis_typ = bewerte_awr_und_hindernisse(awr_post_broncholyse)
-
-
-    # Berechnung des RV/TLC-Quotienten und Graduierung des Emphysems
+    # Berechnungen und Zusammenstellung des Befundberichts
+    Reff_interpretation = interpretiere_reff(fibrose_verdacht, adipositas_verdacht, emphysem_verdacht)
+    Reff_bewertung, hindernis_typ = bewerte_awr_und_hindernisse(Reff_post_broncholyse)
+    rv_bewertung = grad_bewertung(rv, 140, 170)
+    tlc_bewertung = grad_bewertung(tlc, 130, 150)
+    tgv_bewertung = grad_bewertung(tgv, 140, 170)
     rv_tlc_quotient = rv_absolut / tlc_absolut
+
     emphysem_grad = "kein Emphysem"
     if rv_tlc_quotient >= 0.6:
         emphysem_grad = "Schweres Emphysem (> 60%)"
@@ -392,46 +416,63 @@ def Bodyplethysmographie_Residualvolumen():
     elif rv_tlc_quotient >= 0.4:
         emphysem_grad = "Leichtes Emphysem (< 50%)"
 
-   # Initialisierung des Befundberichts
-    befund_text_bodyspleth = "### Befundbericht:\n"
+    pseudorestriktive_stoerung = rv > 120 and tlc >= 80
+    Reff_veraenderung_prozent = berechne_prozentuale_veraenderung(Reff_vor_broncholyse, Reff_post_broncholyse)
+    FEV1_veraenderung_prozent = berechne_prozentuale_veraenderung(FEV1_pre, FEV1_post)
+    FEV1_post_prozent = (FEV1_post / FEV1_pre) * 100
 
-    lungenfunktion_typ = st.session_state.get('lungenfunktionstyp', 'Nicht spezifiziert')
-    grad = st.session_state.get('grad', 'Nicht bewertet')
+    # Zusammenstellung des Befundberichts
+    befund_text = f"### Vorsicht bei der Interpretation des Atemwegswiderstands:\n{Reff_interpretation}\n\n### Befundbericht:\n"
+    if pseudorestriktive_stoerung:
+        befund_text += "**Pseudorestriktive Störung:** Bei Überblähung und normaler TLC, aber reduzierter ventilierbarer Volumina, handelt es sich nicht um eine echte Restriktion, sondern um eine pseudorestriktive Störung durch Überblähung.\n"
+    befund_text += f"\n- Das Residualvolumen (RV) ist {rv_bewertung}, basierend auf einem Wert von {rv}% vom Soll.\n"
+    befund_text += f"- Die Totale Lungenkapazität (TLC) wird als {tlc_bewertung} eingestuft, basierend auf einem Wert von {tlc}% vom Soll.\n"
+    befund_text += f"- Das Thorakale Gasvolumen (TGV) wird als {tgv_bewertung} bewertet, basierend auf einem Wert von {tgv}% vom Soll.\n"
 
-    # Initialisierung des Befundberichts
-    befund_text_bodyspleth = "### Befundbericht:\n"
+    if emphysem_grad != "kein Emphysem":
+        befund_text += f"\n**Emphysem Grad:** {emphysem_grad}\n"
+    if Reff_veraenderung_prozent != 0:
+        befund_text += f"\n**Veränderung des Atemwegswiderstands nach Broncholyse:** {Reff_veraenderung_prozent:.2f}%\n"
+    if FEV1_veraenderung_prozent != 0:
+        befund_text += f"\n**Veränderung des FEV1 nach Broncholyse:** {FEV1_veraenderung_prozent:.2f}%\n"
 
-    # 1. Graduierung der Obstruktion und physiologische Erläuterungen
-    befund_text_bodyspleth += f"\nLungenfunktionsstatus: {lungenfunktion_typ} - {grad}."
-    if lungenfunktion_typ == "Obstruktion":
-        befund_text_bodyspleth += " Dies deutet auf eine Einschränkung des Luftflusses hin, die bei Krankheiten wie Asthma oder COPD üblich ist."
-    elif lungenfunktion_typ == "Restriktion":
-        befund_text_bodyspleth += " Dies weist auf eine verminderte Expansion der Lunge hin, möglicherweise aufgrund von Fibrose oder anderen interstitiellen Lungenerkrankungen."
+    # Anzeige des Befundberichts
+    st.markdown(befund_text)
+    
+    # Ergänzende pathophysiologische Analyse
+    def pathophysiologische_analyse(rv, tlc, tgv, FEV1_pre, FEV1_post, Reff_vor_broncholyse, Reff_post_broncholyse):
+        ergebnisse = []
 
-    # 2. Bewertung des Atemwegswiderstands (AWR) nach Broncholyse und physiologische Bedeutung
-    befund_text_bodyspleth += f"\nAtemwegswiderstand nach Broncholyse ist {awr_bewertung}. "
-    befund_text_bodyspleth += f"Dies deutet auf ein {hindernis_typ} hin, was auf spezifische Pathologien wie Bronchialobstruktion oder Luftröhrenverengung hinweisen kann.\n"
+        # Analyse der Lungenüberblähung
+        if tgv > 120:
+            ergebnisse.append("Eine Erhöhung des thorakalen Gasvolumens (TGV) über 120% des Sollwerts deutet auf eine Lungenüberblähung hin. Dies kann auf eine obstruktive Lungenerkrankung wie das Emphysem zurückzuführen sein, bei der eine Zerstörung der Alveolarwände zu einer permanenten Erweiterung der Luftwege führt.")
 
-    # 3. Berechnung des RV/TLC-Quotienten, Graduierung des Emphysems und Erläuterung
-    befund_text_bodyspleth += f"Der RV/TLC Quotient beträgt {rv_tlc_quotient*100:.2f}%, was auf ein {emphysem_grad} hindeutet. "
-    befund_text_bodyspleth += "Ein erhöhter RV/TLC-Quotient ist ein Marker für ein Emphysem, ein Zustand, der durch die Zerstörung der Alveolarwände gekennzeichnet ist."
+        # Erkennung restriktiver Muster
+        if tlc < 80:
+            ergebnisse.append("Eine reduzierte totale Lungenkapazität (TLC) unter 80% des Sollwerts kann auf eine restriktive Ventilationsstörung hinweisen. Dies ist charakteristisch für Erkrankungen, die die Ausdehnung der Lunge beschränken, wie Lungenfibrose, bei der das Lungengewebe vernarbt und steif wird.")
 
-    # 4. Detaillierte Bewertung von RV, TLC und TGV mit Erläuterungen
-    befund_text_bodyspleth += "\n**Detaillierte Bewertung:**\n"
-    befund_text_bodyspleth += f"- Das Residualvolumen (RV) ist {rv_bewertung}, basierend auf einem Wert von {rv}% vom Soll. Erhöhte RV-Werte können auf eine Obstruktion der kleinen Atemwege hinweisen.\n"
-    befund_text_bodyspleth += f"- Die Totale Lungenkapazität (TLC) wird als {tlc_bewertung} eingestuft, basierend auf einem Wert von {tlc}% vom Soll. Veränderungen in der TLC können auf restriktive oder obstruktive Lungenkrankheiten hindeuten.\n"
-    befund_text_bodyspleth += f"- Das Thorakale Gasvolumen (TGV) wird als {tgv_bewertung} bewertet, basierend auf einem Wert von {tgv}% vom Soll. TGV-Veränderungen reflektieren Veränderungen im Lungenvolumen, die bei verschiedenen pulmonalen Pathologien auftreten können.\n"
+        # Beurteilung der Reversibilität von Atemwegsobstruktionen
+        if Reff_post_broncholyse < Reff_vor_broncholyse and FEV1_post > FEV1_pre:
+            prozentuale_veraenderung_FEV1 = ((FEV1_post - FEV1_pre) / FEV1_pre) * 100
+            ergebnisse.append(f"Ein Rückgang des Atemwegswiderstands (Reff) nach Broncholyse zusammen mit einer Verbesserung des FEV1 um {prozentuale_veraenderung_FEV1:.2f}% deutet auf eine teilweise reversible Atemwegsobstruktion hin. Dies ist ein Indiz für das Vorliegen einer obstruktiven Lungenerkrankung, bei der bronchodilatatorische Medikamente die Atemwegsobstruktion verringern können.")
 
-    # 5. Abschließende Bewertung und Empfehlungen mit Hinweis auf Differentialdiagnosen
-    befund_text_bodyspleth += "\nBasierend auf den vorliegenden Messwerten und dem Atemwegswiderstand empfehlen wir "
-    befund_text_bodyspleth += "eine detaillierte klinische Bewertung, um zwischen reversiblen und irreversiblen Lungenveränderungen sowie zwischen "
-    befund_text_bodyspleth += "extrathorakalen und intrathorakalen Strömungshindernissen zu differenzieren. Mögliche Differentialdiagnosen umfassen Asthma, COPD, interstitielle Lungenerkrankungen und Lungenfibrose. Die weitere Diagnostik sollte auch bildgebende Verfahren und ggf. eine Lungenbiopsie umfassen.\n"
+        # Überprüfung auf Emphysem und Air Trapping
+        if rv / tlc > 0.4:
+            ergebnisse.append("Ein erhöhtes Verhältnis von Residualvolumen (RV) zu totaler Lungenkapazität (TLC) weist auf Air Trapping und möglicherweise auf ein Emphysem hin. Beide Zustände sind charakteristisch für chronisch obstruktive Lungenerkrankungen (COPD), bei denen es zu einer Beeinträchtigung des Luftstroms kommt.")
 
-    # Anzeige des gesamten Befundberichts
-    st.markdown(befund_text_bodyspleth)
+        # Fazit
+        if not ergebnisse:
+            return "Die pathophysiologische Analyse ergab keine spezifischen Auffälligkeiten basierend auf den eingegebenen Messwerten."
+        return "Pathophysiologische Analyseergebnisse:\n" + "\n".join(ergebnisse)
+
+    # Beispielaufruf der Funktion
+    patho_ergebnisse = pathophysiologische_analyse(rv, tlc, tgv, FEV1_pre, FEV1_post, Reff_vor_broncholyse, Reff_post_broncholyse)
+    st.markdown(patho_ergebnisse)
+
+    
 
 
-# In[11]:
+# In[255]:
 
 
 def Bodyplethysmographie_Fluss_Druck_Kurve():
@@ -495,30 +536,84 @@ def Bodyplethysmographie_Fluss_Druck_Kurve():
             st.write("Schnittwinkel der Schleifen > 90° als Zeichen der Obstruktion. Geringe Keulenform als Zeichen eines erhöhten Residualvolumens. Unter Broncholyse (rot) normale Atemschleife als Zeichen einer reversiblen Obstruktion und eines Air Trappings.")
             st.image("Reversible_Obstruktion.jpg")
 
-# Visuelle Bewertungsfragen
-    frage1 = st.radio("Schneiden sich die Schleifen der Atemkurve in einem Winkel größer als 90°?", ('Ja', 'Nein'))
-    frage2 = st.radio("Zeigt die Atemschleife eine Keulenform?", ('Ja', 'Nein'))
-    frage3 = st.radio("Ist die Steigung der Schleife während der Ausatmung deutlich flacher im Vergleich zur Einatmung?", ('Ja', 'Nein'))
-    frage4 = st.radio("Endet die exspiratorische Schleife auf einem höheren Niveau als sie begonnen hat?", ('Ja', 'Nein'))
 
-    # Analyse und automatisierter Befund basierend auf visueller Bewertung
-    if frage1 == 'Ja':
-        st.write("Befund: Ein Winkel größer als 90° deutet auf eine obstruktive Ventilationsstörung hin.")
-    else:
-        st.write("Befund: Ein Winkel kleiner als 90° spricht gegen eine ausgeprägte obstruktive Ventilationsstörung.")
 
-    if frage2 == 'Ja':
-        st.write("Zusatzbefund: Eine Keulenform der Atemschleife weist auf das Vorliegen eines Emphysems oder Air Trapping hin.")
+    st.title("Analyse der Atemschleifen")
 
-    if frage3 == 'Ja':
-        st.write("Hinweis: Eine flachere Steigung während der Ausatmung im Vergleich zur Einatmung signalisiert einen erhöhten exspiratorischen Widerstand.")
+    # Erweitere die Fragen, um spezifischere pathophysiologische Zustände zu adressieren
+    frage1 = st.radio(
+        "Schneiden sich die Schleifen der Atemkurve in einem Winkel größer als 90°?",
+        ('Ja', 'Nein'),
+        help="Ein Winkel > 90° kann auf eine Obstruktion hinweisen."
+    )
 
-    if frage4 == 'Ja':
-        st.write("Weiterer Befund: Ein höheres Ende der exspiratorischen Schleife deutet auf ein erhöhtes Residualvolumen hin, was typisch für Emphysem oder Air Trapping ist.")
+    frage2 = st.radio(
+        "Zeigt die Atemschleife eine Keulenform?",
+        ('Ja', 'Nein'),
+        help="Eine Keulenform deutet oft auf ein Emphysem hin."
+    )
 
-    st.write("Bitte beachten: Diese Analyse ersetzt nicht die umfassende Bewertung durch einen Facharzt. Weitere Untersuchungen könnten erforderlich sein, um eine abschließende Diagnose zu stellen.")
-            
-### Abschnitt Ende
+    frage3 = st.radio(
+        "Ist die Steigung der Schleife während der Ausatmung deutlich flacher im Vergleich zur Einatmung?",
+        ('Ja', 'Nein'),
+        help="Eine flachere Steigung bei Ausatmung spricht für einen erhöhten Widerstand."
+    )
+
+    frage4 = st.radio(
+        "Endet die exspiratorische Schleife auf einem höheren Niveau als sie begonnen hat?",
+        ('Ja', 'Nein'),
+        help="Ein höheres Ende der exspiratorischen Schleife kann auf Air Trapping hinweisen."
+    )
+
+    frage5 = st.radio(
+        "Ist eine 'Bauchbildung' im exspiratorischen Teil der Atemschleife erkennbar?",
+        ('Ja', 'Nein'),
+        help="Eine 'Bauchbildung' kann bei Übergewichtigen vorkommen oder auf eine restriktive Störung hinweisen."
+    )
+
+    frage6 = st.radio(
+        "Gibt es Anzeichen für ein 'stehendes Ei' oder eine 'Kofferkurve' in der Schleife?",
+        ('Ja', 'Nein'),
+        help="'Stehendes Ei' oder 'Kofferkurve' können auf eine zentrale Atemwegsstenose hinweisen."
+    )
+
+    # Analyse basierend auf den Antworten und Generierung des Befundes
+    def generiere_befund(antworten):
+        befund = []
+
+        # Obstruktive Ventilationsstörung
+        if antworten[0] == 'Ja':
+            befund.append("Hinweis auf obstruktive Ventilationsstörung.")
+
+        # Emphysem oder Air Trapping
+        if antworten[1] == 'Ja':
+            befund.append("Möglicher Befund eines Emphysems oder Air Trapping.")
+
+        # Erhöhter exspiratorischer Widerstand
+        if antworten[2] == 'Ja':
+            befund.append("Erhöhter exspiratorischer Widerstand festgestellt.")
+
+        # Erhöhtes Residualvolumen
+        if antworten[3] == 'Ja':
+            befund.append("Anzeichen für erhöhtes Residualvolumen.")
+
+        # Restriktive Störung bei Übergewicht oder Lungenfibrose
+        if antworten[4] == 'Ja':
+            befund.append("Restriktive Ventilationsstörung möglich, besonders bei Patienten mit Übergewicht.")
+
+        # Zentrale Atemwegsstenose
+        if antworten[5] == 'Ja':
+            befund.append("Befund deutet auf eine zentrale Atemwegsstenose hin.")
+
+        if not befund:
+            return "Keine spezifischen Auffälligkeiten basierend auf den Antworten gefunden."
+
+        return "Befund:\n" + "\n".join(befund)
+
+    antworten = [frage1, frage2, frage3, frage4, frage5, frage6]
+    befund = generiere_befund(antworten)
+
+    st.markdown(befund)
 
 
 # In[ ]:
@@ -778,7 +873,7 @@ def Gasaustausch_Transferfaktor():
         st.markdown(kompakte_zusammenfassung)  # Ausgabe der kompakten Zusammenfassun
 
 
-# In[130]:
+# In[271]:
 
 
 import streamlit as st
@@ -805,6 +900,8 @@ def Gasaustausch_Blutgasanalyse():
         """)
     
     # Eingabefelder für die Messwerte
+    geschlecht = st.radio("Geschlecht:", ('Männlich', 'Weiblich'), key='gender_select2')
+    alter = st.number_input("Alter (Jahre):", min_value=0, max_value=120, step=1, format="%d")
     pH = st.number_input("pH-Wert:", value=7.40, format="%.2f")
     PaO2 = st.number_input("PaO2 in mmHg:", value=95.0, format="%.1f")
     PaCO2 = st.number_input("PaCO2 in mmHg:", value=40.0, format="%.1f")
@@ -815,8 +912,94 @@ def Gasaustausch_Blutgasanalyse():
     Cl = st.number_input("Cl in mEq/L:", value=100.0, format="%.1f")
     Ca = st.number_input("Ca in mmol/L:", value=2.4, format="%.2f")
     
+    # Berechnung des korrigierten PaO2
+    PaO2_korr = PaO2 - 1.6 * (40 - PaCO2)
+    PaO2_korr_rundung = round(PaO2_korr, 1)  # Optional: Runden des Ergebnisses auf eine Dezimalstelle
+    summe_PaCO2_PaO2 = PaCO2 + PaO2
+    
     if st.button("Analyse durchführen"):
         results = []
+    
+        # Hinzufügen der korrigierten PaO2 Information
+        results.append(f"**Korrigiertes PaO2: {PaO2_korr_rundung} mmHg**")
+        
+        # Alveoläre Hypoventilation und AHS
+        if PaCO2 > 45:
+            results.append("Hinweis auf alveoläre Hypoventilation. Bei Vorliegen von Adipositas könnte dies auf ein Adipositas-Hypoventilations-Syndrom (AHS) hinweisen.")
+
+        # Schweregradbeurteilung
+        PaO2_Abweichung = 40 - PaO2
+        PaCO2_Abweichung = PaCO2 - 45
+
+        if PaO2_Abweichung > 10 or PaCO2_Abweichung > 10:
+            schweregrad = "schwer"
+        elif 6 <= PaO2_Abweichung <= 10 or 6 <= PaCO2_Abweichung <= 10:
+            schweregrad = "mittel"
+        elif 5 <= PaO2_Abweichung < 6 or 5 <= PaCO2_Abweichung < 6:
+            schweregrad = "leicht"
+        else:
+            schweregrad = "kein"
+
+        if schweregrad != "kein":
+            results.append(f"Schweregrad der respiratorischen Insuffizienz: {schweregrad}.")
+        
+
+
+        # Kritische Werte, die eine sofortige ärztliche Abklärung erfordern
+        if pH < 7.25 and BE > 30:
+            results.append("⚠️ Kritischer Zustand: pH < 7,25 und BE > 30 mmol/l. Sofortige ärztliche Abklärung erforderlich.")
+        if PaCO2 > 55 and PaO2 < 50:
+            results.append("⚠️ Neu aufgetretener kritischer Zustand: PaCO2 > 55mmHg und PaO2 < 50mmHg. Sofortige ärztliche Abklärung erforderlich.")
+        
+        # Analyse der respiratorischen Insuffizienz
+        if PaO2 < 80:  # Annahme eines allgemeinen Schwellenwertes für "erniedrigt"
+            if PaCO2 < 45:  # Schwellenwert für "normal/erniedrigt"
+                results.append("**Hypoxämische Insuffizienz (Typ 1):** Erniedrigter PaO2 mit normalem oder erniedrigtem PaCO2. Mögliche Ursachen sind Gasaustauscheinschränkungen wie Pneumonie oder Lungenembolie.")
+            elif PaCO2 > 45:
+                results.append("**Ventilatorische Insuffizienz (Typ 2):** Erniedrigter PaO2 mit erhöhtem PaCO2. Dies deutet auf eine ventilatorische Problematik hin.")
+        else:
+            results.append("Keine Anzeichen für hypoxämische oder ventilatorische Insuffizienz basierend auf PaO2 und PaCO2 Werten.")
+        
+        # Berechnung des Sollwerts von PaO2 basierend auf Alter und Geschlecht
+        
+        if geschlecht == "Männlich":
+            PaO2_Soll = 100 - (alter / 3)
+        else:  # Weiblich
+            PaO2_Soll = 100 - (alter / 3) - 1
+        PaO2_Soll_rundung = round(PaO2_Soll, 1)
+
+        # Pathologischer Bereich
+        if geschlecht == "Männlich":
+            paO2_pathologisch_untergrenze = PaO2_Soll - 14
+        else:  # Weiblich
+            paO2_pathologisch_untergrenze = PaO2_Soll - 15
+        paO2_pathologisch_untergrenze_rundung = round(paO2_pathologisch_untergrenze, 1)
+
+        results.append(f"**Sollwert PaO2 (basierend auf Alter und Geschlecht): {PaO2_Soll_rundung} mmHg.**")
+        results.append(f"**Pathologische Untergrenze des PaO2: {paO2_pathologisch_untergrenze_rundung} mmHg.**")
+        
+        # Prüfung der Summe von PaCO2 und PaO2 ohne O2-Gabe
+        if summe_PaCO2_PaO2 > 140:
+            results.append("⚠️ Achtung: Die Summe von PaCO2 und PaO2 überschreitet 140 mmHg ohne O2-Gabe. "
+                       "Dies könnte auf eine unzureichende Oxygenierung oder eine inkorrekte Messung hinweisen.")
+        
+        # Hyperventilation und korrigiertes PaO2
+        if PaCO2 < 35:
+            results.append("Hinweis: Bei Hyperventilation (erniedrigtem PaCO2) wurde der Sauerstoffwert entsprechend korrigiert. "
+                           "Dies berücksichtigt, dass Hyperventilation ein Kompensationsmechanismus des Körpers bei Sauerstoffmangel darstellt.")
+
+        # Überprüfung der Indikation zur Einleitung einer NIV bei erhöhtem PaCO2
+        if PaCO2 > 45:
+            results.append("Wichtig: Bei einer Erhöhung des PaCO2 ist stets die Indikation zur Einleitung einer NIV (nicht-invasive Ventilation) zu überprüfen.")
+
+        # LTOT und dessen Überprüfung
+        # Angenommen, es gibt eine Variable `ltot_indiziert` (True/False), die angibt, ob LTOT indiziert ist.
+        # Sie müssten diese Logik basierend auf Ihren spezifischen Kriterien definieren.
+        ltot_indiziert = PaO2 < 60  # Beispielbedingung für die Indikation zur LTOT
+        if ltot_indiziert:
+            results.append("LTOT indiziert. Der Effekt der Therapie unter der gewählten Flussrate muss überprüft werden: "
+                           "Ein Anstieg des PaO2 auf mindestens 60 mmHg bzw. um mindestens 10 mmHg wird angestrebt. "
+                           "Ggf. muss die Messung mit einer höheren Sauerstoff-Flussrate wiederholt werden.")
         
         # Analyse des pH-Wertes
         if pH > 7.45:
@@ -906,6 +1089,16 @@ def Gasaustausch_Blutgasanalyse():
         elif Ca > 2.6:
             results.append("Hyperkalzämie: Achten auf Nierensteine, Knochenschmerzen und psychiatrische Symptome.")
             
+        fehler_bga = """
+        ### Wesentliche Fehler bei der Blutgasanalyse und deren Auswirkungen:
+
+        - **Patient hält die Luft an:** PaCO2 leicht erhöht, PaO2 noch normal.
+        - **Ungenügende Hyperämie:** PaO2 zu niedrig, PaCO2 kann normal sein.
+        - **Luftblase in Kapillare:** PaO2 zu hoch und/oder PaCO2 zu niedrig.
+        - **Hyperventilation:** korrigiertes PaO2 beachten!
+        """
+        st.markdown(fehler_bga)
+        
         detailed_diagnosis = "\n".join(results)
         st.markdown("### Befundergebnisse:")
         st.markdown(detailed_diagnosis)
@@ -987,6 +1180,75 @@ def beurteile_compliance(eingabe_compliance):
     st.markdown("[Mehr Informationen zur Compliance](https://www.ncbi.nlm.nih.gov/books/NBK538324/)")
 
 
+# In[244]:
+
+
+def LTOT():
+    st.header("LTOT - Algorithmus")
+    
+    st.write("Die LTOT-Leitlinie wurde am 23.07.2020 nach einem 1,5-jährigen Prozess mit neun wissenschaftlichen Gesellschaften und der LOT e.V. veröffentlicht. Der Artikel fasst die Hauptpunkte zusammen, insbesondere die Bedeutung für die Patientenversorgung bei Lungenerkrankungen.")
+    link = "https://www.sauerstoffliga.de/wp-content/uploads/2021/11/O²_Report_Langzeit-Sauerstoff-Leitlinie-2020-Teil1-und-Teil2.pdf"
+    st.markdown("Die überarbeitete LTOT-Leitlinie wurde am 23.07.2020 veröffentlicht. Hier ist der [Link zur Leitlinie]({}).".format(link))
+    
+    with st.expander("Indikationen:"):
+        st.write("""
+        - Indikationen zur LTOT haben sich im Vergleich zu 2008 prinzipiell nicht geändert.
+        - Einleitung einer LTOT erfordert eine chronische Hypoxämie über mindestens drei Wochen mit einem pO2 ≤ 55 mmHg, zweimalig nachgewiesen mittels Blutgasanalyse.
+        - Bei einem pO2 ≤ 60 mmHg, erhöhtem Hämatokrit und/oder Belastung des Lungenkreislaufs durch Hypoxämie mit Folge einer Rechtsherzbelastung ist ebenfalls eine LTOT-Verordnung angezeigt.
+        - Eine LTOT-Verordnung bei höheren pO2-Werten als in der Leitlinie genannt hat keinen Einfluss auf das Überleben.
+        """)
+
+    with st.expander("Womit die Indikationsstellung?"):
+        st.write("""
+        - Eine alleinige Messung der Sauerstoffsättigung durch Pulsoxymeter ist nicht ausreichend zur Indikationsstellung für LTOT, da nicht sicher zwischen Patienten, die keine Sauerstofftherapie benötigen, und solchen, die sie benötigen, unterschieden werden kann.
+        - Eine Sauerstoffsättigung ≤92 % sollte Anlass für weitere Diagnostik mit Blutgasanalyse geben, nach einer Ruhezeit von mindestens 10 Minuten durchgeführt.
+        - Hyperventilation (erniedrigter pCO2) erfordert eine entsprechende Korrektur des Sauerstoffwerts, da Hyperventilation ein Kompensationsmechanismus des Körpers bei Sauerstoffmangel darstellt.
+        - Bei Erhöhung des pCO2 muss die Indikation zur Einleitung einer Nicht-Invasiven Beatmung (NIV) überprüft werden. 
+        - Bei Indikation zur LTOT sollte der Effekt der Therapie unter der gewählten Flussrate überprüft werden, mit dem Ziel, den pO2 auf mindestens 60 mmHg oder um mindestens 10 mmHg zu steigern.
+        - Bei einigen Patienten kann die LTOT zu einer Abnahme des Atemantriebs mit einem Anstieg des pCO2 führen. Es ist wichtig, einen kritischen Anstieg zu vermeiden, der zu einer Entgleisung des Säure-Basen-Haushalts führt. Gegebenenfalls sind nächtliche Messungen des CO2-Werts über Hautelektroden erforderlich.
+        """)
+
+    with st.expander("Dauer der LTOT"):
+        st.write("""
+        - Studiendaten empfehlen eine tägliche Durchführung der LTOT von ≥15 Stunden.
+        - Aktuelle Beobachtungsstudien zeigen, dass eine längere Verwendungsdauer keine zusätzlichen Vorteile bezüglich der Endpunkte erneute Krankenhausaufnahme und Sterblichkeit bringt.
+        - Einige mobile Patienten benötigen zusätzlich mobile Sauerstoffversorgungsgeräte, um die empfohlene Gesamtdauer von ≥15 Stunden pro Tag zu erreichen.
+        """)
+        
+    with st.expander("LTOT und Krankheitsbilder"):
+        st.write("""
+        - **COPD**  
+        - Bei COPD wurde gezeigt, dass eine entsprechende Verordnung von LTOT die Krankheitsfolgen und die Sterblichkeit senken kann.
+        - Im LOTT (Long Term Oxygen Trial) wurde vor einigen Jahren gezeigt, dass diese Effekte bei Patienten mit nur mäßiger Hypoxämie (Sauerstoffsättigung zwischen 80–92 %) nicht nachgewiesen werden konnten.
+        - Auch bei alleiniger Belastungshypoxämie ist ein lebensverlängernder Effekt der LTOT nicht nachgewiesen.
+        - **Interstitielle Erkrankungen**
+        -  Analog zur COPD kann bei Patienten mit interstitiellen Lungenerkrankungen eine LTOT unterhalb der gleichen Grenzwerte für pO2 und Sauerstoffsättigung empfohlen werden.
+        - Eine rein nächtliche Sauerstofftherapie wird nicht empfohlen.
+        - Eine aktuelle Studie hat gezeigt, dass die Sauerstoffgabe bei Belastungshypoxämie einen positiven Effekt auf Atemnot und Belastbarkeit haben kann.
+        - **Zystische Fibrose**
+        - Wie bei COPD
+        - **Neuromuskuläre Erkrankungen**
+        - Bei Patienten mit neuromuskulären Erkrankungen wird die Bedeutung der Atempumpenschwäche hervorgehoben, die häufig bei diesen Erkrankungen auftritt.
+        - Primär sollte die Indikation zur Nicht-Invasiven Beatmung (NIV) überprüft werden, gegebenenfalls in Kombination mit einem intensiven Sekretmanagement, bevor unkritisch Sauerstoff verschrieben wird.
+        - **Chronische Herzinsuffizienz**
+        - Bei gesunder Lunge ist die Hypoxämie weniger auf eine verminderte Sauerstoffaufnahme in der Lunge zurückzuführen, sondern eher auf einen vermehrten Sauerstoffverbrauch in den peripheren Organen bei fehlender Lungenstauung.
+        - Es gibt keine Langzeitdaten zur Langzeit-Sauerstofftherapie (LTOT) bei chronischer Herzinsuffizienz; meist ist die Hypoxämie nur mäßig ausgeprägt, so dass keine Indikation zur LTOT im chronischen Verlauf besteht.
+        - In akuten Phasen der Herzschwäche oder palliativ zur Behandlung von Atemnot in den Endstadien der Erkrankung kann Sauerstoff eingesetzt werden.
+        - **Pulmonale Hypertonoe**
+        - Eine LTOT wird bei einem pO2 <60 mmHg empfohlen.
+        """)
+        
+        
+     # Bilder als Platzhalter für interaktive Auswahl
+    with st.columns(1)[0]:  # Direkter Zugriff auf das erste Element der Liste
+        if st.button('LTOT Algorithmus'):
+            st.session_state.selected_curve = 'LTOT'   
+    
+    if 'selected_curve' in st.session_state:
+        if st.session_state.selected_curve == 'LTOT':
+            st.image("LTOT.jpg")
+
+
 # In[191]:
 
 
@@ -1011,7 +1273,7 @@ def main():
         "",
         ("Spirometrie qualitativ", "Spirometrie quantitativ", "Bodyplethysmographie - Residualvolumen", 
          "Bodyplethysmographie - Fluss-Druck-Kurve", "Funktionstests - Broncholyse", "Funktionstests - Provokation", 
-         "Gasaustausch - Transferfaktor", "Gasaustausch - Blutgasanalyse","P0-Atemkraftmessung","Compliancemessung"),
+         "Gasaustausch - Transferfaktor", "Gasaustausch - Blutgasanalyse","P0-Atemkraftmessung","Compliancemessung","LTOT - Algorithmus"),
         key="analysebereich_radio"
     )
 
@@ -1035,6 +1297,8 @@ def main():
         P0_Atemkraftmessung()    
     elif analyse_bereich == "Compliancemessung":
         Compliancemessung()
+    elif analyse_bereich == "LTOT - Algorithmus":
+        LTOT()
 
 if __name__ == "__main__":
     main()
