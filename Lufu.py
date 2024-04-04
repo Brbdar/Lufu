@@ -76,18 +76,31 @@ from Compliancemessung import Compliancemessung
 from LTOT import LTOT
 
 
-# In[276]:
+# In[291]:
 
 
 def main():
     # Benutzerdefiniertes CSS anwenden
     custom_css = """
     <style>
-        /* Anpassungen für die Sidebar */
+        @media (max-width: 768px) {
+            /* Anpassungen für die Sidebar auf kleineren Bildschirmen */
+            .css-1d391kg {
+                font-size: 14px; /* Kleinere Schriftgröße für den Titel */
+            }
+            .stRadio > div {
+                background-color: #f0f2f6;
+                border-radius: 20px;
+                padding: 8px; /* Größeres Padding für bessere Klickbarkeit */
+                font-size: 16px; /* Größere Schrift für bessere Lesbarkeit */
+            }
+        }
+
+        /* Standardanpassungen */
         .css-1d391kg { /* Ändert die Farbe des Titels */
             color: #333;
         }
-        .stRadio > div{ /* Anpassung der Radiobuttons */
+        .stRadio > div { /* Anpassung der Radiobuttons */
             background-color: #f0f2f6;
             border-radius: 20px;
             padding: 5px;
