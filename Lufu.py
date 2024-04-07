@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[278]:
+# In[322]:
 
 
 import streamlit as st
 
 # Hauptteil der App
-st.title("Analysebereich Lungenfunktion")
+st.title("Pneumoapp")
 
 
 # In[14]:
