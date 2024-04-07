@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[10]:
 
 
 import streamlit as st
@@ -46,31 +46,44 @@ def HFpEF_Score():
         probability = (z / (1 + z)) * 100  # Umwandlung in Prozent
         return probability
 
-    # Funktion zur Berechnung der Punktzahl basierend auf den diskreten Kriterien
     def calculate_hfpef_points(af, bmi, pasp, e_e_prime_ratio, age):
         points = 0
-        points += 3 if af == 1 else 0
-        points += 2 if bmi > 30 else 0
-        points += 1 if pasp > 35 else 0  # Annahme: Pulmonale Hypertonie ist definiert als PASP > 35 mmHg
-        points += 1 if e_e_prime_ratio > 9 else 0
-        points += 1 if age > 60 else 0
+        debug_info = []  # Liste zum Speichern von Debug-Informationen
+    
+        if af == 1:
+            points += 3
+            debug_info.append("Vorhofflimmern: +3")
+        if bmi > 30:
+            points += 2
+            debug_info.append("BMI > 30: +2")
+        if pasp > 35:
+            points += 1
+            debug_info.append("PASP > 35: +1")
+        if e_e_prime_ratio > 9:
+            points += 1
+            debug_info.append("E/e′ > 9: +1")
+        if age > 60:
+            points += 1
+            debug_info.append("Alter > 60: +1")
+    
         return points
 
-    # Aktion, wenn der Berechnungsbutton gedrückt wird
-    if st.button('HFpEF Score berechnen'):
-        score = calculate_hfpef_score(age, bmi, e_e_prime_ratio, pasp, af_bin)
-        points = calculate_hfpef_points(af_bin, bmi, pasp, e_e_prime_ratio, age)
-        st.write(f"Erreichte Punktzahl basierend auf diskreten Kriterien: {points}")
-        st.write(f"Basierend auf den kontinuierlichen Variablen beträgt der HFpEF-Score: {score:.2f}%")
+    def interpret_hfpef_points(points):
+        if points <= 1:
+            return "HFpEF kann relativ sicher ausgeschlossen werden."
+        elif 2 <= points <= 5:
+            return "Weitere Diagnostik ist nötig."
+        elif points >= 6:
+            return "HFpEF kann relativ sicher diagnostiziert werden."
 
-    # Interpretation der Punktzahl (optional hinzugefügt für eine bessere Einordnung der Ergebnisse)
-    if points <= 1:
-        interpretation = "HFpEF kann relativ sicher ausgeschlossen werden."
-    elif 2 <= points <= 5:
-        interpretation = "Weitere Diagnostik ist nötig."
-    elif points >= 6:
-        interpretation = "HFpEF kann relativ sicher diagnostiziert werden."
-    st.write(f"Interpretation basierend auf der Punktzahl: {interpretation}")
+    if st.button('HFpEF Score berechnen'):
+        points = calculate_hfpef_points(af_bin, bmi, pasp, e_e_prime_ratio, age)
+        score = calculate_hfpef_score(age, bmi, e_e_prime_ratio, pasp, af_bin)
+        interpretation = interpret_hfpef_points(points)
+
+        st.write(f"Erreichte Punktzahl basierend auf diskreten Kriterien: {points}")
+        st.write(f"Interpretation der Punktzahl: {interpretation}")
+        st.write(f"Basierend auf den kontinuierlichen Variablen beträgt der HFpEF-Score: {score:.2f}%")
     
     with st.expander("Über die Forschung"):
         st.markdown("""
