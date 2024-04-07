@@ -76,108 +76,95 @@ from Compliancemessung import Compliancemessung
 from LTOT import LTOT
 
 
-# In[291]:
+# In[ ]:
 
 
-def main():
-    # Benutzerdefiniertes CSS anwenden
-    custom_css = """
-    <style>
-        @media (max-width: 768px) {
-            /* Anpassungen für die Sidebar auf kleineren Bildschirmen */
-            .css-1d391kg {
-                font-size: 14px; /* Kleinere Schriftgröße für den Titel */
-            }
-            .stRadio > div {
-                background-color: #f0f2f6;
-                border-radius: 20px;
-                padding: 8px; /* Größeres Padding für bessere Klickbarkeit */
-                font-size: 16px; /* Größere Schrift für bessere Lesbarkeit */
-            }
-        }
+from EKG import EKG
 
-        /* Standardanpassungen */
-        .css-1d391kg { /* Ändert die Farbe des Titels */
-            color: #333;
-        }
-        .stRadio > div { /* Anpassung der Radiobuttons */
-            background-color: #f0f2f6;
-            border-radius: 20px;
-            padding: 5px;
-        }
-    </style>
-    """
-    
+
+# In[321]:
+
+
+import streamlit as st
+
+def setup_sidebar():
     st.sidebar.title("🌬️ Analysebereiche - Lungenfunktion")
-    analyse_bereich = st.sidebar.radio(
-        "",
-        ("Spirometrie qualitativ", "Spirometrie quantitativ", "Bodyplethysmographie - Residualvolumen", 
-         "Bodyplethysmographie - Fluss-Druck-Kurve", "Funktionstests - Broncholyse", "Funktionstests - Provokation", 
-         "Gasaustausch - Transferfaktor", "Gasaustausch - Blutgasanalyse","P0-Atemkraftmessung","Compliancemessung","LTOT - Algorithmus"),
+    analyse_bereich_lungenfunktion = st.sidebar.multiselect(
+        label="",
+        options=[
+            "Spirometrie qualitativ", "Spirometrie quantitativ", "Bodyplethysmographie - Residualvolumen",
+            "Bodyplethysmographie - Fluss-Druck-Kurve", "Funktionstests - Broncholyse", "Funktionstests - Provokation",
+            "Gasaustausch - Transferfaktor", "Gasaustausch - Blutgasanalyse", "P0-Atemkraftmessung",
+            "Compliancemessung", "LTOT - Algorithmus"
+        ],
         key="analysebereich_radio"
     )
+    process_selection(analyse_bereich_lungenfunktion)
 
-    if analyse_bereich == "Spirometrie qualitativ":
+    st.sidebar.title("🫀 Rechtsherzkatheter in Arbeit")
+    analyse_bereich_rechtsherzkatheter = st.sidebar.multiselect(
+        label="",
+        options=[
+            "EKG", "Neue Option"
+        ],
+        key="analysebereich_radio2"
+    )
+    process_selection(analyse_bereich_rechtsherzkatheter)
+    
+    st.sidebar.title("🚴🏼‍♂️ Spiroergometrie in Arbeit")
+    analyse_bereich_spiroergometrie = st.sidebar.multiselect(
+        label="",
+        options=["XXX", "XXX"
+        ],
+        key="analysebereich_radio3"
+    )
+    process_selection(analyse_bereich_spiroergometrie)
+
+def process_selection(selection):
+    # Fügen Sie hier die Logik zum Aufrufen von Funktionen basierend auf der Auswahl hinzu
+    if "Spirometrie qualitativ" in selection:
         spirometrie_qualitativ()
-    elif analyse_bereich == "Spirometrie quantitativ":
+    if "Spirometrie quantitativ" in selection:
         tiffeneau_index_berechnung1()
-    elif analyse_bereich == "Bodyplethysmographie - Residualvolumen":
+    if "Bodyplethysmographie - Residualvolumen" in selection:
         Bodyplethysmographie_Residualvolumen()
-    elif analyse_bereich == "Bodyplethysmographie - Fluss-Druck-Kurve":
+    if "Bodyplethysmographie - Fluss-Druck-Kurve" in selection:
         Bodyplethysmographie_Fluss_Druck_Kurve()
-    elif analyse_bereich == "Funktionstests - Broncholyse":
+    if "Funktionstests - Broncholyse" in selection:
         Funktionstests_Broncholyse()
-    elif analyse_bereich == "Funktionstests - Provokation":
+    if "Funktionstests - Provokation" in selection:
         Funktionstests_Provokation()
-    elif analyse_bereich == "Gasaustausch - Transferfaktor":
+    if "Gasaustausch - Transferfaktor" in selection:
         Gasaustausch_Transferfaktor()
-    elif analyse_bereich == "Gasaustausch - Blutgasanalyse":
+    if "Gasaustausch - Blutgasanalyse" in selection:
         Gasaustausch_Blutgasanalyse()
-    elif analyse_bereich == "P0-Atemkraftmessung":
-        P0_Atemkraftmessung()    
-    elif analyse_bereich == "Compliancemessung":
+    if "P0-Atemkraftmessung" in selection:
+        P0_Atemkraftmessung()
+    if "Compliancemessung" in selection:
         Compliancemessung()
-    elif analyse_bereich == "LTOT - Algorithmus":
+    if "LTOT - Algorithmus" in selection:
         LTOT()
+    if "EKG" in selection:
+        EKG()
+        
+    # Fügen Sie weitere Bedingungen für jede Auswahlmöglichkeit hinzu
 
-if __name__ == "__main__":
-    main()
-    
 def main():
-    st.sidebar.title("📊 Analysebereiche - Spiroergometrie")
-    analyse_bereich = st.sidebar.radio(
-        "",
-        ("noch in Arbeit","xxx"),
-        key="analysebereich_Spiroergometrie"
-    )
-
-    if analyse_bereich == "Spirometrie qualitativ":
-        spirometrie_qualitativ()
-    elif analyse_bereich == "Spirometrie quantitativ":
-        tiffeneau_index_berechnung()
+    setup_sidebar()
 
 if __name__ == "__main__":
     main()
-    
-def main():
-    st.sidebar.title("🩺 Analysebereiche - Rechtsherzkatheter")
-    analyse_bereich = st.sidebar.radio(
-        "",
-        ("noch in Arbeit", "xxx"),
-        key="analysebereich_Rechtsherzkatheter"
-    )
 
-    if analyse_bereich == "Spirometrie qualitativ":
-        spirometrie_qualitativ()
-    elif analyse_bereich == "Spirometrie quantitativ":
-        tiffeneau_index_berechnung()
-
-
-if __name__ == "__main__":
-    main()
-    
+        
    # Versionsnummer und Datum in der Sidebar
     st.sidebar.markdown("---")
-    st.sidebar.markdown("**Version:** 1.6")
-    st.sidebar.markdown("**Datum:** 2024-03-31")
+    st.sidebar.markdown("**Version:** 1.7")
+    st.sidebar.markdown("**Datum:** 2024-04-07")
+    st.sidebar.markdown("---")
+
+
+# In[ ]:
+
+
+
 

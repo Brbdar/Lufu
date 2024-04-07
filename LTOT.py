@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[6]:
 
 
 import streamlit as st
@@ -62,50 +62,87 @@ def LTOT():
         """)
         
         
-    st.subheader("LTOT-Indikationsprüfung")
-    with st.form("ltot_form"):
-        po2 = st.number_input("Geben Sie den Sauerstoffpartialdruck (pO2) in mmHg ein:", min_value=0.0, format="%.2f")
-        pulm_hyp = st.checkbox("Vorhandensein von pulmonaler Hypertonie")
-        polyglobulie = st.checkbox("Vorhandensein von Polyglobulie (Hämatokrit ≥ 55%)")
-        submit_button = st.form_submit_button("Prüfung starten")
     
-    if submit_button:
-        # Logik für die LTOT-Indikationsstellung
-        if po2 < 55 or (po2 < 60 and (pulm_hyp or polyglobulie)):
-            st.success("Schwere chronische Hypoxämie erkannt. Indikation zur LTOT gegeben.")
-        elif 55 <= po2 < 60 and not (pulm_hyp or polyglobulie):
-            st.info("Mäßige chronische Hypoxämie erkannt. Keine Indikation zur LTOT.")
-        else:
-            st.warning("Keine klare Indikation für LTOT. Weitere Untersuchungen empfohlen.")
-        
-    with st.expander("Wichtiger Hinweis zur BGA-Messung"):
-        st.write("""
-        In der Regel wird der Sauerstoffpartialdruck (PO2) mittels der BGA aus dem hyperämisierten Ohrläppchen (PcO2) bestimmt. Dieser ist im Mittel etwa 6 mmHg niedriger als der Sauerstoffpartialdruck aus der arteriellen Blutgasanalyse (PaO2). Bei Grenzbefunden sollte daher eine arterielle BGA durchgeführt werden. Innerhalb der stabilen Phase sollten 3 kapilläre BGA innerhalb eines 4-wöchigen Zeitraums durchgeführt werden, während die britische Leitlinie 2 arterielle BGA mit mindestens 3-wöchigem Abstand empfiehlt.
-        """)
-        
-    # Postakute Sauerstofftherapie (PoaOT) Abfrage
-    st.subheader("Postakute Sauerstofftherapie (PoaOT)")
-    with st.expander("Information zur PoaOT"):
-        st.write("""
-        Nach einer akuten Exazerbation einer COPD oder einer Pneumonie kann bei Sättigungswerten unter 93% und Dyspnoe vor der Entlassung aus dem Krankenhaus eine PoaOT verordnet werden. Die Indikation wird durch 2 Verlaufskontrollen in einem stabilen Zeitraum von 6–12 Wochen nach Entlassung überprüft.
-        """)
-    
-    poaot_sattigung = st.number_input("Sättigungswert eingeben (< 93% für PoaOT):", min_value=0.0, max_value=100.0, step=0.1, format="%.2f")
-    dyspnoe = st.radio("Dyspnoe vor Entlassung vorhanden?", ("Ja", "Nein"))
-    
-    if st.button('PoaOT-Indikation prüfen'):
-        if poaot_sattigung < 93 and dyspnoe == "Ja":
-            st.success("Eine PoaOT-Verordnung kann in Betracht gezogen werden. Zwei Verlaufskontrollen im Zeitraum von 6–12 Wochen nach Entlassung sind empfohlen.")
-        else:
-            st.error("Basierend auf den eingegebenen Daten ist keine PoaOT-Verordnung erforderlich oder weitere Bewertungen sind notwendig.")
+    st.title("Algorithmus zur LTOT")
 
-    
-    # Bilder als Platzhalter für interaktive Auswahl
-    with st.columns(1)[0]:  # Direkter Zugriff auf das erste Element der Liste
-        if st.button('LTOT Algorithmus'):
-            st.session_state.selected_curve = 'LTOT'   
-    
-    if 'selected_curve' in st.session_state:
-        if st.session_state.selected_curve == 'LTOT':
-            st.image("LTOT.jpg")
+
+    # Schritt 1: Start des Algorithmus
+    pa02_in_ruhe = st.number_input(
+        'PAO₂ in Ruhe (mmHg)', 
+        min_value=0.0, 
+        format="%.2f", 
+        help="Geben Sie den Sauerstoffpartialdruck in Ruhe ein."
+    )
+    cor_pulmonale_oder_polyglobulie = st.checkbox(
+        'Cor pulmonale oder Polyglobulie oder Hypoxämie im Schlaf'
+    )
+
+    if pa02_in_ruhe < 55 or (55 <= pa02_in_ruhe <= 65 and cor_pulmonale_oder_polyglobulie):
+        # Schritt 2: Überprüfung der Grundkrankheit
+        st.subheader("Therapie-Überprüfung")
+        therapie_optimiert = st.radio(
+            "Ist die Grundkrankheit adäquat therapiert?",
+            ('Ja', 'Nein')
+        )
+
+        if therapie_optimiert == 'Nein':
+            st.warning("Therapie optimieren und Tabakentwöhnung vornehmen.")
+        else:
+            # Schritt 3: Überprüfung der Hypoxämie in Ruhe
+            st.subheader("Hypoxämie-Überprüfung")
+            hypoxaemie_in_ruhe = st.radio(
+                "Liegt eine Hypoxämie in Ruhe vor?",
+                ('Ja', 'Nein')
+            )
+
+            if hypoxaemie_in_ruhe == 'Ja':
+                # Schritt 4: Überprüfung von PAO₂ ≥60 mmHg oder Anstieg um ≥10 mmHg
+                st.subheader("PAO₂-Überprüfung")
+                pa02_60_mmhg_oder_anstieg_um_10 = st.checkbox(
+                    'PAO₂ ≥60 mmHg oder Anstieg um ≥10 mmHg'
+                )
+
+                if pa02_60_mmhg_oder_anstieg_um_10:
+                    # Schritt 5: Überprüfung, ob der Patient mobil ist
+                    st.subheader("Mobilitäts-Überprüfung")
+                    patient_mobil = st.radio(
+                        "Ist der Patient mobil?",
+                        ('Ja', 'Nein')
+                    )
+
+                    if patient_mobil == 'Ja':
+                        st.success("Langzeit-Sauerstofftherapie mit mobilem Sauerstoffgerät.")
+                    else:
+                        st.success("Langzeit-Sauerstofftherapie mit stationärem Sauerstoffgerät.")
+                else:
+                    st.success("O₂-Applikation in Ruhe.")
+
+            else:
+                # Schritt 6: Überprüfung der Hypoxämie nur bei Belastung
+                st.subheader("Hypoxämie bei Belastung")
+                hypoxaemie_nur_belastung = st.radio(
+                    "Liegt eine Hypoxämie nur bei Belastung vor?",
+                    ('Ja', 'Nein')
+                )
+
+                if hypoxaemie_nur_belastung == 'Ja':
+                    st.success("O₂-Applikation unter Belastung.")
+                else:
+                    # Schritt 7: Sättigung überprüfen
+                    st.subheader("Sättigungs-Überprüfung")
+                    saettigung_90 = st.radio(
+                        "Ist die Sättigung >90% und Belastbarkeit verbessert?",
+                        ('Ja', 'Nein')
+                    )
+
+                    if saettigung_90 == 'Ja':
+                        st.success("Langzeit-Sauerstofftherapie mit mobilem Sauerstoffgerät.")
+                    else:
+                        st.error("Keine Langzeit-Sauerstofftherapie. Schlafstudie empfohlen.")
+    else:
+        st.error("Keine Langzeit-Sauerstofftherapie. Weitere Untersuchungen empfohlen.")
+        
+    if st.button('LTOT Algorithmus anzeigen'):
+        st.image("LTOT.jpg", caption="LTOT-Indikationsalgorithmus")
+
 
