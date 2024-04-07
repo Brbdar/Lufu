@@ -82,7 +82,19 @@ from LTOT import LTOT
 from EKG import EKG
 
 
-# In[321]:
+# In[ ]:
+
+
+from Klinik import Klinik
+
+
+# In[329]:
+
+
+from HFpEF_Score import HFpEF_Score
+
+
+# In[328]:
 
 
 import streamlit as st
@@ -105,7 +117,7 @@ def setup_sidebar():
     analyse_bereich_rechtsherzkatheter = st.sidebar.multiselect(
         label="",
         options=[
-            "EKG", "Neue Option"
+            "EKG", "Klinik", "Thorax-Röntgen", "Lungenfunktion und arterielle Gase"
         ],
         key="analysebereich_radio2"
     )
@@ -119,6 +131,15 @@ def setup_sidebar():
         key="analysebereich_radio3"
     )
     process_selection(analyse_bereich_spiroergometrie)
+    
+    st.sidebar.title("Scores und Algorithmen")
+    analyse_bereich_scores = st.sidebar.multiselect(
+        label="",
+        options=["HFpEF Score", "XXX"
+        ],
+        key="analysebereich_radio4"
+    )
+    process_selection(analyse_bereich_scores)
 
 def process_selection(selection):
     # Fügen Sie hier die Logik zum Aufrufen von Funktionen basierend auf der Auswahl hinzu
@@ -146,6 +167,14 @@ def process_selection(selection):
         LTOT()
     if "EKG" in selection:
         EKG()
+    if "Klinik" in selection:
+        Klinik()
+    if "Thorax Röntgen" in selection:
+        Thorax_roentgen()
+    if "Lungenfunktion und Blutgase" in selection:
+        Lufu_BGA()
+    if "HFpEF Score" in selection:
+        HFpEF_Score()
         
     # Fügen Sie weitere Bedingungen für jede Auswahlmöglichkeit hinzu
 
