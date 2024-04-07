@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[13]:
+# In[1]:
 
 
 import streamlit as st
@@ -63,6 +63,15 @@ def HFpEF_Score():
         st.write(f"Erreichte Punktzahl basierend auf diskreten Kriterien: {points}")
         st.write(f"Basierend auf den kontinuierlichen Variablen beträgt der HFpEF-Score: {score:.2f}%")
 
+    # Interpretation der Punktzahl (optional hinzugefügt für eine bessere Einordnung der Ergebnisse)
+    if points <= 1:
+        interpretation = "HFpEF kann relativ sicher ausgeschlossen werden."
+    elif 2 <= points <= 5:
+        interpretation = "Weitere Diagnostik ist nötig."
+    elif points >= 6:
+        interpretation = "HFpEF kann relativ sicher diagnostiziert werden."
+    st.write(f"Interpretation basierend auf der Punktzahl: {interpretation}")
+    
     with st.expander("Über die Forschung"):
         st.markdown("""
         Der H2FPEF Score basiert auf der Forschung von Yogesh N.V. Reddy, Rickey E. Carter, Masaru Obokata, Margaret M. Redfield und Barry A. Borlaug, die in ihrem Artikel *A Simple, Evidence-Based Approach to Help Guide Diagnosis of Heart Failure With Preserved Ejection Fraction* einen evidenzbasierten Ansatz zur Unterstützung der Diagnose von Herzinsuffizienz mit erhaltener Ejektionsfraktion (HFpEF) vorschlagen.
@@ -72,4 +81,10 @@ def HFpEF_Score():
         Weitere Details zur Studie und zum H2FPEF Score finden Sie im vollständigen Artikel, veröffentlicht in *Circulation*, unter dem folgenden Link:
         [Circulation. 2018;138:861–870](https://www.ahajournals.org/doi/10.1161/CIRCULATIONAHA.118.034646)
         """, unsafe_allow_html=True)
+
+
+# In[ ]:
+
+
+
 
