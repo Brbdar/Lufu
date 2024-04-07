@@ -94,7 +94,7 @@ from Klinik import Klinik
 from HFpEF_Score import HFpEF_Score
 
 
-# In[328]:
+# In[330]:
 
 
 import streamlit as st
@@ -113,7 +113,7 @@ def setup_sidebar():
     )
     process_selection(analyse_bereich_lungenfunktion)
 
-    st.sidebar.title("🫀 Rechtsherzkatheter in Arbeit")
+    st.sidebar.title("🫀 Detect pulmonale Hypertonie")
     analyse_bereich_rechtsherzkatheter = st.sidebar.multiselect(
         label="",
         options=[
@@ -135,7 +135,7 @@ def setup_sidebar():
     st.sidebar.title("Scores und Algorithmen")
     analyse_bereich_scores = st.sidebar.multiselect(
         label="",
-        options=["HFpEF Score", "XXX"
+        options=["HFpEF Score", "Blutkultur"
         ],
         key="analysebereich_radio4"
     )
@@ -175,6 +175,8 @@ def process_selection(selection):
         Lufu_BGA()
     if "HFpEF Score" in selection:
         HFpEF_Score()
+    if "Blutkultur" in selection:
+        Blutkultur()
         
     # Fügen Sie weitere Bedingungen für jede Auswahlmöglichkeit hinzu
 
