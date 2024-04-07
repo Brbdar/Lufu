@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[322]:
+# In[ ]:
 
 
 import streamlit as st
 
 # Hauptteil der App
-st.title("Pneumoapp")
+st.title("Pneumo-App ")
 
 
 # In[14]:
@@ -88,13 +88,25 @@ from EKG import EKG
 from Klinik import Klinik
 
 
-# In[329]:
+# In[ ]:
 
 
 from HFpEF_Score import HFpEF_Score
 
 
-# In[330]:
+# In[ ]:
+
+
+from COPD_Score import COPD_Score
+
+
+# In[ ]:
+
+
+from Blutkultur import Blutkultur
+
+
+# In[ ]:
 
 
 import streamlit as st
@@ -112,8 +124,18 @@ def setup_sidebar():
         key="analysebereich_radio"
     )
     process_selection(analyse_bereich_lungenfunktion)
+    
+    st.sidebar.title("🚴🏼‍♂️ Spiroergometrie")
+    analyse_bereich_spiroergometrie = st.sidebar.multiselect(
+        label="",
+        options=["XXX", "XXX"
+        ],
+        key="analysebereich_radio3"
+    )
+    
+    process_selection(analyse_bereich_spiroergometrie)
 
-    st.sidebar.title("🫀 Detect pulmonale Hypertonie")
+    st.sidebar.title("🫀 Detect Algorithmus - pulmonale Hypertonie")
     analyse_bereich_rechtsherzkatheter = st.sidebar.multiselect(
         label="",
         options=[
@@ -121,23 +143,25 @@ def setup_sidebar():
         ],
         key="analysebereich_radio2"
     )
+    
     process_selection(analyse_bereich_rechtsherzkatheter)
     
-    st.sidebar.title("🚴🏼‍♂️ Spiroergometrie in Arbeit")
-    analyse_bereich_spiroergometrie = st.sidebar.multiselect(
+    st.sidebar.title("COPD")
+    analyse_bereich_COPD = st.sidebar.multiselect(
         label="",
-        options=["XXX", "XXX"
+        options=["COPD Score"
         ],
-        key="analysebereich_radio3"
+        key="analysebereich_radio4"
     )
-    process_selection(analyse_bereich_spiroergometrie)
+    
+    process_selection(analyse_bereich_COPD)
     
     st.sidebar.title("Scores und Algorithmen")
     analyse_bereich_scores = st.sidebar.multiselect(
         label="",
         options=["HFpEF Score", "Blutkultur"
         ],
-        key="analysebereich_radio4"
+        key="analysebereich_radio5"
     )
     process_selection(analyse_bereich_scores)
 
@@ -177,6 +201,8 @@ def process_selection(selection):
         HFpEF_Score()
     if "Blutkultur" in selection:
         Blutkultur()
+    if "COPD Score" in selection:
+        COPD_Score()
         
     # Fügen Sie weitere Bedingungen für jede Auswahlmöglichkeit hinzu
 
@@ -189,7 +215,7 @@ if __name__ == "__main__":
         
    # Versionsnummer und Datum in der Sidebar
     st.sidebar.markdown("---")
-    st.sidebar.markdown("**Version:** 1.7")
+    st.sidebar.markdown("**Version:** 1.8")
     st.sidebar.markdown("**Datum:** 2024-04-07")
     st.sidebar.markdown("---")
 
