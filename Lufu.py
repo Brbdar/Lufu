@@ -9,6 +9,23 @@ import streamlit as st
 # Hauptteil der App
 st.title("Pneumo-App ")
 
+with st.expander("Rechtlicher Hinweis"):
+    st.write("""
+            **Offizieller rechtlicher Hinweis**
+
+            Diese Anwendung beinhaltet klinische Werkzeuge und Inhalte, die für die Nutzung durch medizinisches Fachpersonal vorgesehen sind. Diese Werkzeuge stellen keine professionelle Beratung dar; Ärzte und anderes medizinisches Fachpersonal, die diese Werkzeuge nutzen, sollten ihr eigenes klinisches Urteil in Bezug auf die von ihnen bereitgestellten Informationen ausüben. Nicht-medizinische Nutzer, die diese Werkzeuge verwenden, tun dies auf eigenes Risiko. Personen mit jeglichen medizinischen Bedingungen wird ausdrücklich geraten, professionellen medizinischen Rat einzuholen, bevor sie irgendeine Art von Gesundheitsbehandlung beginnen. Bei medizinischen Anliegen, einschließlich Entscheidungen über Medikamente und andere Behandlungen, sollten nicht-medizinische Nutzer immer ihren Arzt oder einen anderen qualifizierten Gesundheitsdienstleister konsultieren.
+
+            Die Inhaltsentwickler haben sorgfältig versucht, die Inhalte gemäß den Standards der professionellen Praxis zu gestalten, die zum Zeitpunkt der Entwicklung herrschten. Dennoch ändern sich Standards und Praktiken in der Medizin, da neue Daten verfügbar werden, und der einzelne medizinische Fachmann sollte eine Vielzahl von Quellen konsultieren.
+
+            Die Inhalte dieser Anwendung, wie Texte, Grafiken und Bilder, dienen nur zu Informationszwecken. Es wird keine spezifische Empfehlung oder Befürwortung für bestimmte Tests, Ärzte, Produkte, Verfahren, Meinungen oder andere auf der Plattform erwähnte Informationen ausgesprochen.
+
+            Obwohl die Informationen aus Quellen stammen, die als zuverlässig erachtet werden, wird weder die Genauigkeit der Informationen auf dieser Plattform noch von unseren Inhaltsanbietern garantiert.
+
+            Wir erteilen keine medizinischen Ratschläge, noch bieten wir medizinische oder diagnostische Dienstleistungen an. Medizinische Informationen ändern sich schnell. Weder wir noch unsere Inhaltsanbieter garantieren, dass die Inhalte alle möglichen Anwendungen, Anweisungen, Vorsichtsmaßnahmen, Wechselwirkungen mit Medikamenten oder Nebenwirkungen, die mit therapeutischen Behandlungen verbunden sein können, abdecken.
+
+            Die Nutzung der Informationen und Inhalte, die Sie durch diese Plattform erhalten, erfolgt ausschließlich auf Ihr eigenes Risiko. Weder wir noch unsere Inhaltsanbieter übernehmen irgendeine Haftung oder Verantwortung für Schäden oder Verletzungen (einschließlich Tod) an Ihnen, anderen Personen oder Eigentum, die aus der Nutzung von Produkten, Informationen, Ideen oder Anweisungen resultieren, die in den bereitgestellten Inhalten oder Diensten an Sie vermittelt werden.
+            """)
+
 
 # In[14]:
 
@@ -109,6 +126,78 @@ from Blutkultur import Blutkultur
 # In[ ]:
 
 
+from chadsvascore import chadsvascore
+
+
+# In[ ]:
+
+
+# Multiselect Box für die Auswahl der Seiten
+selected_pages = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich Lungenfunktion aus:",
+                                ["Spirometrie qualitativ", "Spirometrie quantitativ", "Bodyplethysmographie - Residualvolumen",
+                                "Bodyplethysmographie - Fluss-Druck-Kurve", "Funktionstests - Broncholyse", "Funktionstests - Provokation",
+                                "Gasaustausch - Transferfaktor", "Gasaustausch - Blutgasanalyse", "P0-Atemkraftmessung",
+                                "Compliancemessung", "LTOT - Algorithmus"], key="Lufubox")
+
+# Logik zur Anzeige der ausgewählten Seiten
+if 'Spirometrie Qualitativ' in selected_pages:
+    spirometrie_qualitativ()
+if 'Tiffeneau-Index Berechnung' in selected_pages:
+    tiffeneau_index_berechnung1()
+if "Bodyplethysmographie - Residualvolumen" in selected_pages:
+    Bodyplethysmographie_Residualvolumen()
+if "Bodyplethysmographie - Fluss-Druck-Kurve" in selected_pages:
+    Bodyplethysmographie_Fluss_Druck_Kurve()
+if "Funktionstests - Broncholyse" in selected_pages:
+    Funktionstests_Broncholyse()
+if "Funktionstests - Provokation" in selected_pages:
+    Funktionstests_Provokation()
+if "Gasaustausch - Transferfaktor" in selected_pages:
+    Gasaustausch_Transferfaktor()
+if "Gasaustausch - Blutgasanalyse" in selected_pages:
+    Gasaustausch_Blutgasanalyse()
+if "P0-Atemkraftmessung" in selected_pages:
+    P0_Atemkraftmessung()
+if "Compliancemessung" in selected_pages:
+    Compliancemessung()
+if "LTOT - Algorithmus" in selected_pages:
+    LTOT()
+    
+selected_pages = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich Spiroergometrie aus:",
+                                ["XXX", "XXX"], key="Spiroergo")
+
+selected_pages = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich PH Diagnostik aus:",
+                                ["EKG", "Klinik", "Thorax-Röntgen", "Lungenfunktion und arterielle Gase"], key="pulmonalehypertonie")
+
+if "EKG" in selected_pages:
+    EKG()
+if "Klinik" in selected_pages:
+    Klinik()
+if "Thorax Röntgen" in selected_pages:
+    Thorax_roentgen()
+if "Lungenfunktion und Blutgase" in selected_pages:
+    Lufu_BGA()   
+    
+selected_pages = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich COPD aus:",
+                                ["COPD Score"], key="COPD")
+
+if "COPD Score" in selected_pages:
+    COPD_Score()
+    
+selected_pages = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich Scores & Algorithmen aus:",
+                                ["HFpEF Score", "Blutkultur","CHA₂DS₂-VASc Score"], key="Scores")
+
+if "HFpEF Score" in selected_pages:
+    HFpEF_Score()
+if "Blutkultur" in selected_pages:
+    Blutkultur()
+if "CHA₂DS₂-VASc Score" in selected_pages:
+    chadsvascore()
+
+
+# In[ ]:
+
+
 import streamlit as st
 
 def setup_sidebar():
@@ -159,7 +248,7 @@ def setup_sidebar():
     st.sidebar.title("Scores und Algorithmen")
     analyse_bereich_scores = st.sidebar.multiselect(
         label="",
-        options=["HFpEF Score", "Blutkultur"
+        options=["HFpEF Score", "Blutkultur","CHA₂DS₂-VASc Score"
         ],
         key="analysebereich_radio5"
     )
@@ -203,6 +292,8 @@ def process_selection(selection):
         Blutkultur()
     if "COPD Score" in selection:
         COPD_Score()
+    if "CHA₂DS₂-VASc Score" in selection:
+        chadsvascore()
         
     # Fügen Sie weitere Bedingungen für jede Auswahlmöglichkeit hinzu
 
@@ -218,10 +309,4 @@ if __name__ == "__main__":
     st.sidebar.markdown("**Version:** 1.8")
     st.sidebar.markdown("**Datum:** 2024-04-07")
     st.sidebar.markdown("---")
-
-
-# In[ ]:
-
-
-
 
