@@ -132,6 +132,18 @@ from chadsvascore import chadsvascore
 # In[ ]:
 
 
+from erguss1 import erguss1
+
+
+# In[ ]:
+
+
+from rhkbefund import rhkbefund
+
+
+# In[ ]:
+
+
 # Multiselect Box für die Auswahl der Seiten
 selected_pages = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich Lungenfunktion aus:",
                                 ["Spirometrie qualitativ", "Spirometrie quantitativ", "Bodyplethysmographie - Residualvolumen",
@@ -167,7 +179,7 @@ selected_pages = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Be
                                 ["XXX", "XXX"], key="Spiroergo")
 
 selected_pages = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich PH Diagnostik aus:",
-                                ["EKG", "Klinik", "Thorax-Röntgen", "Lungenfunktion und arterielle Gase"], key="pulmonalehypertonie")
+                                ["EKG", "Klinik", "Thorax-Röntgen", "Lungenfunktion und arterielle Gase","der RHK Befund"], key="pulmonalehypertonie")
 
 if "EKG" in selected_pages:
     EKG()
@@ -177,6 +189,8 @@ if "Thorax Röntgen" in selected_pages:
     Thorax_roentgen()
 if "Lungenfunktion und Blutgase" in selected_pages:
     Lufu_BGA()   
+if "der RHK Befund" in selected_pages:
+    rhkbefund()
     
 selected_pages = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich COPD aus:",
                                 ["COPD Score"], key="COPD")
@@ -185,7 +199,7 @@ if "COPD Score" in selected_pages:
     COPD_Score()
     
 selected_pages = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich Scores & Algorithmen aus:",
-                                ["HFpEF Score", "Blutkultur","CHA₂DS₂-VASc Score"], key="Scores")
+                                ["HFpEF Score", "Blutkultur","CHA₂DS₂-VASc Score","Pleuraerguss"], key="Scores")
 
 if "HFpEF Score" in selected_pages:
     HFpEF_Score()
@@ -193,9 +207,11 @@ if "Blutkultur" in selected_pages:
     Blutkultur()
 if "CHA₂DS₂-VASc Score" in selected_pages:
     chadsvascore()
+if "Pleuraerguss" in selected_pages:
+    erguss1()
 
 
-# In[ ]:
+# In[331]:
 
 
 import streamlit as st
@@ -228,7 +244,7 @@ def setup_sidebar():
     analyse_bereich_rechtsherzkatheter = st.sidebar.multiselect(
         label="",
         options=[
-            "EKG", "Klinik", "Thorax-Röntgen", "Lungenfunktion und arterielle Gase"
+            "EKG", "Klinik", "Thorax-Röntgen", "Lungenfunktion und arterielle Gase","der RHK Befund"
         ],
         key="analysebereich_radio2"
     )
@@ -248,7 +264,7 @@ def setup_sidebar():
     st.sidebar.title("Scores und Algorithmen")
     analyse_bereich_scores = st.sidebar.multiselect(
         label="",
-        options=["HFpEF Score", "Blutkultur","CHA₂DS₂-VASc Score"
+        options=["HFpEF Score", "Blutkultur","CHA₂DS₂-VASc Score","Pleuraerguss"
         ],
         key="analysebereich_radio5"
     )
@@ -294,6 +310,11 @@ def process_selection(selection):
         COPD_Score()
     if "CHA₂DS₂-VASc Score" in selection:
         chadsvascore()
+    if "Pleuraerguss" in selection:
+        erguss1()
+    if "der RHK Befund" in selection:
+        rhkbefund()
+
         
     # Fügen Sie weitere Bedingungen für jede Auswahlmöglichkeit hinzu
 
@@ -306,7 +327,7 @@ if __name__ == "__main__":
         
    # Versionsnummer und Datum in der Sidebar
     st.sidebar.markdown("---")
-    st.sidebar.markdown("**Version:** 1.8")
-    st.sidebar.markdown("**Datum:** 2024-04-07")
+    st.sidebar.markdown("**Version:** 1.9")
+    st.sidebar.markdown("**Datum:** 2024-04-08")
     st.sidebar.markdown("---")
 
