@@ -7,24 +7,10 @@
 import streamlit as st
 
 # Hauptteil der App
-st.title("Pneumo-App ")
+st.title("Pneumo-App")
 
-with st.expander("Rechtlicher Hinweis"):
-    st.write("""
-            **Offizieller rechtlicher Hinweis**
-
-            Diese Anwendung beinhaltet klinische Werkzeuge und Inhalte, die für die Nutzung durch medizinisches Fachpersonal vorgesehen sind. Diese Werkzeuge stellen keine professionelle Beratung dar; Ärzte und anderes medizinisches Fachpersonal, die diese Werkzeuge nutzen, sollten ihr eigenes klinisches Urteil in Bezug auf die von ihnen bereitgestellten Informationen ausüben. Nicht-medizinische Nutzer, die diese Werkzeuge verwenden, tun dies auf eigenes Risiko. Personen mit jeglichen medizinischen Bedingungen wird ausdrücklich geraten, professionellen medizinischen Rat einzuholen, bevor sie irgendeine Art von Gesundheitsbehandlung beginnen. Bei medizinischen Anliegen, einschließlich Entscheidungen über Medikamente und andere Behandlungen, sollten nicht-medizinische Nutzer immer ihren Arzt oder einen anderen qualifizierten Gesundheitsdienstleister konsultieren.
-
-            Die Inhaltsentwickler haben sorgfältig versucht, die Inhalte gemäß den Standards der professionellen Praxis zu gestalten, die zum Zeitpunkt der Entwicklung herrschten. Dennoch ändern sich Standards und Praktiken in der Medizin, da neue Daten verfügbar werden, und der einzelne medizinische Fachmann sollte eine Vielzahl von Quellen konsultieren.
-
-            Die Inhalte dieser Anwendung, wie Texte, Grafiken und Bilder, dienen nur zu Informationszwecken. Es wird keine spezifische Empfehlung oder Befürwortung für bestimmte Tests, Ärzte, Produkte, Verfahren, Meinungen oder andere auf der Plattform erwähnte Informationen ausgesprochen.
-
-            Obwohl die Informationen aus Quellen stammen, die als zuverlässig erachtet werden, wird weder die Genauigkeit der Informationen auf dieser Plattform noch von unseren Inhaltsanbietern garantiert.
-
-            Wir erteilen keine medizinischen Ratschläge, noch bieten wir medizinische oder diagnostische Dienstleistungen an. Medizinische Informationen ändern sich schnell. Weder wir noch unsere Inhaltsanbieter garantieren, dass die Inhalte alle möglichen Anwendungen, Anweisungen, Vorsichtsmaßnahmen, Wechselwirkungen mit Medikamenten oder Nebenwirkungen, die mit therapeutischen Behandlungen verbunden sein können, abdecken.
-
-            Die Nutzung der Informationen und Inhalte, die Sie durch diese Plattform erhalten, erfolgt ausschließlich auf Ihr eigenes Risiko. Weder wir noch unsere Inhaltsanbieter übernehmen irgendeine Haftung oder Verantwortung für Schäden oder Verletzungen (einschließlich Tod) an Ihnen, anderen Personen oder Eigentum, die aus der Nutzung von Produkten, Informationen, Ideen oder Anweisungen resultieren, die in den bereitgestellten Inhalten oder Diensten an Sie vermittelt werden.
-            """)
+# Copyright-Text in kleiner Schrift
+st.markdown("© Bruno Brito da Rocha 2024", unsafe_allow_html=True)
 
 
 # In[14]:
@@ -33,7 +19,7 @@ with st.expander("Rechtlicher Hinweis"):
 from spirometrie_qualitativ import spirometrie_qualitativ
 
 
-# In[287]:
+# In[ ]:
 
 
 from tiffeneau_index_berechnung import tiffeneau_index_berechnung1
@@ -144,6 +130,12 @@ from rhkbefund import rhkbefund
 # In[ ]:
 
 
+from rfi import rfi
+
+
+# In[ ]:
+
+
 # Multiselect Box für die Auswahl der Seiten
 selected_pages = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich Lungenfunktion aus:",
                                 ["Spirometrie qualitativ", "Spirometrie quantitativ", "Bodyplethysmographie - Residualvolumen",
@@ -154,7 +146,7 @@ selected_pages = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Be
 # Logik zur Anzeige der ausgewählten Seiten
 if 'Spirometrie Qualitativ' in selected_pages:
     spirometrie_qualitativ()
-if 'Tiffeneau-Index Berechnung' in selected_pages:
+if 'Spirometrie quantitativ' in selected_pages:
     tiffeneau_index_berechnung1()
 if "Bodyplethysmographie - Residualvolumen" in selected_pages:
     Bodyplethysmographie_Residualvolumen()
@@ -199,7 +191,7 @@ if "COPD Score" in selected_pages:
     COPD_Score()
     
 selected_pages = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich Scores & Algorithmen aus:",
-                                ["HFpEF Score", "Blutkultur","CHA₂DS₂-VASc Score","Pleuraerguss"], key="Scores")
+                                ["HFpEF Score", "Blutkultur","CHA₂DS₂-VASc Score","Pleuraerguss","Renal Failure Index"], key="Scores")
 
 if "HFpEF Score" in selected_pages:
     HFpEF_Score()
@@ -209,9 +201,32 @@ if "CHA₂DS₂-VASc Score" in selected_pages:
     chadsvascore()
 if "Pleuraerguss" in selected_pages:
     erguss1()
+if "Renal Failure Index" in selected_pages:
+    rfi()
+    
+with st.expander("Rechtlicher Hinweis"):
+
+    st.write("""
+        **Offizieller rechtlicher Hinweis**
+
+        Diese Anwendung beinhaltet klinische Werkzeuge und Inhalte, die für die Nutzung durch medizinisches Fachpersonal vorgesehen sind. Diese Werkzeuge stellen keine professionelle Beratung dar; Ärzte und anderes medizinisches Fachpersonal, die diese Werkzeuge nutzen, sollten ihr eigenes klinisches Urteil in Bezug auf die von ihnen bereitgestellten Informationen ausüben. Nicht-medizinische Nutzer, die diese Werkzeuge verwenden, tun dies auf eigenes Risiko. Personen mit jeglichen medizinischen Bedingungen wird ausdrücklich geraten, professionellen medizinischen Rat einzuholen, bevor sie irgendeine Art von Gesundheitsbehandlung beginnen. Bei medizinischen Anliegen, einschließlich Entscheidungen über Medikamente und andere Behandlungen, sollten nicht-medizinische Nutzer immer ihren Arzt oder einen anderen qualifizierten Gesundheitsdienstleister konsultieren.
+
+        Die Inhaltsentwickler haben sorgfältig versucht, die Inhalte gemäß den Standards der professionellen Praxis zu gestalten, die zum Zeitpunkt der Entwicklung herrschten. Dennoch ändern sich Standards und Praktiken in der Medizin, da neue Daten verfügbar werden, und der einzelne medizinische Fachmann sollte eine Vielzahl von Quellen konsultieren.
+
+        Die Inhalte dieser Anwendung, wie Texte, Grafiken und Bilder, dienen nur zu Informationszwecken. Es wird keine spezifische Empfehlung oder Befürwortung für bestimmte Tests, Ärzte, Produkte, Verfahren, Meinungen oder andere auf der Plattform erwähnte Informationen ausgesprochen.
+
+        Obwohl die Informationen aus Quellen stammen, die als zuverlässig erachtet werden, wird weder die Genauigkeit der Informationen auf dieser Plattform noch von unseren Inhaltsanbietern garantiert.
+
+        Wir erteilen keine medizinischen Ratschläge, noch bieten wir medizinische oder diagnostische Dienstleistungen an. Medizinische Informationen ändern sich schnell. Weder wir noch unsere Inhaltsanbieter garantieren, dass die Inhalte alle möglichen Anwendungen, Anweisungen, Vorsichtsmaßnahmen, Wechselwirkungen mit Medikamenten oder Nebenwirkungen, die mit therapeutischen Behandlungen verbunden sein können, abdecken.
+
+        Die Nutzung der Informationen und Inhalte, die Sie durch diese Plattform erhalten, erfolgt ausschließlich auf Ihr eigenes Risiko. Weder wir noch unsere Inhaltsanbieter übernehmen irgendeine Haftung oder Verantwortung für Schäden oder Verletzungen (einschließlich Tod) an Ihnen, anderen Personen oder Eigentum, die aus der Nutzung von Produkten, Informationen, Ideen oder Anweisungen resultieren, die in den bereitgestellten Inhalten oder Diensten an Sie vermittelt werden.
+        """)
+    
+# Fügen Sie weitere Bedingungen für jede Auswahlmöglichkeit hinzu
 
 
-# In[331]:
+
+# In[ ]:
 
 
 import streamlit as st
@@ -264,7 +279,7 @@ def setup_sidebar():
     st.sidebar.title("Scores und Algorithmen")
     analyse_bereich_scores = st.sidebar.multiselect(
         label="",
-        options=["HFpEF Score", "Blutkultur","CHA₂DS₂-VASc Score","Pleuraerguss"
+        options=["HFpEF Score", "Blutkultur","CHA₂DS₂-VASc Score","Pleuraerguss", "Renal Failure Index "
         ],
         key="analysebereich_radio5"
     )
@@ -314,12 +329,14 @@ def process_selection(selection):
         erguss1()
     if "der RHK Befund" in selection:
         rhkbefund()
+    if "Renal Failure Index " in selection:
+        rfi()
 
         
-    # Fügen Sie weitere Bedingungen für jede Auswahlmöglichkeit hinzu
-
+    
 def main():
     setup_sidebar()
+
 
 if __name__ == "__main__":
     main()
@@ -328,6 +345,6 @@ if __name__ == "__main__":
    # Versionsnummer und Datum in der Sidebar
     st.sidebar.markdown("---")
     st.sidebar.markdown("**Version:** 1.9")
-    st.sidebar.markdown("**Datum:** 2024-04-08")
+    st.sidebar.markdown("**Datum:** 2024-04-10")
     st.sidebar.markdown("---")
 
