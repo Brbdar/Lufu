@@ -1,23 +1,170 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[57]:
+# In[9]:
 
 
 import streamlit as st
 
-# Hauptteil der App
-st.title("Pneumo-App")
+st.set_page_config(
+    page_title="Pneumo-App",
+    layout="wide",
+    initial_sidebar_state="expanded")
 
-# Copyright-Text in kleiner Schrift
-st.markdown("© Bruno Brito da Rocha 2024", unsafe_allow_html=True)
+
+# Copyright text in small font
+st.caption("© Bruno Brito da Rocha 2024")
 
 
-# In[50]:
+# In[24]:
+
+
+from spirometrie_qualitativ import spirometrie_qualitativ
+
+
+# In[25]:
+
+
+from tiffeneau_index_berechnung import tiffeneau_index_berechnung1
+
+
+# In[26]:
+
+
+from Bodyplethysmographie_Residualvolumen import Bodyplethysmographie_Residualvolumen
+
+
+# In[27]:
+
+
+from Bodyplethysmographie_Fluss_Druck_Kurve import Bodyplethysmographie_Fluss_Druck_Kurve
+
+
+# In[28]:
+
+
+from Funktionstests_Broncholyse import Funktionstests_Broncholyse
+
+
+# In[29]:
+
+
+from Funktionstests_Provokation import Funktionstests_Provokation
+
+
+# In[30]:
+
+
+from P0_Atemkraftmessung import P0_Atemkraftmessung
+
+
+# In[31]:
+
+
+from Gasaustausch_Transferfaktor import Gasaustausch_Transferfaktor
+
+
+# In[32]:
+
+
+from Gasaustausch_Blutgasanalyse import Gasaustausch_Blutgasanalyse
+
+
+# In[33]:
+
+
+from Compliancemessung import Compliancemessung
+
+
+# In[34]:
+
+
+from LTOT import LTOT
+
+
+# In[35]:
+
+
+from EKG import EKG
+
+
+# In[36]:
+
+
+from Klinik import Klinik
+
+
+# In[37]:
+
+
+from HFpEF_Score import HFpEF_Score
+
+
+# In[38]:
+
+
+from COPD_Score import COPD_Score
+
+
+# In[39]:
+
+
+from Blutkultur import Blutkultur
+
+
+# In[40]:
+
+
+from chadsvascore import chadsvascore
+
+
+# In[41]:
+
+
+from erguss1 import erguss1
+
+
+# In[42]:
+
+
+from rhkbefund import rhkbefund
+
+
+# In[43]:
+
+
+from rfi import rfi
+
+
+# In[44]:
+
+
+from ane1 import ane1 
+
+
+# In[45]:
+
+
+from ruleout import ruleout
+
+
+# In[49]:
+
+
+from raai import raai
+
+
+# In[ ]:
+
+
+from embo import embo
+
+
+# In[11]:
 
 
 # Multiselect Box für die Auswahl der Seiten
-selected_pages_lufu = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich Lungenfunktion aus:",
+selected_pages_lufu = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Lungenfunktion** aus:",
                                 ["Spirometrie qualitativ", "Spirometrie quantitativ", "Bodyplethysmographie - Residualvolumen",
                                 "Bodyplethysmographie - Fluss-Druck-Kurve", "Funktionstests - Broncholyse", "Funktionstests - Provokation",
                                 "Gasaustausch - Transferfaktor", "Gasaustausch - Blutgasanalyse", "P0-Atemkraftmessung",
@@ -47,10 +194,10 @@ if "Compliancemessung" in selected_pages_lufu:
 if "LTOT - Algorithmus" in selected_pages_lufu:
     LTOT()
 
-selected_pages_spiro = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich Spiroergometrie aus:",
+selected_pages_spiro = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Spiroergometrie** aus:",
                                 ["XXX", "XXX"], key="Spiroergo")
 
-selected_pages_ph = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich PH Diagnostik aus:",
+selected_pages_ph = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **PH Diagnostik** aus:",
                                 ["EKG", "Klinik", "Thorax-Röntgen", "Lungenfunktion und arterielle Gase","der RHK Befund"], key="pulmonalehypertonie")
 
 if "EKG" in selected_pages_ph:
@@ -64,19 +211,19 @@ if "Lungenfunktion und Blutgase" in selected_pages_ph:
 if "der RHK Befund" in selected_pages_ph:
     rhkbefund()
 
-selected_pages_copd = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich COPD aus:",
+selected_pages_copd = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **COPD** aus:",
                                 ["COPD Score"], key="COPD")
 
 if "COPD Score" in selected_pages_copd:
     COPD_Score()
 
-selected_pages_ane = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich Anämie aus:",
+selected_pages_ane = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Anämie** aus:",
                                 ["Mikrozytäre Anämie"], key="Anämie")
 
 if "Mikrozytäre Anämie" in selected_pages_ane:
     ane1()
 
-selected_pages_scores = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich Scores & Algorithmen aus:",
+selected_pages_scores = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Scores & Algorithmen** aus:",
                                 ["HFpEF Score", "Blutkultur","CHA₂DS₂-VASc Score","Pleuraerguss","Renal Failure Index","Rule out ACS","RV Diastole","Verdacht auf Lungenembolie"], key="Scores")
 
 if "HFpEF Score" in selected_pages_scores:
@@ -252,148 +399,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-# In[24]:
-
-
-from spirometrie_qualitativ import spirometrie_qualitativ
-
-
-# In[25]:
-
-
-from tiffeneau_index_berechnung import tiffeneau_index_berechnung1
-
-
-# In[26]:
-
-
-from Bodyplethysmographie_Residualvolumen import Bodyplethysmographie_Residualvolumen
-
-
-# In[27]:
-
-
-from Bodyplethysmographie_Fluss_Druck_Kurve import Bodyplethysmographie_Fluss_Druck_Kurve
-
-
-# In[28]:
-
-
-from Funktionstests_Broncholyse import Funktionstests_Broncholyse
-
-
-# In[29]:
-
-
-from Funktionstests_Provokation import Funktionstests_Provokation
-
-
-# In[30]:
-
-
-from P0_Atemkraftmessung import P0_Atemkraftmessung
-
-
-# In[31]:
-
-
-from Gasaustausch_Transferfaktor import Gasaustausch_Transferfaktor
-
-
-# In[32]:
-
-
-from Gasaustausch_Blutgasanalyse import Gasaustausch_Blutgasanalyse
-
-
-# In[33]:
-
-
-from Compliancemessung import Compliancemessung
-
-
-# In[34]:
-
-
-from LTOT import LTOT
-
-
-# In[35]:
-
-
-from EKG import EKG
-
-
-# In[36]:
-
-
-from Klinik import Klinik
-
-
-# In[37]:
-
-
-from HFpEF_Score import HFpEF_Score
-
-
-# In[38]:
-
-
-from COPD_Score import COPD_Score
-
-
-# In[39]:
-
-
-from Blutkultur import Blutkultur
-
-
-# In[40]:
-
-
-from chadsvascore import chadsvascore
-
-
-# In[41]:
-
-
-from erguss1 import erguss1
-
-
-# In[42]:
-
-
-from rhkbefund import rhkbefund
-
-
-# In[43]:
-
-
-from rfi import rfi
-
-
-# In[44]:
-
-
-from ane1 import ane1 
-
-
-# In[45]:
-
-
-from ruleout import ruleout
-
-
-# In[49]:
-
-
-from raai import raai
-
-
-# In[ ]:
-
-
-from embo import embo
 
