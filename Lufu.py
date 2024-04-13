@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[5]:
+# In[23]:
 
 
 import streamlit as st
@@ -13,133 +13,151 @@ st.title("Pneumo-App")
 st.markdown("© Bruno Brito da Rocha 2024", unsafe_allow_html=True)
 
 
-# In[14]:
+# In[24]:
 
 
 from spirometrie_qualitativ import spirometrie_qualitativ
 
 
-# In[ ]:
+# In[25]:
 
 
 from tiffeneau_index_berechnung import tiffeneau_index_berechnung1
 
 
-# In[ ]:
+# In[26]:
 
 
 from Bodyplethysmographie_Residualvolumen import Bodyplethysmographie_Residualvolumen
 
 
-# In[ ]:
+# In[27]:
 
 
 from Bodyplethysmographie_Fluss_Druck_Kurve import Bodyplethysmographie_Fluss_Druck_Kurve
 
 
-# In[ ]:
+# In[28]:
 
 
 from Funktionstests_Broncholyse import Funktionstests_Broncholyse
 
 
-# In[ ]:
+# In[29]:
 
 
 from Funktionstests_Provokation import Funktionstests_Provokation
 
 
-# In[ ]:
+# In[30]:
 
 
 from P0_Atemkraftmessung import P0_Atemkraftmessung
 
 
-# In[186]:
+# In[31]:
 
 
 from Gasaustausch_Transferfaktor import Gasaustausch_Transferfaktor
 
 
-# In[97]:
+# In[32]:
 
 
 from Gasaustausch_Blutgasanalyse import Gasaustausch_Blutgasanalyse
 
 
-# In[271]:
+# In[33]:
 
 
 from Compliancemessung import Compliancemessung
 
 
-# In[125]:
+# In[34]:
 
 
 from LTOT import LTOT
 
 
-# In[ ]:
+# In[35]:
 
 
 from EKG import EKG
 
 
-# In[ ]:
+# In[36]:
 
 
 from Klinik import Klinik
 
 
-# In[ ]:
+# In[37]:
 
 
 from HFpEF_Score import HFpEF_Score
 
 
-# In[ ]:
+# In[38]:
 
 
 from COPD_Score import COPD_Score
 
 
-# In[8]:
+# In[39]:
 
 
 from Blutkultur import Blutkultur
 
 
-# In[ ]:
+# In[40]:
 
 
 from chadsvascore import chadsvascore
 
 
-# In[ ]:
+# In[41]:
 
 
 from erguss1 import erguss1
 
 
-# In[ ]:
+# In[42]:
 
 
 from rhkbefund import rhkbefund
 
 
-# In[ ]:
+# In[43]:
 
 
 from rfi import rfi
 
 
-# In[ ]:
+# In[44]:
 
 
 from ane1 import ane1 
 
 
-# In[12]:
+# In[45]:
+
+
+from ruleout import ruleout
+
+
+# In[49]:
+
+
+from raai import raai
+
+
+# In[ ]:
+
+
+from embo import embo
+
+
+# In[50]:
 
 
 # Multiselect Box für die Auswahl der Seiten
@@ -203,10 +221,12 @@ if "Mikrozytäre Anämie" in selected_pages_ane:
     ane1()
 
 selected_pages_scores = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich Scores & Algorithmen aus:",
-                                ["HFpEF Score", "Blutkultur","CHA₂DS₂-VASc Score","Pleuraerguss","Renal Failure Index"], key="Scores")
+                                ["HFpEF Score", "Blutkultur","CHA₂DS₂-VASc Score","Pleuraerguss","Renal Failure Index","Rule out ACS","RV Diastole","Verdacht auf Lungenembolie"], key="Scores")
 
 if "HFpEF Score" in selected_pages_scores:
     HFpEF_Score()
+if "RV Diastole" in selected_pages_scores:
+    raai()
 if "Blutkultur" in selected_pages_scores:
     Blutkultur()
 if "CHA₂DS₂-VASc Score" in selected_pages_scores:
@@ -215,6 +235,11 @@ if "Pleuraerguss" in selected_pages_scores:
     erguss1()
 if "Renal Failure Index" in selected_pages_scores:
     rfi()
+if "Rule out ACS" in selected_pages_scores:
+    ruleout()
+if "Verdacht auf Lungenembolie" in selected_pages_scores:
+    embo()
+    
 
 with st.expander("Rechtlicher Hinweis"):
 
@@ -238,7 +263,7 @@ with st.expander("Rechtlicher Hinweis"):
 
 
 
-# In[13]:
+# In[56]:
 
 
 import streamlit as st
@@ -300,7 +325,7 @@ def setup_sidebar():
     st.sidebar.title("Scores und Algorithmen")
     analyse_bereich_scores = st.sidebar.multiselect(
         "Wählen Sie relevante Scores und Algorithmen:",
-        ["HFpEF Score", "Blutkultur", "CHA₂DS₂-VASc Score", "Pleuraerguss", "Renal Failure Index "],
+        ["HFpEF Score", "Blutkultur", "CHA₂DS₂-VASc Score", "Pleuraerguss", "Renal Failure Index ","Rule out ACS","RV Diastole","Verdacht auf Lungenembolie"],
         key="analysebereich_scores"
     )
     process_selection(analyse_bereich_scores)
@@ -353,8 +378,13 @@ def process_selection(selection):
         rfi()
     if "Mikrozytäre Anämie" in selection:
         ane1()
+    if "Rule out ACS" in selection:
+        ruleout()
+    if "RV Diastole" in selection:
+        raai()
+    if "Verdacht auf Lungenembolie" in selection:
+        embo()
 
-        
     
 def main():
     setup_sidebar()
