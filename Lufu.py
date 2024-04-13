@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[9]:
+# In[16]:
 
 
 import streamlit as st
+from streamlit_float import *
 
 st.set_page_config(
     page_title="Pneumo-App",
@@ -12,8 +13,24 @@ st.set_page_config(
     initial_sidebar_state="expanded")
 
 
-# Copyright text in small font
-st.caption("© Bruno Brito da Rocha 2024")
+# Float feature initialization
+float_init()
+
+# Create footer container and add content
+footer_container = st.container()
+with footer_container:
+    st.markdown("Copyright &copy; 2023 Your Name - All Rights Reserved.")
+
+# Get custom theme background color if set, otherwise default to white
+bg_color = st.get_option('theme.backgroundColor')
+if bg_color is None:
+    bg_color = "white"
+
+# Generate CSS to target the floating footer container
+css = float_css_helper(bottom="0", background=bg_color)
+
+# Float the footer container and provide CSS to target it with
+footer_container.float(css)
 
 
 # In[24]:
