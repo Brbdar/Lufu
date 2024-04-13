@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[23]:
+# In[57]:
 
 
 import streamlit as st
@@ -11,150 +11,6 @@ st.title("Pneumo-App")
 
 # Copyright-Text in kleiner Schrift
 st.markdown("© Bruno Brito da Rocha 2024", unsafe_allow_html=True)
-
-
-# In[24]:
-
-
-from spirometrie_qualitativ import spirometrie_qualitativ
-
-
-# In[25]:
-
-
-from tiffeneau_index_berechnung import tiffeneau_index_berechnung1
-
-
-# In[26]:
-
-
-from Bodyplethysmographie_Residualvolumen import Bodyplethysmographie_Residualvolumen
-
-
-# In[27]:
-
-
-from Bodyplethysmographie_Fluss_Druck_Kurve import Bodyplethysmographie_Fluss_Druck_Kurve
-
-
-# In[28]:
-
-
-from Funktionstests_Broncholyse import Funktionstests_Broncholyse
-
-
-# In[29]:
-
-
-from Funktionstests_Provokation import Funktionstests_Provokation
-
-
-# In[30]:
-
-
-from P0_Atemkraftmessung import P0_Atemkraftmessung
-
-
-# In[31]:
-
-
-from Gasaustausch_Transferfaktor import Gasaustausch_Transferfaktor
-
-
-# In[32]:
-
-
-from Gasaustausch_Blutgasanalyse import Gasaustausch_Blutgasanalyse
-
-
-# In[33]:
-
-
-from Compliancemessung import Compliancemessung
-
-
-# In[34]:
-
-
-from LTOT import LTOT
-
-
-# In[35]:
-
-
-from EKG import EKG
-
-
-# In[36]:
-
-
-from Klinik import Klinik
-
-
-# In[37]:
-
-
-from HFpEF_Score import HFpEF_Score
-
-
-# In[38]:
-
-
-from COPD_Score import COPD_Score
-
-
-# In[39]:
-
-
-from Blutkultur import Blutkultur
-
-
-# In[40]:
-
-
-from chadsvascore import chadsvascore
-
-
-# In[41]:
-
-
-from erguss1 import erguss1
-
-
-# In[42]:
-
-
-from rhkbefund import rhkbefund
-
-
-# In[43]:
-
-
-from rfi import rfi
-
-
-# In[44]:
-
-
-from ane1 import ane1 
-
-
-# In[45]:
-
-
-from ruleout import ruleout
-
-
-# In[49]:
-
-
-from raai import raai
-
-
-# In[ ]:
-
-
-from embo import embo
 
 
 # In[50]:
@@ -390,10 +246,154 @@ def main():
     setup_sidebar()
     # Footer mit Versionsnummer und Datum
     st.sidebar.markdown("---")
-    st.sidebar.markdown("**Version:** 1.9")
+    st.sidebar.markdown("**Version:** 2")
     st.sidebar.markdown("**Datum:** 2024-04-13")
     st.sidebar.markdown("---")
 
 if __name__ == "__main__":
     main()
+
+
+# In[24]:
+
+
+from spirometrie_qualitativ import spirometrie_qualitativ
+
+
+# In[25]:
+
+
+from tiffeneau_index_berechnung import tiffeneau_index_berechnung1
+
+
+# In[26]:
+
+
+from Bodyplethysmographie_Residualvolumen import Bodyplethysmographie_Residualvolumen
+
+
+# In[27]:
+
+
+from Bodyplethysmographie_Fluss_Druck_Kurve import Bodyplethysmographie_Fluss_Druck_Kurve
+
+
+# In[28]:
+
+
+from Funktionstests_Broncholyse import Funktionstests_Broncholyse
+
+
+# In[29]:
+
+
+from Funktionstests_Provokation import Funktionstests_Provokation
+
+
+# In[30]:
+
+
+from P0_Atemkraftmessung import P0_Atemkraftmessung
+
+
+# In[31]:
+
+
+from Gasaustausch_Transferfaktor import Gasaustausch_Transferfaktor
+
+
+# In[32]:
+
+
+from Gasaustausch_Blutgasanalyse import Gasaustausch_Blutgasanalyse
+
+
+# In[33]:
+
+
+from Compliancemessung import Compliancemessung
+
+
+# In[34]:
+
+
+from LTOT import LTOT
+
+
+# In[35]:
+
+
+from EKG import EKG
+
+
+# In[36]:
+
+
+from Klinik import Klinik
+
+
+# In[37]:
+
+
+from HFpEF_Score import HFpEF_Score
+
+
+# In[38]:
+
+
+from COPD_Score import COPD_Score
+
+
+# In[39]:
+
+
+from Blutkultur import Blutkultur
+
+
+# In[40]:
+
+
+from chadsvascore import chadsvascore
+
+
+# In[41]:
+
+
+from erguss1 import erguss1
+
+
+# In[42]:
+
+
+from rhkbefund import rhkbefund
+
+
+# In[43]:
+
+
+from rfi import rfi
+
+
+# In[44]:
+
+
+from ane1 import ane1 
+
+
+# In[45]:
+
+
+from ruleout import ruleout
+
+
+# In[49]:
+
+
+from raai import raai
+
+
+# In[ ]:
+
+
+from embo import embo
 
