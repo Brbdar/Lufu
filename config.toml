@@ -180,8 +180,8 @@ enableCORS = true
 # Due to conflicts between CORS and XSRF, if `server.enableXsrfProtection` is on and
 # `server.enableCORS` is off at the same time, we will prioritize `server.enableXsrfProtection`.
 
-# Default: true
-# enableXsrfProtection = true
+Default: true
+enableXsrfProtection = false
 
 # Max size, in megabytes, for files uploaded with the file_uploader.
 
@@ -195,13 +195,13 @@ enableCORS = true
 
 # Enables support for websocket compression.
 
-# Default: false
-# enableWebsocketCompression = false
+Default: false
+enableWebsocketCompression = true
 
 # Enable serving files from a `static` directory in the running app's directory.
 
-# Default: false
-# enableStaticServing = false
+Default: false
+enableStaticServing = false
 
 # Server certificate file for connecting via HTTPS.
 # Must be set at the same time as "server.sslKeyFile".
