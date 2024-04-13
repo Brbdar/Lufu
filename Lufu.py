@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[5]:
 
 
 import streamlit as st
@@ -103,7 +103,7 @@ from HFpEF_Score import HFpEF_Score
 from COPD_Score import COPD_Score
 
 
-# In[ ]:
+# In[8]:
 
 
 from Blutkultur import Blutkultur
@@ -136,74 +136,86 @@ from rfi import rfi
 # In[ ]:
 
 
+from ane1 import ane1 
+
+
+# In[12]:
+
+
 # Multiselect Box für die Auswahl der Seiten
-selected_pages = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich Lungenfunktion aus:",
+selected_pages_lufu = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich Lungenfunktion aus:",
                                 ["Spirometrie qualitativ", "Spirometrie quantitativ", "Bodyplethysmographie - Residualvolumen",
                                 "Bodyplethysmographie - Fluss-Druck-Kurve", "Funktionstests - Broncholyse", "Funktionstests - Provokation",
                                 "Gasaustausch - Transferfaktor", "Gasaustausch - Blutgasanalyse", "P0-Atemkraftmessung",
-                                "Compliancemessung", "LTOT - Algorithmus"], key="Lufubox")
+                                "Compliancemessung", "LTOT - Algorithmus"], key="lufu")
 
 # Logik zur Anzeige der ausgewählten Seiten
-if 'Spirometrie Qualitativ' in selected_pages:
+if 'Spirometrie Qualitativ' in selected_pages_lufu:
     spirometrie_qualitativ()
-if 'Spirometrie quantitativ' in selected_pages:
+if 'Spirometrie quantitativ' in selected_pages_lufu:
     tiffeneau_index_berechnung1()
-if "Bodyplethysmographie - Residualvolumen" in selected_pages:
+if "Bodyplethysmographie - Residualvolumen" in selected_pages_lufu:
     Bodyplethysmographie_Residualvolumen()
-if "Bodyplethysmographie - Fluss-Druck-Kurve" in selected_pages:
+if "Bodyplethysmographie - Fluss-Druck-Kurve" in selected_pages_lufu:
     Bodyplethysmographie_Fluss_Druck_Kurve()
-if "Funktionstests - Broncholyse" in selected_pages:
+if "Funktionstests - Broncholyse" in selected_pages_lufu:
     Funktionstests_Broncholyse()
-if "Funktionstests - Provokation" in selected_pages:
+if "Funktionstests - Provokation" in selected_pages_lufu:
     Funktionstests_Provokation()
-if "Gasaustausch - Transferfaktor" in selected_pages:
+if "Gasaustausch - Transferfaktor" in selected_pages_lufu:
     Gasaustausch_Transferfaktor()
-if "Gasaustausch - Blutgasanalyse" in selected_pages:
+if "Gasaustausch - Blutgasanalyse" in selected_pages_lufu:
     Gasaustausch_Blutgasanalyse()
-if "P0-Atemkraftmessung" in selected_pages:
+if "P0-Atemkraftmessung" in selected_pages_lufu:
     P0_Atemkraftmessung()
-if "Compliancemessung" in selected_pages:
+if "Compliancemessung" in selected_pages_lufu:
     Compliancemessung()
-if "LTOT - Algorithmus" in selected_pages:
+if "LTOT - Algorithmus" in selected_pages_lufu:
     LTOT()
-    
-selected_pages = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich Spiroergometrie aus:",
+
+selected_pages_spiro = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich Spiroergometrie aus:",
                                 ["XXX", "XXX"], key="Spiroergo")
 
-selected_pages = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich PH Diagnostik aus:",
+selected_pages_ph = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich PH Diagnostik aus:",
                                 ["EKG", "Klinik", "Thorax-Röntgen", "Lungenfunktion und arterielle Gase","der RHK Befund"], key="pulmonalehypertonie")
 
-if "EKG" in selected_pages:
+if "EKG" in selected_pages_ph:
     EKG()
-if "Klinik" in selected_pages:
+if "Klinik" in selected_pages_ph:
     Klinik()
-if "Thorax Röntgen" in selected_pages:
+if "Thorax Röntgen" in selected_pages_ph:
     Thorax_roentgen()
-if "Lungenfunktion und Blutgase" in selected_pages:
+if "Lungenfunktion und Blutgase" in selected_pages_ph:
     Lufu_BGA()   
-if "der RHK Befund" in selected_pages:
+if "der RHK Befund" in selected_pages_ph:
     rhkbefund()
-    
-selected_pages = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich COPD aus:",
+
+selected_pages_copd = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich COPD aus:",
                                 ["COPD Score"], key="COPD")
 
-if "COPD Score" in selected_pages:
+if "COPD Score" in selected_pages_copd:
     COPD_Score()
-    
-selected_pages = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich Scores & Algorithmen aus:",
+
+selected_pages_ane = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich Anämie aus:",
+                                ["Mikrozytäre Anämie"], key="Anämie")
+
+if "Mikrozytäre Anämie" in selected_pages_ane:
+    ane1()
+
+selected_pages_scores = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich Scores & Algorithmen aus:",
                                 ["HFpEF Score", "Blutkultur","CHA₂DS₂-VASc Score","Pleuraerguss","Renal Failure Index"], key="Scores")
 
-if "HFpEF Score" in selected_pages:
+if "HFpEF Score" in selected_pages_scores:
     HFpEF_Score()
-if "Blutkultur" in selected_pages:
+if "Blutkultur" in selected_pages_scores:
     Blutkultur()
-if "CHA₂DS₂-VASc Score" in selected_pages:
+if "CHA₂DS₂-VASc Score" in selected_pages_scores:
     chadsvascore()
-if "Pleuraerguss" in selected_pages:
+if "Pleuraerguss" in selected_pages_scores:
     erguss1()
-if "Renal Failure Index" in selected_pages:
+if "Renal Failure Index" in selected_pages_scores:
     rfi()
-    
+
 with st.expander("Rechtlicher Hinweis"):
 
     st.write("""
@@ -221,67 +233,75 @@ with st.expander("Rechtlicher Hinweis"):
 
         Die Nutzung der Informationen und Inhalte, die Sie durch diese Plattform erhalten, erfolgt ausschließlich auf Ihr eigenes Risiko. Weder wir noch unsere Inhaltsanbieter übernehmen irgendeine Haftung oder Verantwortung für Schäden oder Verletzungen (einschließlich Tod) an Ihnen, anderen Personen oder Eigentum, die aus der Nutzung von Produkten, Informationen, Ideen oder Anweisungen resultieren, die in den bereitgestellten Inhalten oder Diensten an Sie vermittelt werden.
         """)
-    
+
 # Fügen Sie weitere Bedingungen für jede Auswahlmöglichkeit hinzu
 
 
 
-# In[ ]:
+# In[13]:
 
 
 import streamlit as st
 
 def setup_sidebar():
+    # Titel und Auswahl für den Bereich Lungenfunktion
     st.sidebar.title("🌬️ Analysebereiche - Lungenfunktion")
     analyse_bereich_lungenfunktion = st.sidebar.multiselect(
-        label="",
-        options=[
+        "Wählen Sie die gewünschten Lungenfunktionstests:",
+        [
             "Spirometrie qualitativ", "Spirometrie quantitativ", "Bodyplethysmographie - Residualvolumen",
             "Bodyplethysmographie - Fluss-Druck-Kurve", "Funktionstests - Broncholyse", "Funktionstests - Provokation",
             "Gasaustausch - Transferfaktor", "Gasaustausch - Blutgasanalyse", "P0-Atemkraftmessung",
             "Compliancemessung", "LTOT - Algorithmus"
         ],
-        key="analysebereich_radio"
+        key="analysebereich_lungenfunktion"
     )
     process_selection(analyse_bereich_lungenfunktion)
-    
+
+    # Bereich Spiroergometrie
     st.sidebar.title("🚴🏼‍♂️ Spiroergometrie")
     analyse_bereich_spiroergometrie = st.sidebar.multiselect(
-        label="",
-        options=["XXX", "XXX"
-        ],
-        key="analysebereich_radio3"
+        "Wählen Sie relevante Tests für Spiroergometrie:",
+        ["XXX", "XXX"],  # Bitte die Platzhalter mit realen Werten ersetzen
+        key="analysebereich_spiroergometrie"
     )
-    
     process_selection(analyse_bereich_spiroergometrie)
 
+    # Bereich pulmonale Hypertonie
     st.sidebar.title("🫀 Detect Algorithmus - pulmonale Hypertonie")
     analyse_bereich_rechtsherzkatheter = st.sidebar.multiselect(
-        label="",
-        options=[
-            "EKG", "Klinik", "Thorax-Röntgen", "Lungenfunktion und arterielle Gase","der RHK Befund"
+        "Wählen Sie Tests für die Diagnose von pulmonaler Hypertonie:",
+        [
+            "EKG", "Klinik", "Thorax-Röntgen", "Lungenfunktion und arterielle Gase", "der RHK Befund"
         ],
-        key="analysebereich_radio2"
+        key="analysebereich_rechtsherzkatheter"
     )
-    
     process_selection(analyse_bereich_rechtsherzkatheter)
-    
+
+    # Bereich COPD
     st.sidebar.title("COPD")
     analyse_bereich_COPD = st.sidebar.multiselect(
-        label="",
-        options=["COPD Score"
-        ],
-        key="analysebereich_radio4"
+        "Wählen Sie Tests für COPD:",
+        ["COPD Score"],
+        key="analysebereich_COPD"
     )
-    
     process_selection(analyse_bereich_COPD)
-    
+
+    # Bereich Anämie
+    st.sidebar.title("Anämie")
+    analyse_bereich_Anämie = st.sidebar.multiselect(
+        "Wählen Sie Tests für Anämie:",
+        ["Mikrozytäre Anämie"],
+        key="analysebereich_Anämie"
+    )
+    process_selection(analyse_bereich_Anämie)
+
+    # Bereich Scores und Algorithmen
     st.sidebar.title("Scores und Algorithmen")
     analyse_bereich_scores = st.sidebar.multiselect(
-        label="",
-        options=["HFpEF Score", "Blutkultur","CHA₂DS₂-VASc Score","Pleuraerguss", "Renal Failure Index "
-        ],
-        key="analysebereich_radio5"
+        "Wählen Sie relevante Scores und Algorithmen:",
+        ["HFpEF Score", "Blutkultur", "CHA₂DS₂-VASc Score", "Pleuraerguss", "Renal Failure Index "],
+        key="analysebereich_scores"
     )
     process_selection(analyse_bereich_scores)
 
@@ -331,20 +351,19 @@ def process_selection(selection):
         rhkbefund()
     if "Renal Failure Index " in selection:
         rfi()
+    if "Mikrozytäre Anämie" in selection:
+        ane1()
 
         
     
 def main():
     setup_sidebar()
-
+    # Footer mit Versionsnummer und Datum
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("**Version:** 1.9")
+    st.sidebar.markdown("**Datum:** 2024-04-13")
+    st.sidebar.markdown("---")
 
 if __name__ == "__main__":
     main()
-
-        
-   # Versionsnummer und Datum in der Sidebar
-    st.sidebar.markdown("---")
-    st.sidebar.markdown("**Version:** 1.9")
-    st.sidebar.markdown("**Datum:** 2024-04-10")
-    st.sidebar.markdown("---")
 
