@@ -17,13 +17,13 @@ st.set_page_config(
 st.caption("© Bruno Brito da Rocha 2024")
 
 
-# In[24]:
+# from spirometrie_qualitativ import spirometrie_qualitativ
+
+# In[ ]:
 
 
-from spirometrie_qualitativ import spirometrie_qualitativ
+from tiffeneau_index_berechnung import tiffeneau_index_berechnung1
 
-
-# from tiffeneau_index_berechnung import tiffeneau_index_berechnung1
 
 # from Bodyplethysmographie_Residualvolumen import Bodyplethysmographie_Residualvolumen
 
