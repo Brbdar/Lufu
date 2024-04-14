@@ -162,7 +162,7 @@ from raai import raai
 from embo import embo
 
 
-# In[11]:
+# In[23]:
 
 
 # Multiselect Box für die Auswahl der Seiten
@@ -226,7 +226,7 @@ if "Mikrozytäre Anämie" in selected_pages_ane:
     ane1()
 
 selected_pages_scores = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Scores & Algorithmen** aus:",
-                                ["HFpEF Score", "Blutkultur","CHA₂DS₂-VASc Score","Pleuraerguss","Renal Failure Index","Rule out ACS","RV Diastole","Verdacht auf Lungenembolie"], key="Scores")
+                                ["HFpEF Score", "Blutkultur","Blutungs vs. Thrombose","Pleuraerguss","Renal Failure Index","Rule out ACS","RV Diastole","Verdacht auf Lungenembolie"], key="Scores")
 
 if "HFpEF Score" in selected_pages_scores:
     HFpEF_Score()
@@ -234,7 +234,7 @@ if "RV Diastole" in selected_pages_scores:
     raai()
 if "Blutkultur" in selected_pages_scores:
     Blutkultur()
-if "CHA₂DS₂-VASc Score" in selected_pages_scores:
+if "Blutungs vs. Thrombose" in selected_pages_scores:
     chadsvascore()
 if "Pleuraerguss" in selected_pages_scores:
     erguss1()
@@ -244,7 +244,7 @@ if "Rule out ACS" in selected_pages_scores:
     ruleout()
 if "Verdacht auf Lungenembolie" in selected_pages_scores:
     embo()
-    
+
 
 with st.expander("Rechtlicher Hinweis"):
 
@@ -268,10 +268,8 @@ with st.expander("Rechtlicher Hinweis"):
 
 
 
-# In[56]:
+# In[32]:
 
-
-import streamlit as st
 
 def setup_sidebar():
     # Titel und Auswahl für den Bereich Lungenfunktion
@@ -292,7 +290,7 @@ def setup_sidebar():
     st.sidebar.title("🚴🏼‍♂️ Spiroergometrie")
     analyse_bereich_spiroergometrie = st.sidebar.multiselect(
         "Wählen Sie relevante Tests für Spiroergometrie:",
-        ["XXX", "XXX"],  # Bitte die Platzhalter mit realen Werten ersetzen
+        ["Belastungstest", "VO2max Analyse"],  # Aktualisierte Platzhalterwerte
         key="analysebereich_spiroergometrie"
     )
     process_selection(analyse_bereich_spiroergometrie)
@@ -330,10 +328,16 @@ def setup_sidebar():
     st.sidebar.title("Scores und Algorithmen")
     analyse_bereich_scores = st.sidebar.multiselect(
         "Wählen Sie relevante Scores und Algorithmen:",
-        ["HFpEF Score", "Blutkultur", "CHA₂DS₂-VASc Score", "Pleuraerguss", "Renal Failure Index ","Rule out ACS","RV Diastole","Verdacht auf Lungenembolie"],
+        ["HFpEF Score", "Blutkultur", "Blutungs vs. Thrombose", "Pleuraerguss", "Renal Failure Index", "Rule out ACS", "RV Diastole", "Verdacht auf Lungenembolie"],
         key="analysebereich_scores"
     )
     process_selection(analyse_bereich_scores)
+
+    # Trennlinie und Information über die Version
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("**Version:** 2")
+    st.sidebar.markdown("**Datum:** 2024-04-13")
+    st.sidebar.markdown("---")
 
 def process_selection(selection):
     # Fügen Sie hier die Logik zum Aufrufen von Funktionen basierend auf der Auswahl hinzu
@@ -373,7 +377,7 @@ def process_selection(selection):
         Blutkultur()
     if "COPD Score" in selection:
         COPD_Score()
-    if "CHA₂DS₂-VASc Score" in selection:
+    if "Blutungs vs. Thrombose" in selection:
         chadsvascore()
     if "Pleuraerguss" in selection:
         erguss1()
@@ -390,15 +394,17 @@ def process_selection(selection):
     if "Verdacht auf Lungenembolie" in selection:
         embo()
 
-    
-def main():
-    setup_sidebar()
-    # Footer mit Versionsnummer und Datum
-    st.sidebar.markdown("---")
-    st.sidebar.markdown("**Version:** 2")
-    st.sidebar.markdown("**Datum:** 2024-04-13")
-    st.sidebar.markdown("---")
+# Aufruf der Setup-Funktion, um die Sidebar zu initialisieren
+setup_sidebar()
 
-if __name__ == "__main__":
-    main()
 
+#     def main():
+#             setup_sidebar()
+#             # Footer mit Versionsnummer und Datum
+#             st.sidebar.markdown("---")
+#             st.sidebar.markdown("**Version:** 2")
+#             st.sidebar.markdown("**Datum:** 2024-04-13")
+#             st.sidebar.markdown("---")
+# 
+#         if __name__ == "__main__":
+#         main()
