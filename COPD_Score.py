@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[24]:
+# In[29]:
 
 
 import streamlit as st
@@ -57,20 +57,17 @@ def COPD_Score():
     # Exazerbationshistorie
     exacerbation_history = st.number_input("Anzahl der Exazerbationen im letzten Jahr:", min_value=0)
 
+
     # Klassifizierung in COPD-Gruppen gemäß den neuen ABE-Leitlinien
-    if exacerbation_history <= 1:
-        if mMRC_score_index < 2 and total_score < 10:
-            copd_group = 'A'
-            initial_therapy = "Monotherapie mit einem Bronchodilatator (LAMA oder LABA)"
-    else:
-        copd_group = 'B'
-        initial_therapy = "LAMA + LABA"
-    elif exacerbation_history > 1:
+    if exacerbation_history >= 2 or (exacerbation_history == 1 and st.checkbox("Stationäre Behandlung benötigt")):
         copd_group = 'E'
         initial_therapy = "LAMA + LABA und ggf. ICS bei Asthma in der Vorgeschichte und/oder Eosinophilenzahlen von ≥300/μL"
+    elif exacerbation_history == 1 or (mMRC_score_index >= 2 or total_score >= 10):
+        copd_group = 'B'
+        initial_therapy = "LAMA + LABA"
     else:
-        copd_group = 'Unbestimmt'  # Sicherheitsmaßnahme für ungewöhnliche Fälle
-        initial_therapy = "Bitte überprüfen Sie die Eingaben und Leitlinien."
+        copd_group = 'A'
+        initial_therapy = "Monotherapie mit einem Bronchodilatator (LAMA oder LABA)"
 
     # Anzeige der COPD-Gruppe, Initialtherapie und weitere Empfehlungen
     st.write(f"### COPD-Gruppe: {copd_group}")
