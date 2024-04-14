@@ -23,143 +23,51 @@ st.caption("© Bruno Brito da Rocha 2024")
 from spirometrie_qualitativ import spirometrie_qualitativ
 
 
-# In[25]:
+# from tiffeneau_index_berechnung import tiffeneau_index_berechnung1
 
+# from Bodyplethysmographie_Residualvolumen import Bodyplethysmographie_Residualvolumen
 
-from tiffeneau_index_berechnung import tiffeneau_index_berechnung1
+# from Bodyplethysmographie_Fluss_Druck_Kurve import Bodyplethysmographie_Fluss_Druck_Kurve
 
+# from Funktionstests_Broncholyse import Funktionstests_Broncholyse
 
-# In[26]:
+# from Funktionstests_Provokation import Funktionstests_Provokation
 
+# from P0_Atemkraftmessung import P0_Atemkraftmessung
 
-from Bodyplethysmographie_Residualvolumen import Bodyplethysmographie_Residualvolumen
+# from Gasaustausch_Transferfaktor import Gasaustausch_Transferfaktor
 
+# from Gasaustausch_Blutgasanalyse import Gasaustausch_Blutgasanalyse
 
-# In[27]:
+# from Compliancemessung import Compliancemessung
 
+# from LTOT import LTOT
 
-from Bodyplethysmographie_Fluss_Druck_Kurve import Bodyplethysmographie_Fluss_Druck_Kurve
+# from EKG import EKG
 
+# from Klinik import Klinik
 
-# In[28]:
+# from HFpEF_Score import HFpEF_Score
 
+# from COPD_Score import COPD_Score
 
-from Funktionstests_Broncholyse import Funktionstests_Broncholyse
+# from Blutkultur import Blutkultur
 
+# from chadsvascore import chadsvascore
 
-# In[29]:
+# from erguss1 import erguss1
 
+# from rhkbefund import rhkbefund
 
-from Funktionstests_Provokation import Funktionstests_Provokation
+# from rfi import rfi
 
+# from ane1 import ane1 
 
-# In[30]:
+# from ruleout import ruleout
 
+# from raai import raai
 
-from P0_Atemkraftmessung import P0_Atemkraftmessung
-
-
-# In[31]:
-
-
-from Gasaustausch_Transferfaktor import Gasaustausch_Transferfaktor
-
-
-# In[32]:
-
-
-from Gasaustausch_Blutgasanalyse import Gasaustausch_Blutgasanalyse
-
-
-# In[33]:
-
-
-from Compliancemessung import Compliancemessung
-
-
-# In[34]:
-
-
-from LTOT import LTOT
-
-
-# In[35]:
-
-
-from EKG import EKG
-
-
-# In[36]:
-
-
-from Klinik import Klinik
-
-
-# In[37]:
-
-
-from HFpEF_Score import HFpEF_Score
-
-
-# In[38]:
-
-
-from COPD_Score import COPD_Score
-
-
-# In[39]:
-
-
-from Blutkultur import Blutkultur
-
-
-# In[40]:
-
-
-from chadsvascore import chadsvascore
-
-
-# In[41]:
-
-
-from erguss1 import erguss1
-
-
-# In[42]:
-
-
-from rhkbefund import rhkbefund
-
-
-# In[43]:
-
-
-from rfi import rfi
-
-
-# In[44]:
-
-
-from ane1 import ane1 
-
-
-# In[45]:
-
-
-from ruleout import ruleout
-
-
-# In[49]:
-
-
-from raai import raai
-
-
-# In[ ]:
-
-
-from embo import embo
-
+# from embo import embo
 
 # # Multiselect Box für die Auswahl der Seiten
 # selected_pages_lufu = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Lungenfunktion** aus:",
