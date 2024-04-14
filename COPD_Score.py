@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[23]:
+# In[24]:
 
 
 import streamlit as st
@@ -54,19 +54,18 @@ def COPD_Score():
     total_score = sum(scores.values())
     st.write("### Gesamtpunktzahl Ihrer Symptome: ", total_score)
 
-
-
     # Exazerbationshistorie
     exacerbation_history = st.number_input("Anzahl der Exazerbationen im letzten Jahr:", min_value=0)
 
     # Klassifizierung in COPD-Gruppen gemäß den neuen ABE-Leitlinien
-    if (exacerbation_history <= 1 and mMRC_score_index < 2 and total_score < 10):
-        copd_group = 'A'
-        initial_therapy = "Monotherapie mit einem Bronchodilatator (LAMA oder LABA)"
-    elif (mMRC_score_index >= 2 or total_score >= 10):
+    if exacerbation_history <= 1:
+        if mMRC_score_index < 2 and total_score < 10:
+            copd_group = 'A'
+            initial_therapy = "Monotherapie mit einem Bronchodilatator (LAMA oder LABA)"
+    else:
         copd_group = 'B'
         initial_therapy = "LAMA + LABA"
-    elif (exacerbation_history > 1 or (exacerbation_history == 1 and st.checkbox("Stationäre Behandlung benötigt"))):
+    elif exacerbation_history > 1:
         copd_group = 'E'
         initial_therapy = "LAMA + LABA und ggf. ICS bei Asthma in der Vorgeschichte und/oder Eosinophilenzahlen von ≥300/μL"
     else:
@@ -78,9 +77,7 @@ def COPD_Score():
     st.write(f"### Empfohlene Initialtherapie: {initial_therapy}")
     st.write("### Weiterführende Empfehlungen basieren auf der Eskalationstherapie, abhängig von den spezifischen Anforderungen und dem Verlauf der Erkrankung.")
     st.write("Bitte beachten Sie, dass diese Bewertungen auf Ihren Angaben basieren und eine professionelle medizinische Bewertung nicht ersetzen können.")
-
     
-
     st.subheader("Eskalationstherapie")
 
     dyspnoe_focus = st.checkbox("Steht Dyspnoe im Vordergrund?")
