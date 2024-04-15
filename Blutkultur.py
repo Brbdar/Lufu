@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[6]:
+# In[1]:
 
 
 import streamlit as st
@@ -45,7 +45,7 @@ def Blutkultur():
     st.header('Major Criteria')
     suspect_endocarditis = st.radio('Verdacht auf Endokarditis', ('Nein', 'Ja'))
     temp_39_4 = st.radio('Temperatur ≥39.4°C (103.0°F)', ('Nein', 'Ja'))
-    indwelling_catheter = st.radio('Vorhandensein eines intravaskulären Katheters', ('Nein', 'Ja'))
+    indwelling_catheter = st.radio('Pat. mit intravaskulären Kath. oder BDK gekommen?', ('Nein', 'Ja'))
 
     # Minor Criteria
     st.header('Minor Criteria')
@@ -55,7 +55,7 @@ def Blutkultur():
     vomiting = st.radio('Erbrechen', ('Nein', 'Ja'))
     hypotension = st.radio('Hypotonie (SBP <90 mm Hg)', ('Nein', 'Ja'))
     white_blood_cell_count = st.radio('Leukozyten >18,000 Zellen/mm3', ('Nein', 'Ja'))
-    bands_over_5 = st.radio('Bands >5%', ('Nein', 'Ja'))
+    bands_over_5 = st.radio('Neutrophile >5%', ('Nein', 'Ja'))
     platelets_under_150 = st.radio('Thrombozyten <150,000 Zellen/mm3', ('Nein', 'Ja'))
     creatinine_over_2 = st.radio('Kreatinin >2.0 mg/dL', ('Nein', 'Ja'))
 
@@ -92,6 +92,8 @@ def Blutkultur():
     [Pubmed-Quelle](https://pubmed.ncbi.nlm.nih.gov/18486413/)
     """)
 
+      # Trennlinie hinzufügen
+    st.markdown("---")
         
         
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[26]:
+# In[39]:
 
 
 import streamlit as st
@@ -246,21 +246,47 @@ def COPD_Score():
             Eine Kontraindikation besteht bei relevanten Rhythmusstörungen bzw. schwerer kardialer Komorbidität.
             """)
         
+
+
+    def eosinophil_analysis(eosinophils, exacerbation_focus=False):
+    # Initialize variables
+        icon = ""
+    # Determine eosinophil level and set the corresponding color and icon
+    if eosinophils < 150:
+        eosinophil_level = "geringgradig"
+        color = "#add8e6"  # Light blue
+        icon = "🟦"
+    elif 150 <= eosinophils < 300:
+        eosinophil_level = "mittelgradig"
+        color = "#ffff99"  # Light yellow
+        icon = "🟨"
+    else:
+        eosinophil_level = "hochgradig"
+        color = "#ffcccb"  # Light red
+        icon = "🟥"
     
+    # Define recommendations based on eosinophil level
+    recommendations = {
+        "hochgradig": f"{icon} Empfehlung: Inhalative Steroide angezeigt (hochgradig).",
+        "mittelgradig": f"{icon} Empfehlung: Inhalative Steroide angezeigt (mittelgradig), falls Exazerbationen im Fokus stehen." if exacerbation_focus else "",
+        "geringgradig": f"{icon} Empfehlung: Erwägung des Absetzens inhalativer Steroide bei geringgradiger eosinophiler Inflammation."
+    }
 
-    # Eosinophil-Level bestimmen
-    eosinophil_level = "geringgradig" if eosinophils < 150 else "mittelgradig" if 150 <= eosinophils < 300 else "hochgradig"
+    # Retrieve the recommendation text safely
+    recommendation_text = recommendations.get(eosinophil_level, "Keine spezifische Empfehlung verfügbar.")
 
-    # Farbdefinition basierend auf dem Eosinophil-Level
-    color = "red" if eosinophil_level == "hochgradig" else "yellow" if eosinophil_level == "mittelgradig" else "blue"
+    if recommendation_text:
+        # Display the recommendation with a colored background and improved styling
+        st.markdown(f"""
+        <div style='background-color: {color}; padding: 15px; border-radius: 10px; border: 1px solid grey; box-shadow: 2px 2px 2px grey;'>
+            <h4 style='color: black;'>{recommendation_text}</h4>
+        </div>
+        """, unsafe_allow_html=True)
 
-    # Eosinophil-basierte Empfehlungen mit farblichem Hintergrund
-    if eosinophil_level == "hochgradig" or (eosinophil_level == "mittelgradig" and exacerbation_focus):
-        st.markdown(f"<div style='color: white; background-color: {color}; padding: 10px; border-radius: 10px;'>Empfehlung: Inhalative Steroide angezeigt ({eosinophil_level}).</div>", unsafe_allow_html=True)
-    elif eosinophil_level == "geringgradig":
-        st.markdown(f"<div style='color: white; background-color: {color}; padding: 10px; border-radius: 10px;'>Empfehlung: Erwägung des Absetzens inhalativer Steroide bei geringgradiger eosinophiler Inflammation.</div>", unsafe_allow_html=True)
-
-    
+    # Example usage (use this for testing in your Streamlit application)
+    eosinophils_value = 250  # Example eosinophil count
+    exacerbation_focus_example = True  # Example flag indicating if exacerbations are a focus
+    eosinophil_analysis(eosinophils_value, exacerbation_focus_example)
     
     st.info(
     "COPD geht häufig mit einer erhöhten Zahl eosinophiler Granulozyten einher. "

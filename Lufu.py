@@ -1,21 +1,88 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[10]:
 
 
 import streamlit as st
 
+def set_page_styles():
+    """Apply custom styles to enhance the app's aesthetics."""
+    style_code = """
+        <style>
+            /* Base layout styles */
+            .stApp {
+                background-color: #f4f4f8;
+                color: #333;
+                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            }
+            
+            /* Customizing the header */
+            header {
+                background-color: #6c5b7b;
+                color: #ffffff;
+            }
+            
+            /* Sidebar styling */
+            .css-1d391kg {
+                background-color: #355c7d;
+                color: #ffffff;
+            }
+            
+            /* Button styling */
+            button {
+                border: none;
+                border-radius: 5px;
+                background-color: #c06c84;
+                color: white;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                transition-duration: 0.4s;
+                cursor: pointer;
+            }
 
-st.set_page_config(
-    page_title="Pneumo-App",
-    layout="wide",
-    initial_sidebar_state="expanded")
+            button:hover {
+                background-color: #f67280;
+                color: white;
+            }
 
+            /* Widget custom styling */
+            .stSlider .stThumb {
+                background-color: #6c5b7b;
+            }
+        </style>
+    """
+    st.write(style_code, unsafe_allow_html=True)
 
-# Copyright text in small font
-st.caption("© Bruno Brito da Rocha 2024")
-st.caption("Version 2.1 / 15.04.24")
+def configure_page():
+    """Configure the page settings with a refined look."""
+    st.set_page_config(
+        page_title="Pneumo-App",
+        page_icon="🌬️",
+        layout="centered",
+        initial_sidebar_state="auto"
+    )
+    set_page_styles()
+
+def display_footer():
+    """Display stylish footer information."""
+    footer_text = "<div style='color: #333; font-size: 12px; padding: 10px;'>© Bruno Brito da Rocha 2024 - Version 2.1 / 15.04.24</div>"
+    st.markdown(footer_text, unsafe_allow_html=True)
+
+def main():
+    """Main function to enhance the Streamlit app design."""
+    configure_page()
+    # Example of additional content
+    st.title("Pneumo-App")
+
+    display_footer()
+
+if __name__ == "__main__":
+    main()
 
 
 # In[ ]:
@@ -168,6 +235,12 @@ from embo import embo
 from Inhalator import Inhalator
 
 
+# In[ ]:
+
+
+from bc import bc
+
+
 # In[2]:
 
 
@@ -227,6 +300,12 @@ if "COPD Score" in selected_pages_copd:
 if "Inhalatorenauswahl" in selected_pages_copd:
     Inhalator()
 
+selected_pages_ane = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Bronchialkarzinom** aus:",
+                                ["Malignitäts-Risiko-Score (Mayo Clinic Modell)"], key="BC")
+
+if "Malignitäts-Risiko-Score (Mayo Clinic Modell)" in selected_pages_ane:
+    bc()
+    
 selected_pages_ane = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Anämie** aus:",
                                 ["Mikrozytäre Anämie"], key="Anämie")
 
@@ -276,7 +355,7 @@ with st.expander("Rechtlicher Hinweis"):
 
 
 
-# In[ ]:
+# In[6]:
 
 
 def setup_sidebar():
@@ -323,6 +402,15 @@ def setup_sidebar():
     )
     process_selection(analyse_bereich_COPD)
 
+    # Bereich Bronchialkarzinom
+    st.sidebar.title("Bronchialkarzinom")
+    analyse_bereich_bc = st.sidebar.multiselect(
+        "Wählen Sie entsprechend für das Thema BC aus:",
+        ["Malignitäts-Risiko-Score (Mayo Clinic Modell)"],
+        key="analysebereich_bc"
+    )
+    process_selection(analyse_bereich_bc)
+    
     # Bereich Anämie
     st.sidebar.title("Anämie")
     analyse_bereich_Anämie = st.sidebar.multiselect(
@@ -403,6 +491,8 @@ def process_selection(selection):
         embo()
     if "Inhalatorenauswahl" in selection:
         Inhalator()
+    if "Malignitäts-Risiko-Score (Mayo Clinic Modell)" in selection:
+        bc()
     
 
 # Aufruf der Setup-Funktion, um die Sidebar zu initialisieren
