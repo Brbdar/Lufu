@@ -15,6 +15,7 @@ st.set_page_config(
 
 # Copyright text in small font
 st.caption("© Bruno Brito da Rocha 2024")
+st.caption("Version 2.1 / 15.04.24")
 
 
 # In[ ]:
@@ -164,6 +165,12 @@ from embo import embo
 # In[ ]:
 
 
+from Inhalator import Inhalator
+
+
+# In[2]:
+
+
 # Multiselect Box für die Auswahl der Seiten
 selected_pages_lufu = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Lungenfunktion** aus:",
                                 ["Spirometrie qualitativ", "Spirometrie quantitativ", "Bodyplethysmographie - Residualvolumen",
@@ -213,10 +220,12 @@ if "der RHK Befund" in selected_pages_ph:
     rhkbefund()
 
 selected_pages_copd = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **COPD** aus:",
-                                ["COPD Score"], key="COPD")
+                                ["COPD Score","Inhalatorenauswahl"], key="COPD")
 
 if "COPD Score" in selected_pages_copd:
     COPD_Score()
+if "Inhalatorenauswahl" in selected_pages_copd:
+    Inhalator()
 
 selected_pages_ane = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Anämie** aus:",
                                 ["Mikrozytäre Anämie"], key="Anämie")
@@ -309,7 +318,7 @@ def setup_sidebar():
     st.sidebar.title("COPD")
     analyse_bereich_COPD = st.sidebar.multiselect(
         "Wählen Sie Tests für COPD:",
-        ["COPD Score"],
+        ["COPD Score","Inhalatorenauswahl"],
         key="analysebereich_COPD"
     )
     process_selection(analyse_bereich_COPD)
@@ -334,7 +343,7 @@ def setup_sidebar():
 
     # Trennlinie und Information über die Version
     st.sidebar.markdown("---")
-    st.sidebar.markdown("**Version:** 2")
+    st.sidebar.markdown("**Version:** 2.1")
     st.sidebar.markdown("**Datum:** 2024-04-13")
     st.sidebar.markdown("---")
 
@@ -392,6 +401,9 @@ def process_selection(selection):
         raai()
     if "Verdacht auf Lungenembolie" in selection:
         embo()
+    if "Inhalatorenauswahl" in selection:
+        Inhalator()
+    
 
 # Aufruf der Setup-Funktion, um die Sidebar zu initialisieren
 setup_sidebar()
