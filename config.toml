@@ -50,7 +50,7 @@ baseUrlPath = ""
 serverAddress = "localhost"
 # Disable usage statistics for privacy
 gatherUsageStats = false
-serverPort = 8502
+serverPort = 80
 
 [theme]
 # Establish a consistent theme, change as per your design preference
