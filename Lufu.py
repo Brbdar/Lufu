@@ -281,7 +281,7 @@ with st.expander("Rechtlicher Hinweis"):
 
 def setup_sidebar():
     # Titel und Auswahl für den Bereich Lungenfunktion
-    st.sidebar.title("🌬️ Analysebereiche - Lungenfunktion")
+    st.sidebar.title("Analysebereiche - Lungenfunktion")
     analyse_bereich_lungenfunktion = st.sidebar.multiselect(
         "Wählen Sie die gewünschten Lungenfunktionstests:",
         [
@@ -295,7 +295,7 @@ def setup_sidebar():
     process_selection(analyse_bereich_lungenfunktion)
 
     # Bereich Spiroergometrie
-    st.sidebar.title("🚴🏼‍♂️ Spiroergometrie")
+    st.sidebar.title("Spiroergometrie")
     analyse_bereich_spiroergometrie = st.sidebar.multiselect(
         "Wählen Sie relevante Tests für Spiroergometrie:",
         ["Belastungstest", "VO2max Analyse"],  # Aktualisierte Platzhalterwerte
@@ -304,7 +304,7 @@ def setup_sidebar():
     process_selection(analyse_bereich_spiroergometrie)
 
     # Bereich pulmonale Hypertonie
-    st.sidebar.title("🫀 Detect Algorithmus - pulmonale Hypertonie")
+    st.sidebar.title("Detect Algorithmus - pulmonale Hypertonie")
     analyse_bereich_rechtsherzkatheter = st.sidebar.multiselect(
         "Wählen Sie Tests für die Diagnose von pulmonaler Hypertonie:",
         [
