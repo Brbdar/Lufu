@@ -37,7 +37,7 @@ fileWatcherType = "watchdog"
 # Run the server in headless mode to prevent automatic browser pop-ups
 headless = true
 # Enable CORS and XSRF protection for security
-enableCORS = true
+enableCORS = false
 enableXsrfProtection = true
 # Adjust WebSocket settings for performance
 enableWebsocketCompression = false
@@ -47,11 +47,12 @@ baseUrlPath = ""
 
 [browser]
 # Direct users to the correct server address
-serverAddress = "localhost"
+# serverAddress = "localhost"
 # Disable usage statistics for privacy
 gatherUsageStats = false
 # Align the serverPort with the actual port used by the server
-serverPort = 80
+serverAddress = "0.0.0.0"
+serverPort = 9000
 
 [theme]
 # Establish a consistent theme, change as per your design preference
