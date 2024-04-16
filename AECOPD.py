@@ -85,7 +85,7 @@ def AECOPD():
     st.write('Der BAP-65 Score hilft Klinikern, das Risiko für Krankenhausmortalität und die Notwendigkeit mechanischer Beatmung innerhalb der nächsten 48h bei Patienten mit akuten Exazerbationen der COPD zu bewerten.')
     
     with st.form("bap_form"):
-        bun = st.radio('BUN ≥25 mg/dL (8.9 mmol/L):', [0, 1], format_func=lambda x: {0:'Nein', 1:'Ja'}.get(x))
+        bun = st.radio('Harnstoff ≥25 mg/dL (8.9 mmol/L):', [0, 1], format_func=lambda x: {0:'Nein', 1:'Ja'}.get(x))
         mental_status = st.radio('Veränderte geistige Verfassung:', [0, 1], format_func=lambda x: {0:'Nein', 1:'Ja'}.get(x))
         pulse = st.radio('Puls ≥109 Schläge/min:', [0, 1], format_func=lambda x: {0:'Nein', 1:'Ja'}.get(x))
         age = st.number_input('Alter des Patienten:', min_value=40, max_value=120)
