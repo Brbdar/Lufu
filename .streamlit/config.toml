@@ -31,19 +31,19 @@ showSidebarNavigation = false
 
 [server]
 # Optimize file watcher settings for fewer reloads
-fileWatcherType = "watchdog"
+# fileWatcherType = "watchdog"
 # Set cookie secret for consistent sessions across multiple instances
 # cookieSecret = "b793e2eee09e155cf46cee55739c8f91a6e141fd8531e0dd5645c0dd7ad10552"
 # Run the server in headless mode to prevent automatic browser pop-ups
-headless = true
+# headless = true
 # Enable CORS and XSRF protection for security
 enableCORS = false
-enableXsrfProtection = true
+# enableXsrfProtection = true
 # Adjust WebSocket settings for performance
-enableWebsocketCompression = false
+# enableWebsocketCompression = false
 # Set server port and base URL
 # port = 80
-baseUrlPath = ""
+# baseUrlPath = ""
 
 [browser]
 # Direct users to the correct server address
