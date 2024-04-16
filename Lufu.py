@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[4]:
+# In[6]:
 
+
+import streamlit as st
 
 # This example assumes the classes and tags do not change. Always verify with the latest Streamlit documentation.
 def set_page_styles():
@@ -65,6 +67,8 @@ def set_page_styles():
             }
         </style>
     """, unsafe_allow_html=True)
+# The rest of your functions and main setup remains unchanged
+
 
 def configure_page():
     """Configure the page settings with a refined look."""
