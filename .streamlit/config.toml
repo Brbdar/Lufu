@@ -33,7 +33,7 @@ enumCoercion = "nameAndValue"
 # Optimize file watcher settings for fewer reloads
 fileWatcherType = "watchdog"
 # Set cookie secret for consistent sessions across multiple instances
-cookieSecret = "b793e2eee09e155cf46cee55739c8f91a6e141fd8531e0dd5645c0dd7ad10552"
+# cookieSecret = "b793e2eee09e155cf46cee55739c8f91a6e141fd8531e0dd5645c0dd7ad10552"
 # Run the server in headless mode to prevent automatic browser pop-ups
 headless = true
 # Enable CORS and XSRF protection for security
@@ -42,16 +42,16 @@ enableXsrfProtection = true
 # Adjust WebSocket settings for performance
 enableWebsocketCompression = false
 # Set server port and base URL
-port = 8502
-baseUrlPath = ""
+# port = 8502
+# baseUrlPath = ""
 
 [browser]
 # Direct users to the correct server address
-serverAddress = "localhost"
+# serverAddress = "localhost"
 # Disable usage statistics for privacy
-gatherUsageStats = false
+# gatherUsageStats = false
 # Align the serverPort with the actual port used by the server
-serverPort = 8502
+# serverPort = 8502
 
 [theme]
 # Establish a consistent theme, change as per your design preference
