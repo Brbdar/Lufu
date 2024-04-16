@@ -110,7 +110,7 @@ def configure_page():
 def display_footer():
     """Display footer information using Streamlit components."""
     st.markdown("---")  # Draw a horizontal line for separation
-    st.caption("© Bruno Brito da Rocha 2024 - Version 2.1 / 15.04.24")
+    st.caption("© Bruno Brito da Rocha 2024 - Version 2.2 / 16.04.24: NEU: AECOPD Risikostrat.")
 
 def main():
     """Main function to enhance the Streamlit app design."""
@@ -282,6 +282,12 @@ from Inhalator import Inhalator
 from bc import bc
 
 
+# In[ ]:
+
+
+from AECOPD import AECOPD
+
+
 # In[2]:
 
 
@@ -334,12 +340,14 @@ if "der RHK Befund" in selected_pages_ph:
     rhkbefund()
 
 selected_pages_copd = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **COPD** aus:",
-                                ["COPD Score","Inhalatorenauswahl"], key="COPD")
+                                ["COPD Score","Inhalatorenauswahl","Risikostratifizierung der AECOPD"], key="COPD")
 
 if "COPD Score" in selected_pages_copd:
     COPD_Score()
 if "Inhalatorenauswahl" in selected_pages_copd:
     Inhalator()
+if "Risikostratifizierung der AECOPD" in selected_pages_copd:
+    AECOPD()
 
 selected_pages_ane = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Bronchialkarzinom** aus:",
                                 ["Malignitäts-Risiko-Score (Mayo Clinic Modell)"], key="BC")
@@ -396,7 +404,7 @@ with st.expander("Rechtlicher Hinweis"):
 
 
 
-# In[6]:
+# In[11]:
 
 
 def setup_sidebar():
@@ -438,7 +446,7 @@ def setup_sidebar():
     st.sidebar.title("COPD")
     analyse_bereich_COPD = st.sidebar.multiselect(
         "Wählen Sie Tests für COPD:",
-        ["COPD Score","Inhalatorenauswahl"],
+        ["COPD Score","Inhalatorenauswahl","Risikostratifizierung der AECOPD"],
         key="analysebereich_COPD"
     )
     process_selection(analyse_bereich_COPD)
@@ -534,6 +542,8 @@ def process_selection(selection):
         Inhalator()
     if "Malignitäts-Risiko-Score (Mayo Clinic Modell)" in selection:
         bc()
+    if "Risikostratifizierung der AECOPD" in selection:
+        AECOPD()
     
 
 # Aufruf der Setup-Funktion, um die Sidebar zu initialisieren
