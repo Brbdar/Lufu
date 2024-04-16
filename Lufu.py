@@ -404,148 +404,145 @@ with st.expander("Rechtlicher Hinweis"):
 
 
 
-# In[11]:
-
-
-def setup_sidebar():
-    # Titel und Auswahl für den Bereich Lungenfunktion
-    st.sidebar.title("Analysebereiche - Lungenfunktion")
-    analyse_bereich_lungenfunktion = st.sidebar.multiselect(
-        "Wählen Sie die gewünschten Lungenfunktionstests:",
-        [
-            "Spirometrie qualitativ", "Spirometrie quantitativ", "Bodyplethysmographie - Residualvolumen",
-            "Bodyplethysmographie - Fluss-Druck-Kurve", "Funktionstests - Broncholyse", "Funktionstests - Provokation",
-            "Gasaustausch - Transferfaktor", "Gasaustausch - Blutgasanalyse", "P0-Atemkraftmessung",
-            "Compliancemessung", "LTOT - Algorithmus"
-        ],
-        key="analysebereich_lungenfunktion"
-    )
-    process_selection(analyse_bereich_lungenfunktion)
-
-    # Bereich Spiroergometrie
-    st.sidebar.title("Spiroergometrie")
-    analyse_bereich_spiroergometrie = st.sidebar.multiselect(
-        "Wählen Sie relevante Tests für Spiroergometrie:",
-        ["Belastungstest", "VO2max Analyse"],  # Aktualisierte Platzhalterwerte
-        key="analysebereich_spiroergometrie"
-    )
-    process_selection(analyse_bereich_spiroergometrie)
-
-    # Bereich pulmonale Hypertonie
-    st.sidebar.title("Detect Algorithmus - pulmonale Hypertonie")
-    analyse_bereich_rechtsherzkatheter = st.sidebar.multiselect(
-        "Wählen Sie Tests für die Diagnose von pulmonaler Hypertonie:",
-        [
-            "EKG", "Klinik", "Thorax-Röntgen", "Lungenfunktion und arterielle Gase", "der RHK Befund"
-        ],
-        key="analysebereich_rechtsherzkatheter"
-    )
-    process_selection(analyse_bereich_rechtsherzkatheter)
-
-    # Bereich COPD
-    st.sidebar.title("COPD")
-    analyse_bereich_COPD = st.sidebar.multiselect(
-        "Wählen Sie Tests für COPD:",
-        ["COPD Score","Inhalatorenauswahl","Risikostratifizierung der AECOPD"],
-        key="analysebereich_COPD"
-    )
-    process_selection(analyse_bereich_COPD)
-
-    # Bereich Bronchialkarzinom
-    st.sidebar.title("Bronchialkarzinom")
-    analyse_bereich_bc = st.sidebar.multiselect(
-        "Wählen Sie entsprechend für das Thema BC aus:",
-        ["Malignitäts-Risiko-Score (Mayo Clinic Modell)"],
-        key="analysebereich_bc"
-    )
-    process_selection(analyse_bereich_bc)
-    
-    # Bereich Anämie
-    st.sidebar.title("Anämie")
-    analyse_bereich_Anämie = st.sidebar.multiselect(
-        "Wählen Sie Tests für Anämie:",
-        ["Mikrozytäre Anämie"],
-        key="analysebereich_Anämie"
-    )
-    process_selection(analyse_bereich_Anämie)
-
-    # Bereich Scores und Algorithmen
-    st.sidebar.title("Scores und Algorithmen")
-    analyse_bereich_scores = st.sidebar.multiselect(
-        "Wählen Sie relevante Scores und Algorithmen:",
-        ["HFpEF Score", "Blutkultur", "Blutungs vs. Thrombose", "Pleuraerguss", "Renal Failure Index", "Rule out ACS", "RV Diastole", "Verdacht auf Lungenembolie"],
-        key="analysebereich_scores"
-    )
-    process_selection(analyse_bereich_scores)
-
-    # Trennlinie und Information über die Version
-    st.sidebar.markdown("---")
-    st.sidebar.markdown("**Version:** 2.1")
-    st.sidebar.markdown("**Datum:** 2024-04-13")
-    st.sidebar.markdown("---")
-
-def process_selection(selection):
-    # Fügen Sie hier die Logik zum Aufrufen von Funktionen basierend auf der Auswahl hinzu
-    if "Spirometrie qualitativ" in selection:
-        spirometrie_qualitativ()
-    if "Spirometrie quantitativ" in selection:
-        tiffeneau_index_berechnung1()
-    if "Bodyplethysmographie - Residualvolumen" in selection:
-        Bodyplethysmographie_Residualvolumen()
-    if "Bodyplethysmographie - Fluss-Druck-Kurve" in selection:
-        Bodyplethysmographie_Fluss_Druck_Kurve()
-    if "Funktionstests - Broncholyse" in selection:
-        Funktionstests_Broncholyse()
-    if "Funktionstests - Provokation" in selection:
-        Funktionstests_Provokation()
-    if "Gasaustausch - Transferfaktor" in selection:
-        Gasaustausch_Transferfaktor()
-    if "Gasaustausch - Blutgasanalyse" in selection:
-        Gasaustausch_Blutgasanalyse()
-    if "P0-Atemkraftmessung" in selection:
-        P0_Atemkraftmessung()
-    if "Compliancemessung" in selection:
-        Compliancemessung()
-    if "LTOT - Algorithmus" in selection:
-        LTOT()
-    if "EKG" in selection:
-        EKG()
-    if "Klinik" in selection:
-        Klinik()
-    if "Thorax Röntgen" in selection:
-        Thorax_roentgen()
-    if "Lungenfunktion und Blutgase" in selection:
-        Lufu_BGA()
-    if "HFpEF Score" in selection:
-        HFpEF_Score()
-    if "Blutkultur" in selection:
-        Blutkultur()
-    if "COPD Score" in selection:
-        COPD_Score()
-    if "Blutungs vs. Thrombose" in selection:
-        chadsvascore()
-    if "Pleuraerguss" in selection:
-        erguss1()
-    if "der RHK Befund" in selection:
-        rhkbefund()
-    if "Renal Failure Index " in selection:
-        rfi()
-    if "Mikrozytäre Anämie" in selection:
-        ane1()
-    if "Rule out ACS" in selection:
-        ruleout()
-    if "RV Diastole" in selection:
-        raai()
-    if "Verdacht auf Lungenembolie" in selection:
-        embo()
-    if "Inhalatorenauswahl" in selection:
-        Inhalator()
-    if "Malignitäts-Risiko-Score (Mayo Clinic Modell)" in selection:
-        bc()
-    if "Risikostratifizierung der AECOPD" in selection:
-        AECOPD()
-    
-
-# Aufruf der Setup-Funktion, um die Sidebar zu initialisieren
-setup_sidebar()
-
+# def setup_sidebar():
+#     # Titel und Auswahl für den Bereich Lungenfunktion
+#     st.sidebar.title("Analysebereiche - Lungenfunktion")
+#     analyse_bereich_lungenfunktion = st.sidebar.multiselect(
+#         "Wählen Sie die gewünschten Lungenfunktionstests:",
+#         [
+#             "Spirometrie qualitativ", "Spirometrie quantitativ", "Bodyplethysmographie - Residualvolumen",
+#             "Bodyplethysmographie - Fluss-Druck-Kurve", "Funktionstests - Broncholyse", "Funktionstests - Provokation",
+#             "Gasaustausch - Transferfaktor", "Gasaustausch - Blutgasanalyse", "P0-Atemkraftmessung",
+#             "Compliancemessung", "LTOT - Algorithmus"
+#         ],
+#         key="analysebereich_lungenfunktion"
+#     )
+#     process_selection(analyse_bereich_lungenfunktion)
+# 
+#     # Bereich Spiroergometrie
+#     st.sidebar.title("Spiroergometrie")
+#     analyse_bereich_spiroergometrie = st.sidebar.multiselect(
+#         "Wählen Sie relevante Tests für Spiroergometrie:",
+#         ["Belastungstest", "VO2max Analyse"],  # Aktualisierte Platzhalterwerte
+#         key="analysebereich_spiroergometrie"
+#     )
+#     process_selection(analyse_bereich_spiroergometrie)
+# 
+#     # Bereich pulmonale Hypertonie
+#     st.sidebar.title("Detect Algorithmus - pulmonale Hypertonie")
+#     analyse_bereich_rechtsherzkatheter = st.sidebar.multiselect(
+#         "Wählen Sie Tests für die Diagnose von pulmonaler Hypertonie:",
+#         [
+#             "EKG", "Klinik", "Thorax-Röntgen", "Lungenfunktion und arterielle Gase", "der RHK Befund"
+#         ],
+#         key="analysebereich_rechtsherzkatheter"
+#     )
+#     process_selection(analyse_bereich_rechtsherzkatheter)
+# 
+#     # Bereich COPD
+#     st.sidebar.title("COPD")
+#     analyse_bereich_COPD = st.sidebar.multiselect(
+#         "Wählen Sie Tests für COPD:",
+#         ["COPD Score","Inhalatorenauswahl","Risikostratifizierung der AECOPD"],
+#         key="analysebereich_COPD"
+#     )
+#     process_selection(analyse_bereich_COPD)
+# 
+#     # Bereich Bronchialkarzinom
+#     st.sidebar.title("Bronchialkarzinom")
+#     analyse_bereich_bc = st.sidebar.multiselect(
+#         "Wählen Sie entsprechend für das Thema BC aus:",
+#         ["Malignitäts-Risiko-Score (Mayo Clinic Modell)"],
+#         key="analysebereich_bc"
+#     )
+#     process_selection(analyse_bereich_bc)
+#     
+#     # Bereich Anämie
+#     st.sidebar.title("Anämie")
+#     analyse_bereich_Anämie = st.sidebar.multiselect(
+#         "Wählen Sie Tests für Anämie:",
+#         ["Mikrozytäre Anämie"],
+#         key="analysebereich_Anämie"
+#     )
+#     process_selection(analyse_bereich_Anämie)
+# 
+#     # Bereich Scores und Algorithmen
+#     st.sidebar.title("Scores und Algorithmen")
+#     analyse_bereich_scores = st.sidebar.multiselect(
+#         "Wählen Sie relevante Scores und Algorithmen:",
+#         ["HFpEF Score", "Blutkultur", "Blutungs vs. Thrombose", "Pleuraerguss", "Renal Failure Index", "Rule out ACS", "RV Diastole", "Verdacht auf Lungenembolie"],
+#         key="analysebereich_scores"
+#     )
+#     process_selection(analyse_bereich_scores)
+# 
+#     # Trennlinie und Information über die Version
+#     st.sidebar.markdown("---")
+#     st.sidebar.markdown("**Version:** 2.1")
+#     st.sidebar.markdown("**Datum:** 2024-04-13")
+#     st.sidebar.markdown("---")
+# 
+# def process_selection(selection):
+#     # Fügen Sie hier die Logik zum Aufrufen von Funktionen basierend auf der Auswahl hinzu
+#     if "Spirometrie qualitativ" in selection:
+#         spirometrie_qualitativ()
+#     if "Spirometrie quantitativ" in selection:
+#         tiffeneau_index_berechnung1()
+#     if "Bodyplethysmographie - Residualvolumen" in selection:
+#         Bodyplethysmographie_Residualvolumen()
+#     if "Bodyplethysmographie - Fluss-Druck-Kurve" in selection:
+#         Bodyplethysmographie_Fluss_Druck_Kurve()
+#     if "Funktionstests - Broncholyse" in selection:
+#         Funktionstests_Broncholyse()
+#     if "Funktionstests - Provokation" in selection:
+#         Funktionstests_Provokation()
+#     if "Gasaustausch - Transferfaktor" in selection:
+#         Gasaustausch_Transferfaktor()
+#     if "Gasaustausch - Blutgasanalyse" in selection:
+#         Gasaustausch_Blutgasanalyse()
+#     if "P0-Atemkraftmessung" in selection:
+#         P0_Atemkraftmessung()
+#     if "Compliancemessung" in selection:
+#         Compliancemessung()
+#     if "LTOT - Algorithmus" in selection:
+#         LTOT()
+#     if "EKG" in selection:
+#         EKG()
+#     if "Klinik" in selection:
+#         Klinik()
+#     if "Thorax Röntgen" in selection:
+#         Thorax_roentgen()
+#     if "Lungenfunktion und Blutgase" in selection:
+#         Lufu_BGA()
+#     if "HFpEF Score" in selection:
+#         HFpEF_Score()
+#     if "Blutkultur" in selection:
+#         Blutkultur()
+#     if "COPD Score" in selection:
+#         COPD_Score()
+#     if "Blutungs vs. Thrombose" in selection:
+#         chadsvascore()
+#     if "Pleuraerguss" in selection:
+#         erguss1()
+#     if "der RHK Befund" in selection:
+#         rhkbefund()
+#     if "Renal Failure Index " in selection:
+#         rfi()
+#     if "Mikrozytäre Anämie" in selection:
+#         ane1()
+#     if "Rule out ACS" in selection:
+#         ruleout()
+#     if "RV Diastole" in selection:
+#         raai()
+#     if "Verdacht auf Lungenembolie" in selection:
+#         embo()
+#     if "Inhalatorenauswahl" in selection:
+#         Inhalator()
+#     if "Malignitäts-Risiko-Score (Mayo Clinic Modell)" in selection:
+#         bc()
+#     if "Risikostratifizierung der AECOPD" in selection:
+#         AECOPD()
+#     
+# 
+# # Aufruf der Setup-Funktion, um die Sidebar zu initialisieren
+# setup_sidebar()
+# 
