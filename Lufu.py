@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[10]:
+# In[3]:
 
 
 import streamlit as st
@@ -11,24 +11,41 @@ def set_page_styles():
     style_code = """
         <style>
             /* Base layout styles */
-            .stApp {
+            body {
                 background-color: #f4f4f8;
                 color: #333;
                 font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             }
-            
+            /* Dark mode adjustments */
+            @media (prefers-color-scheme: dark) {
+                body {
+                    background-color: #333;
+                    color: #f4f4f8;
+                }
+                header {
+                    background-color: #333;
+                }
+                .css-1d391kg {
+                    background-color: #222;
+                }
+                button {
+                    background-color: #555;
+                    color: white;
+                }
+                .stSlider .stThumb {
+                    background-color: #777;
+                }
+            }
             /* Customizing the header */
             header {
                 background-color: #6c5b7b;
                 color: #ffffff;
             }
-            
             /* Sidebar styling */
             .css-1d391kg {
                 background-color: #355c7d;
                 color: #ffffff;
             }
-            
             /* Button styling */
             button {
                 border: none;
@@ -44,12 +61,10 @@ def set_page_styles():
                 transition-duration: 0.4s;
                 cursor: pointer;
             }
-
             button:hover {
                 background-color: #f67280;
                 color: white;
             }
-
             /* Widget custom styling */
             .stSlider .stThumb {
                 background-color: #6c5b7b;
