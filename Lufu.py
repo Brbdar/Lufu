@@ -1,74 +1,102 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[6]:
+# import streamlit as st
+# 
+# # This example assumes the classes and tags do not change. Always verify with the latest Streamlit documentation.
+# def set_page_styles():
+#     """Apply custom styles to enhance the app's aesthetics via Streamlit's native methods."""
+#     st.markdown("""
+#         <style>
+#             /* Base layout styles */
+#             body {
+#                 background-color: #f4f4f8;
+#                 color: #333;
+#                 font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+#             }
+#             @media (prefers-color-scheme: dark) {
+#                 body {
+#                     background-color: #333;
+#                     color: #f4f4f8;
+#                 }
+#                 header {
+#                     background-color: #333;
+#                 }
+#                 .css-1d391kg {
+#                     background-color: #222;
+#                 }
+#                 button {
+#                     background-color: #555;
+#                     color: white;
+#                 }
+#                 .stSlider .stThumb {
+#                     background-color: #777;
+#                 }
+#             }
+#             header {
+#                 background-color: #6c5b7b;
+#                 color: #ffffff;
+#             }
+#             .css-1d391kg {
+#                 background-color: #355c7d;
+#                 color: #ffffff;
+#             }
+#             button {
+#                 border: none;
+#                 border-radius: 5px;
+#                 background-color: #c06c84;
+#                 color: white;
+#                 padding: 10px 20px;
+#                 text-align: center;
+#                 text-decoration: none;
+#                 display: inline-block;
+#                 font-size: 16px;
+#                 margin: 4px 2px;
+#                 transition-duration: 0.4s;
+#                 cursor: pointer;
+#             }
+#             button:hover {
+#                 background-color: #f67280;
+#                 color: white;
+#             }
+#             .stSlider .stThumb {
+#                 background-color: #6c5b7b;
+#             }
+#         </style>
+#     """, unsafe_allow_html=True)
+# # The rest of your functions and main setup remains unchanged
+# 
+# 
+# def configure_page():
+#     """Configure the page settings with a refined look."""
+#     st.set_page_config(
+#         page_title="Pneumo-App",
+#         page_icon="🌬️",
+#         layout="centered",
+#         initial_sidebar_state="auto"
+#     )
+#     set_page_styles()
+# 
+# def display_footer():
+#     """Display stylish footer information."""
+#     footer_text = "<div style='color: #333; font-size: 12px; padding: 10px;'>© Bruno Brito da Rocha 2024 - Version 2.1 / 15.04.24</div>"
+#     st.markdown(footer_text, unsafe_allow_html=True)
+# 
+# def main():
+#     """Main function to enhance the Streamlit app design."""
+#     configure_page()
+#     # Example of additional content
+#     st.title("Pneumo-App")
+# 
+#     display_footer()
+# 
+# if __name__ == "__main__":
+#     main()
+
+# In[10]:
 
 
 import streamlit as st
-
-# This example assumes the classes and tags do not change. Always verify with the latest Streamlit documentation.
-def set_page_styles():
-    """Apply custom styles to enhance the app's aesthetics via Streamlit's native methods."""
-    st.markdown("""
-        <style>
-            /* Base layout styles */
-            body {
-                background-color: #f4f4f8;
-                color: #333;
-                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            }
-            @media (prefers-color-scheme: dark) {
-                body {
-                    background-color: #333;
-                    color: #f4f4f8;
-                }
-                header {
-                    background-color: #333;
-                }
-                .css-1d391kg {
-                    background-color: #222;
-                }
-                button {
-                    background-color: #555;
-                    color: white;
-                }
-                .stSlider .stThumb {
-                    background-color: #777;
-                }
-            }
-            header {
-                background-color: #6c5b7b;
-                color: #ffffff;
-            }
-            .css-1d391kg {
-                background-color: #355c7d;
-                color: #ffffff;
-            }
-            button {
-                border: none;
-                border-radius: 5px;
-                background-color: #c06c84;
-                color: white;
-                padding: 10px 20px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 16px;
-                margin: 4px 2px;
-                transition-duration: 0.4s;
-                cursor: pointer;
-            }
-            button:hover {
-                background-color: #f67280;
-                color: white;
-            }
-            .stSlider .stThumb {
-                background-color: #6c5b7b;
-            }
-        </style>
-    """, unsafe_allow_html=True)
-# The rest of your functions and main setup remains unchanged
-
 
 def configure_page():
     """Configure the page settings with a refined look."""
@@ -78,18 +106,19 @@ def configure_page():
         layout="centered",
         initial_sidebar_state="auto"
     )
-    set_page_styles()
 
 def display_footer():
-    """Display stylish footer information."""
-    footer_text = "<div style='color: #333; font-size: 12px; padding: 10px;'>© Bruno Brito da Rocha 2024 - Version 2.1 / 15.04.24</div>"
-    st.markdown(footer_text, unsafe_allow_html=True)
+    """Display footer information using Streamlit components."""
+    st.markdown("---")  # Draw a horizontal line for separation
+    st.caption("© Bruno Brito da Rocha 2024 - Version 2.1 / 15.04.24")
 
 def main():
     """Main function to enhance the Streamlit app design."""
     configure_page()
-    # Example of additional content
     st.title("Pneumo-App")
+    
+    # If you need to add space manually, use empty write calls or markdown for spaces.
+    st.write("\n\n\n")  # Add some space before the footer
 
     display_footer()
 
