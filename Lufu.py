@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[3]:
+# In[4]:
 
 
-import streamlit as st
-
+# This example assumes the classes and tags do not change. Always verify with the latest Streamlit documentation.
 def set_page_styles():
-    """Apply custom styles to enhance the app's aesthetics."""
-    style_code = """
+    """Apply custom styles to enhance the app's aesthetics via Streamlit's native methods."""
+    st.markdown("""
         <style>
             /* Base layout styles */
             body {
@@ -16,7 +15,6 @@ def set_page_styles():
                 color: #333;
                 font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             }
-            /* Dark mode adjustments */
             @media (prefers-color-scheme: dark) {
                 body {
                     background-color: #333;
@@ -36,17 +34,14 @@ def set_page_styles():
                     background-color: #777;
                 }
             }
-            /* Customizing the header */
             header {
                 background-color: #6c5b7b;
                 color: #ffffff;
             }
-            /* Sidebar styling */
             .css-1d391kg {
                 background-color: #355c7d;
                 color: #ffffff;
             }
-            /* Button styling */
             button {
                 border: none;
                 border-radius: 5px;
@@ -65,13 +60,11 @@ def set_page_styles():
                 background-color: #f67280;
                 color: white;
             }
-            /* Widget custom styling */
             .stSlider .stThumb {
                 background-color: #6c5b7b;
             }
         </style>
-    """
-    st.write(style_code, unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
 def configure_page():
     """Configure the page settings with a refined look."""
