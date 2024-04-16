@@ -47,11 +47,11 @@ enableWebsocketCompression = false
 
 [browser]
 # Direct users to the correct server address
-# serverAddress = "localhost"
+serverAddress = "localhost"
 # Disable usage statistics for privacy
-# gatherUsageStats = false
+gatherUsageStats = false
 # Align the serverPort with the actual port used by the server
-# serverPort = 8502
+serverPort = 80
 
 [theme]
 # Establish a consistent theme, change as per your design preference
