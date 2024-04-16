@@ -21,13 +21,13 @@ showSidebarNavigation = false
 
 [runner]
 # Enable Streamlit's magic commands for ease of use
-magicEnabled = true
+#magicEnabled = true
 # Handle rerun requests immediately for faster response times
-fastReruns = true
+#fastReruns = true
 # Ensure session state is serializable for consistent behavior across sessions
-enforceSerializableSessionState = true
+#enforceSerializableSessionState = true
 # Use name and value matching for Enum coercion to prevent issues during reruns
-enumCoercion = "nameAndValue"
+#enumCoercion = "nameAndValue"
 
 [server]
 # Optimize file watcher settings for fewer reloads
