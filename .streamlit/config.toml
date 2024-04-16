@@ -42,8 +42,8 @@ enableXsrfProtection = true
 # Adjust WebSocket settings for performance
 enableWebsocketCompression = false
 # Set server port and base URL
-# port = 8502
-# baseUrlPath = ""
+port = 80
+baseUrlPath = ""
 
 [browser]
 # Direct users to the correct server address
