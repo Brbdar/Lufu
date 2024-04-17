@@ -7,41 +7,54 @@
 import streamlit as st
 
 def Klinik():
-    st.header("Klinik")
+    st.header("Diagnoste Algorithmus PH - Klinik bei pulmonaler Hypertonie")
 
-    # Datenstruktur für Symptome und Beschreibungen
+    # Datenstruktur für Symptome und deren detaillierte physiologische Beschreibungen
     symptome = {
-        "Belastungsdyspnoe": "Dyspnoe, die typischerweise bei körperlicher Anstrengung auftritt und durch eine Dysfunktion des rechten Ventrikels verursacht wird.",
-        "Fatigue und Abgeschlagenheit": "Allgemeines Gefühl der Ermüdung, das sich mit fortschreitender Krankheit verschlimmert.",
-        "Dyspnoe beim Vorüberbeugen": "Atemnot, die beim Vorbeugen auftritt, bekannt als Bendopnoe.",
-        "Palpitationen": "Unangenehm spürbare Herzschläge, die durch den erhöhten Arbeitsaufwand des Herzens entstehen können.",
-        "Hämoptysen": "Aushusten von Blut, was auf schwere Krankheitszustände hinweisen kann.",
-        # Fügen Sie hier weitere Symptome und deren Beschreibungen hinzu
+        "Belastungsdyspnoe": "Dyspnoe bei Belastung durch erhöhte Nachlast, verminderte Compliance und erschwerte Rechtsherzauswurfleistung.",
+        "Fatigue und Abgeschlagenheit": "Resultiert aus unzureichender Sauerstoffversorgung der Muskulatur und gesteigerter metabolischer Anforderung bei chronischer Herzbelastung.",
+        "Dyspnoe beim Vorüberbeugen": "Bendopnoe, ausgelöst durch die Verlagerung intrathorakaler Blutvolumina, was den Druck im rechten Herzen weiter erhöht.",
+        "Palpitationen": "Häufig durch Tachyarrhythmien als Antwort auf Hypoxie und rechtsventrikuläre Belastung.",
+        "Hämoptysen": "Typischerweise ein Indikator für eine extreme Belastung der pulmonalen Zirkulation, die zu Kapillarrupturen führen kann.",
+        # Weitere Symptome und deren Beschreibungen
     }
 
-    # Titel der App
-    st.title('Lerneinheit zur Klinik bei PH-Patienten')
 
     # Einführungstext
     st.markdown('''
-    Die pulmonale Hypertonie (PH) ist eine ernsthafte Erkrankung, die vor allem durch eine Dysfunktion des rechten Ventrikels charakterisiert wird.
-    Die Symptome und klinischen Zeichen variieren je nach Stadium und Schweregrad der Erkrankung. Hier eine Übersicht der Symptome:
+    Pulmonale Hypertonie ist gekennzeichnet durch den progressiven Anstieg des pulmonalen arteriellen Drucks, der zu einer schweren Belastung und schließlich zum Versagen des rechten Ventrikels führt.
+    Die folgende Übersicht bietet Einblick in die vielfältigen Symptome, die mit verschiedenen Stadien dieser komplexen Erkrankung assoziiert sind:
     ''')
 
     # Auswahlbox für Symptome
-    symptom_auswahl = st.selectbox('Wählen Sie ein Symptom aus der Liste:', list(symptome.keys()))
+    symptom_auswahl = st.selectbox('Wählen Sie ein Symptom aus:', list(symptome.keys()))
 
     # Anzeige der Beschreibung zum ausgewählten Symptom
     st.subheader('Beschreibung des Symptoms:')
     st.write(symptome[symptom_auswahl])
 
-    # Erklärung der Dysfunktion des rechten Ventrikels
-    st.subheader('Dysfunktion des rechten Ventrikels und PH:')
+    # Erweiterte Erklärung der Pathophysiologie
+    st.subheader('Pathophysiologie der pulmonalen Hypertonie:')
     st.markdown('''
-    Die Symptome der PH sind hauptsächlich auf eine Dysfunktion des rechten Ventrikels zurückzuführen. Diese manifestieren sich im Frühstadium der Erkrankung typischerweise bei körperlicher Anstrengung.
-    Ein Schlüsselsymptom ist die Dyspnoe, die zunehmend auch unter geringerer Belastung auftritt.
+    Pulmonale Hypertonie führt zu einer progressiven Belastung des rechten Ventrikels, die initial bei körperlicher Anstrengung symptomatisch wird und in fortgeschrittenen Stadien auch in Ruhe manifest sein kann. Eine zentrale Rolle spielen dabei die chronische Druckerhöhung im kleinen Kreislauf und die daraus resultierende Hypertrophie und Dilatation des rechten Ventrikels.
+    ''')
+
+
+    
+    # Bild einfügen
+    st.image("klinik.jpg", caption="Visualisierung der Klinik")
+
+    # Link zu den Leitlinien
+    st.markdown('''
+    Weitere Informationen finden Sie in den [Leitlinien zur pulmonalen Hypertonie](https://academic.oup.com/eurheartj/article/43/38/3618/6673929?login=false#413902448).
     ''')
 
     # Hinweis für die Nutzer, wie sie die App verwenden können
     st.sidebar.info('Nutzen Sie diese App, um durch die verschiedenen Symptome der pulmonalen Hypertonie zu navigieren und lernen Sie mehr über deren Zusammenhang mit der rechten Ventrikeldysfunktion.')
+
+
+# In[ ]:
+
+
+
 

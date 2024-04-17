@@ -294,10 +294,23 @@ from AECOPD import AECOPD
 from tvt import tvt
 
 
-# In[2]:
+# In[14]:
+
+
+from anamnese import anamnese
+
+
+# In[15]:
 
 
 # Multiselect Box für die Auswahl der Seiten
+selected_pages_allgemeines = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Allgemeines** aus:",
+                                ["Anamnesetool"], key="anamnese")
+
+# Logik zur Anzeige der ausgewählten Seiten
+if 'Anamnesetool' in selected_pages_allgemeines:
+    anamnese()
+
 selected_pages_lufu = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Lungenfunktion** aus:",
                                 ["Spirometrie qualitativ", "Spirometrie quantitativ", "Bodyplethysmographie - Residualvolumen",
                                 "Bodyplethysmographie - Fluss-Druck-Kurve", "Funktionstests - Broncholyse", "Funktionstests - Provokation",
