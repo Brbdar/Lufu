@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[14]:
+# In[16]:
 
 
 import streamlit as st
@@ -61,7 +61,7 @@ def anamnese():
 
     # 4. Rauchgewohnheiten
     st.subheader('Rauchgewohnheiten')
-    smoking_status = st.radio('Rauchstatus:', ['Ja', 'Nein'])
+    smoking_status = st.radio('Rauchstatus:', ['Ja', 'Nein'],index=1)
     if smoking_status == 'Ja':
         cigarettes_per_day = st.number_input('Anzahl der täglich gerauchten Zigaretten:', min_value=1, max_value=100, step=1)
         years_smoked = st.number_input('Rauchdauer in Jahren:', min_value=1, max_value=100, step=1)
@@ -72,7 +72,7 @@ def anamnese():
 
     # 5. Heimsauerstoff
     st.header('Heimsauerstoff')
-    home_oxygen = st.radio('Wird Heimsauerstoff verwendet?', ['Ja', 'Nein'], key='home_oxygen')
+    home_oxygen = st.radio('Wird Heimsauerstoff verwendet?', ['Ja', 'Nein'],index=1, key='home_oxygen')
     if home_oxygen == 'Ja':
         oxygen_since = st.text_input('Seit wann wird Heimsauerstoff verwendet?', key='oxygen_since')
         oxygen_amount = st.number_input('Wie viel Liter pro Minute?', min_value=0.1, max_value=10.0, step=0.1, key='oxygen_amount')
@@ -80,14 +80,14 @@ def anamnese():
 
     # 6. Antikoagulation
     st.header('Antikoagulation')
-    anticoagulation = st.radio('Wird eine Antikoagulation durchgeführt?', ['Ja', 'Nein'], key='anticoagulation')
+    anticoagulation = st.radio('Wird eine Antikoagulation durchgeführt?', ['Ja', 'Nein'],index=1, key='anticoagulation')
     if anticoagulation == 'Ja':
         anticoagulant_type = st.text_input('Welches Antikoagulans wird verwendet?', key='anticoagulant_type')
         anamnese_report += f"Antikoagulation mit {anticoagulant_type}. "
 
     # 7. Plättchenhemmung
     st.header('Plättchenhemmung')
-    platelet_inhibition = st.radio('Wird eine Plättchenhemmung durchgeführt?', ['Ja', 'Nein'], key='platelet_inhibition')
+    platelet_inhibition = st.radio('Wird eine Plättchenhemmung durchgeführt?', ['Ja', 'Nein'],index=1, key='platelet_inhibition')
     if platelet_inhibition == 'Ja':
         platelet_inhibitor_type = st.text_input('Welches Plättchenhemmer wird verwendet?', key='platelet_inhibitor_type')
         platelet_inhibition_reason = st.text_input('Aus welchem Grund wird die Plättchenhemmung durchgeführt?', key='platelet_inhibition_reason')
