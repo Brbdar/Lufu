@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[14]:
+# In[18]:
 
 
 import streamlit as st
@@ -10,18 +10,18 @@ def tvt():
     st.header("Risikostratifizierung und Prophylaxe von tiefer Beinvenenthrombose")
     st.markdown("Bezugnehmend auf die Studien: *Prevention Registry on Venous Thromboembolism Risk Assessment Model*, *Padua Prediction Score for Risk of VTE* und *Accuracy of clinical assessment of deep-vein thrombosis von P S Wells et al.*")
     st.subheader("PADUA: Ist eine Thromboseprophylaxe notwendig?")
-    st.subheader("IMPROVE-RAM: Wie hoch ist das drei Monats Risiko für eine TVT? bei hospitalisierten Pat.")
-    st.subheader("Wells-Score (TVT): Wahrscheinlichkeit für eine TVT u. weitere empfohlene Maßnahmen")
+    st.subheader("IMPROVE-RAM: Wie hoch ist das drei Monats Risiko für eine TVT? bei hospitalisierten Patienten.")
+    st.subheader("Wells-Score (TVT): Wahrscheinlichkeit für eine TVT und weitere empfohlene Maßnahmen")
 
-    
     # Initialisierung der Eingaben
     age = st.number_input("Alter", min_value=0, max_value=120, step=1)
     cancer = st.checkbox("Aktiver Krebs")
     vte = st.checkbox("Vorangegangene VTE")
     thrombophilia = st.checkbox("Bekannte Thrombophilie")
     paralysis = st.checkbox("Lähmung der unteren Gliedmaßen")
-    immobilization = st.checkbox("Immobilisierung")
+    immobilization = st.checkbox("Immobilisiert ≥7 Tage")
     icu_stay = st.checkbox("Aufenthalt in der Intensivstation oder Herzüberwachungsstation")
+    d_dimer_high = st.checkbox("D-dimer ≥2x ULN")
 
     # Spezifische Kriterien für weitere Scores
     bedridden = st.checkbox("Kürzlich bettlägerig >3 Tage oder größere Operation innerhalb von 12 Wochen")
@@ -34,13 +34,15 @@ def tvt():
     alternative_diagnosis = st.checkbox("Alternative Diagnose zu DVT wahrscheinlich oder wahrscheinlicher")
 
     # Berechnung der Scores
+
     def calculate_scores():
+
         base_score = 0
         padua_score = 0
         wells_score = 0
 
         # Gemeinsame Faktoren
-        base_score += 3 * vte + 2 * (thrombophilia + paralysis + cancer) + 1 * (immobilization + icu_stay) + (1 if age > 60 else 0)
+        base_score = (3 * vte + 2 * (thrombophilia + paralysis + cancer + d_dimer_high) + 1 * (immobilization + icu_stay) + (1 if age > 60 else 0))
         padua_score += 3 * (cancer + vte + immobilization + thrombophilia) + 2 * bedridden + 1 * (age >= 70 + paralysis + previous_dvt + leg_swollen + pitting_edema)
         wells_score += 1 * (cancer + bedridden + calf_swelling + superficial_veins + leg_swollen + tenderness + pitting_edema + paralysis + previous_dvt) - 2 * alternative_diagnosis
 
@@ -48,7 +50,18 @@ def tvt():
 
     # Interpretation des IMPROVE RAM Scores
     def interpret_improve_score(base_score):
-        return "Geringes Risiko für venöse Thromboembolie (VTE)" if base_score <= 2 else "Risiko für VTE"
+        if base_score == 0:
+            return "42-Tage VTE Risiko: 0.4%, 77-Tage VTE Risiko: 0.5%"
+        elif base_score == 1:
+            return "42-Tage VTE Risiko: 0.6%, 77-Tage VTE Risiko: 0.7%"
+        elif base_score == 2:
+            return "42-Tage VTE Risiko: 0.8%, 77-Tage VTE Risiko: 1.0%"
+        elif base_score == 3:
+            return "42-Tage VTE Risiko: 1.2%, 77-Tage VTE Risiko: 1.4%"
+        elif base_score == 4:
+            return "42-Tage VTE Risiko: 1.6%, 77-Tage VTE Risiko: 1.9%"
+        else:
+            return "42-Tage VTE Risiko: 2.2%, 77-Tage VTE Risiko: 2.7%"
 
     # Interpretation des Padua Prediction Scores
     def interpret_padua_score(padua_score):
