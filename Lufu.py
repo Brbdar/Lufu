@@ -93,7 +93,7 @@
 # if __name__ == "__main__":
 #     main()
 
-# In[12]:
+# In[19]:
 
 
 import streamlit as st
@@ -110,7 +110,7 @@ def configure_page():
 def display_footer():
     """Display footer information using Streamlit components."""
     st.markdown("---")  # Draw a horizontal line for separation
-    st.caption("© Bruno Brito da Rocha 2024 - Version 2.3 / 17.04.24: NEU: AECOPD Risikostrat. u TVT")
+    st.caption("© Bruno Brito da Rocha 2024 - Version 2.3 / 18.04.24: Anamnesetool")
 
 def main():
     """Main function to enhance the Streamlit app design."""
@@ -300,7 +300,13 @@ from tvt import tvt
 from anamnese import anamnese
 
 
-# In[15]:
+# In[17]:
+
+
+from tacr import tacr 
+
+
+# In[18]:
 
 
 # Multiselect Box für die Auswahl der Seiten
@@ -368,7 +374,7 @@ if "Inhalatorenauswahl" in selected_pages_copd:
 if "Risikostratifizierung der AECOPD" in selected_pages_copd:
     AECOPD()
 
-selected_pages_ane = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Bronchialkarzinom** aus:",
+selected_pages_BC = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Bronchialkarzinom** aus:",
                                 ["Malignitäts-Risiko-Score (Mayo Clinic Modell)"], key="BC")
 
 if "Malignitäts-Risiko-Score (Mayo Clinic Modell)" in selected_pages_ane:
@@ -379,6 +385,14 @@ selected_pages_ane = st.multiselect("Wählen Sie eine oder mehrere Seiten aus de
 
 if "Mikrozytäre Anämie" in selected_pages_ane:
     ane1()
+    
+selected_pages_nephro = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Nephrologie** aus:",
+                                ["Tacrolimus und Mykophenolat","Renal Failure Index"], key="Nephro")
+
+if "Tacrolimus und Mykophenolat" in selected_pages_nephro:
+    tacr()
+if "Renal Failure Index" in selected_pages_nephro:
+    rfi()
 
 selected_pages_scores = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Scores & Algorithmen** aus:",
                                 ["HFpEF Score", "Blutkultur","Blutungs vs. Thrombose","Pleuraerguss","Renal Failure Index","Rule out ACS","RV Diastole","Verdacht auf Lungenembolie","TVT Stratifizierung"], key="Scores")
@@ -393,8 +407,6 @@ if "Blutungs vs. Thrombose" in selected_pages_scores:
     chadsvascore()
 if "Pleuraerguss" in selected_pages_scores:
     erguss1()
-if "Renal Failure Index" in selected_pages_scores:
-    rfi()
 if "Rule out ACS" in selected_pages_scores:
     ruleout()
 if "Verdacht auf Lungenembolie" in selected_pages_scores:
