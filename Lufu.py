@@ -306,7 +306,7 @@ from anamnese import anamnese
 from tacr import tacr 
 
 
-# In[18]:
+# In[20]:
 
 
 # Multiselect Box für die Auswahl der Seiten
@@ -374,10 +374,10 @@ if "Inhalatorenauswahl" in selected_pages_copd:
 if "Risikostratifizierung der AECOPD" in selected_pages_copd:
     AECOPD()
 
-selected_pages_BC = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Bronchialkarzinom** aus:",
+selected_pages_onko = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Bronchialkarzinom** aus:",
                                 ["Malignitäts-Risiko-Score (Mayo Clinic Modell)"], key="BC")
 
-if "Malignitäts-Risiko-Score (Mayo Clinic Modell)" in selected_pages_ane:
+if "Malignitäts-Risiko-Score (Mayo Clinic Modell)" in selected_pages_onko:
     bc()
     
 selected_pages_ane = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Anämie** aus:",
