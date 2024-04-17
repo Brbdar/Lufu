@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[13]:
+# In[14]:
 
 
 import streamlit as st
 from fpdf import FPDF
+from datetime import datetime
 
 def anamnese():
 
@@ -104,7 +105,7 @@ def anamnese():
 
     # Schwangerschaftsfrage bei relevanten Nutzern
     if alter < 50 and geschlecht == "Weiblich":
-        schwanger = st.checkbox("Sind Sie schwanger?")
+        schwanger = st.checkbox("Besteht eine Schwangerschaft??")
     
     # PDF Erstellung und Download
     if st.button('Bericht als PDF speichern'):
