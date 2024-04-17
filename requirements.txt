@@ -9,4 +9,4 @@ seaborn>=0.12.2
 statsmodels>=0.14.0
 plotly >=5.15.0
 pip >=24.0
-FPDF 1.7.2
+fpdf 1.7.2
