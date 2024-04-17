@@ -9,9 +9,9 @@ import streamlit as st
 def tvt():
     st.header("Risikostratifizierung und Prophylaxe von tiefer Beinvenenthrombose")
     st.markdown("Bezugnehmend auf die Studien: *Prevention Registry on Venous Thromboembolism Risk Assessment Model*, *Padua Prediction Score for Risk of VTE* und *Accuracy of clinical assessment of deep-vein thrombosis von P S Wells et al.*")
-    st.subheader("PADUA: Ist eine Thromboseprophylaxe notwendig?")
-    st.subheader("IMPROVE-RAM: Wie hoch ist das drei Monats Risiko für eine TVT? bei hospitalisierten Patienten.")
-    st.subheader("Wells-Score (TVT): Wahrscheinlichkeit für eine TVT und weitere empfohlene Maßnahmen")
+    st.info("**PADUA:** Ist eine Thromboseprophylaxe notwendig?")
+    st.info("**IMPROVE-RAM:** Wie hoch ist das drei Monats Risiko für eine TVT? bei hospitalisierten Patienten.")
+    st.info("**Wells-Score (TVT)**: Wahrscheinlichkeit für eine TVT und weitere empfohlene Maßnahmen")
 
     # Initialisierung der Eingaben
     age = st.number_input("Alter", min_value=0, max_value=120, step=1)
@@ -30,8 +30,8 @@ def tvt():
     leg_swollen = st.checkbox("Gesamtes Bein geschwollen")
     tenderness = st.checkbox("Lokale Empfindlichkeit entlang des tiefen Venensystems")
     pitting_edema = st.checkbox("Grubenödem, beschränkt auf das symptomatische Bein")
-    previous_dvt = st.checkbox("Früher dokumentierte DVT")
-    alternative_diagnosis = st.checkbox("Alternative Diagnose zu DVT wahrscheinlich oder wahrscheinlicher")
+    previous_dvt = st.checkbox("Früher dokumentierte TVT")
+    alternative_diagnosis = st.checkbox("Alternative Diagnose zu TVT wahrscheinlich oder wahrscheinlicher")
 
     # Berechnung der Scores
 
