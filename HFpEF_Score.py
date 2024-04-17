@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[10]:
+# In[1]:
 
 
 import streamlit as st
@@ -84,6 +84,16 @@ def HFpEF_Score():
         st.write(f"Erreichte Punktzahl basierend auf diskreten Kriterien: {points}")
         st.write(f"Interpretation der Punktzahl: {interpretation}")
         st.write(f"Basierend auf den kontinuierlichen Variablen beträgt der HFpEF-Score: {score:.2f}%")
+    
+   # Laden und Anzeigen des Bildes
+    image_path = "hfpef.jpg"
+    st.image(image_path, caption="Visualisierung von HFpEF")
+
+    # Anzeigen des Links zur Publikation
+    st.markdown("""
+    Dieses Bild bezieht sich auf eine Studie über Herzinsuffizienz mit erhaltener Auswurffraktion (HFpEF).
+    Lesen Sie mehr über die Studie im folgenden Artikel: [Link zur Publikation](https://link.springer.com/epdf/10.1007/s11906-024-01296-2?sharing_token=En162S40ldEVjjSs8FSeOfe4RwlQNchNByi7wbcMAY4tEe4fS6WIOuCpoj_mhjqo5GKMrSlow4QYU9fDafV9O0Ubyy-5qh0W8WxhFnT7JEMvNZcWyP6dL3657xYwLoE9N5vCymrIeJJ8qBs9h9Bq12Ybzcbz9R28UPxmKxEGRrc=)
+    """) 
     
     with st.expander("Über die Forschung"):
         st.markdown("""
