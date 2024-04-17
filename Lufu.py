@@ -93,7 +93,7 @@
 # if __name__ == "__main__":
 #     main()
 
-# In[10]:
+# In[12]:
 
 
 import streamlit as st
@@ -110,7 +110,7 @@ def configure_page():
 def display_footer():
     """Display footer information using Streamlit components."""
     st.markdown("---")  # Draw a horizontal line for separation
-    st.caption("© Bruno Brito da Rocha 2024 - Version 2.2 / 16.04.24: NEU: AECOPD Risikostrat.")
+    st.caption("© Bruno Brito da Rocha 2024 - Version 2.3 / 17.04.24: NEU: AECOPD Risikostrat. u TVT")
 
 def main():
     """Main function to enhance the Streamlit app design."""
@@ -288,6 +288,12 @@ from bc import bc
 from AECOPD import AECOPD
 
 
+# In[ ]:
+
+
+from tvt import tvt
+
+
 # In[2]:
 
 
@@ -362,7 +368,7 @@ if "Mikrozytäre Anämie" in selected_pages_ane:
     ane1()
 
 selected_pages_scores = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Scores & Algorithmen** aus:",
-                                ["HFpEF Score", "Blutkultur","Blutungs vs. Thrombose","Pleuraerguss","Renal Failure Index","Rule out ACS","RV Diastole","Verdacht auf Lungenembolie"], key="Scores")
+                                ["HFpEF Score", "Blutkultur","Blutungs vs. Thrombose","Pleuraerguss","Renal Failure Index","Rule out ACS","RV Diastole","Verdacht auf Lungenembolie","TVT Stratifizierung"], key="Scores")
 
 if "HFpEF Score" in selected_pages_scores:
     HFpEF_Score()
@@ -380,7 +386,8 @@ if "Rule out ACS" in selected_pages_scores:
     ruleout()
 if "Verdacht auf Lungenembolie" in selected_pages_scores:
     embo()
-
+if "TVT Stratifizierung" in selected_pages_scores:
+    tvt()
 
 with st.expander("Rechtlicher Hinweis"):
 
@@ -541,6 +548,8 @@ with st.expander("Rechtlicher Hinweis"):
 #         bc()
 #     if "Risikostratifizierung der AECOPD" in selection:
 #         AECOPD()
+#     if "TVT Stratifizierung" in selection:
+#         tvt()
 #     
 # 
 # # Aufruf der Setup-Funktion, um die Sidebar zu initialisieren
