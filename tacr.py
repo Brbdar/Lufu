@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[3]:
+# In[4]:
 
 
 import streamlit as st
@@ -59,12 +59,6 @@ def tacr():
     plt.text(0.5, 0.9, f'Durchschnittskonzentration: {average_concentration:.2f} ng/mL', transform=plt.gca().transAxes, fontsize=10, ha='left')
 
     plt.legend(loc='upper right', fontsize=10)
-
-    # Speichern des Plots
-    plt.savefig("/Users/Bruno/Desktop/LuFu App/pharmakokinetisches_profil.png")
-
-    # Anzeigen des Plots
-    st.image("/Users/Bruno/Desktop/LuFu App/pharmakokinetisches_profil.png")
 
     st.write(f'Durchschnittskonzentration: {average_concentration:.2f} ng/mL')
 
