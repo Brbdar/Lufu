@@ -48,17 +48,25 @@ def tacr():
     # Formel zur Berechnung der MPA-AUC
     mpa_auc_formula = "-1.86 + 6.7 * C0 + 1.19 * C40 + 4.8 * C120"
 
-    # Plotten des Modells
-    plt.figure(figsize=(8, 6))
-    plt.plot(extended_times, profile, label='Pharmakokinetisches Profil', color='blue', linewidth=2)
-    plt.fill_between(extended_times, 0, profile, color='blue', alpha=0.3, label=f'MPA-AUC = {auc:.2f}')
-    plt.scatter(times, concentrations, color='red', label='Gemessene Konzentrationen')
-    plt.xlabel('Zeit (Minuten)', fontsize=12)
-    plt.ylabel('Konzentration (ng/mL)', fontsize=12)
-    plt.title('Pharmakokinetischer Verlauf der Tacrolimus-Konzentration (bis 4 Stunden)', fontsize=14)
-    plt.grid(True, which='both', linestyle='--', linewidth=0.5)
-    plt.ylim(bottom=0)  # Sicherstellen, dass die y-Achse nicht unter Null geht
-    st.pyplot(plt)
+ # Plotten des Modells
+    fig, ax = plt.subplots(figsize=(8, 6))
+    ax.plot(extended_times, profile, label='Pharmakokinetisches Profil', color='blue', linewidth=2)
+    ax.fill_between(extended_times, 0, profile, color='blue', alpha=0.3, label=f'MPA-AUC = {auc:.2f}')
+    ax.scatter(times, concentrations, color='red', label='Gemessene Konzentrationen')
+    ax.set_xlabel('Zeit (Minuten)', fontsize=12)
+    ax.set_ylabel('Konzentration (ng/mL)', fontsize=12)
+    ax.set_title('Pharmakokinetischer Verlauf der Tacrolimus-Konzentration (bis 4 Stunden)', fontsize=14)
+    ax.grid(True, which='both', linestyle='--', linewidth=0.5)
+    ax.legend(loc='upper right', fontsize=10)
+    ax.set_ylim(bottom=0)  # Sicherstellen, dass die y-Achse nicht unter Null geht
+
+    # Anzeige der durchschnittlichen Konzentration oben rechts im Plot
+    average_concentration = np.mean(concentrations)
+    ax.text(1, 1, f'Durchschnittskonzentration: {average_concentration:.2f} ng/mL',
+            transform=ax.transAxes, ha='right', va='top', fontsize=10, color='green')
+
+    # Anzeigen des Plots mit Streamlit
+    st.pyplot(fig)
 
     # Ergebnisse anzeigen
     st.write(f'MPA-AUC: {auc:.2f}')
