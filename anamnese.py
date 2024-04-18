@@ -214,7 +214,7 @@ def anamnese():
 
     # Begin the report section for Dizziness and Syncope, if not already started
     if '### Schwindel und Synkopen' not in anamnese_report:
-        anamnese_report += "\n### Schwindel und Synkopen\n"
+        anamnese_report += "Schwindel und Synkopen"
 
     # Dizziness Inquiry - Ensure it only runs if not already asked
     if 'dizziness' not in locals():
