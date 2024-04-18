@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[27]:
+# In[28]:
 
 
 import streamlit as st
@@ -52,22 +52,24 @@ def tacr():
     # Plotten des Modells
     plt.figure(figsize=(8, 6))
     plt.plot(extended_times, profile, label='Pharmakokinetisches Profil', color='blue', linewidth=2)
+    plt.fill_between(extended_times, 0, profile, color='blue', alpha=0.3, label=f'MPA-AUC = {auc:.2f}')
+    plt.scatter(times, concentrations, color='red', label='Gemessene Konzentrationen')
     plt.xlabel('Zeit (Minuten)', fontsize=12)
     plt.ylabel('Konzentration (ng/mL)', fontsize=12)
     plt.title('Pharmakokinetischer Verlauf der Tacrolimus-Konzentration (bis 4 Stunden)', fontsize=14)
     plt.grid(True, which='both', linestyle='--', linewidth=0.5)
+    plt.legend(loc='upper right', fontsize=10)
     plt.ylim(bottom=0)  # Sicherstellen, dass die y-Achse nicht unter Null geht
 
+    
     # Anzeige der durchschnittlichen Konzentration oben rechts im Plot
     average_concentration = np.mean(concentrations)
     plt.text(0.98, 0.98, f'Durchschnittskonzentration: {average_concentration:.2f} ng/mL',
-             horizontalalignment='right', verticalalignment='top', transform=plt.gca().transAxes, fontsize=10, color='green')
+         horizontalalignment='right', verticalalignment='down', transform=plt.gca().transAxes, fontsize=10, color='green')
 
-    # Anzeigen des Plots mit Streamlit
-    st.pyplot()
-
+    
+    st.pyplot(plt)
     # Ergebnisse anzeigen
     st.write(f'MPA-AUC (Mykophenolsäure-Area under the Curve): {auc:.2f}')
     st.write(f'Formel zur Berechnung der MPA-AUC: {mpa_auc_formula}')
-
 
