@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[5]:
+# In[21]:
 
 
 import streamlit as st
@@ -11,10 +11,11 @@ from scipy.integrate import simps
 from scipy.interpolate import interp1d
 
 def tacr():
+
     # Definition der Funktion für das pharmakokinetische Profil
     def pharmacokinetic_profile(times, concentrations):
         # Interpolation der Konzentrationen
-        interpolation = interp1d(times, concentrations, kind='quadratic', fill_value="extrapolate")
+        interpolation = interp1d(times, concentrations, kind='linear', fill_value="extrapolate")
         # Berechnung der Konzentrationen für die erweiterten Zeitpunkte
         extended_concentrations = interpolation(extended_times)
         # Berechnung des pharmakokinetischen Profils unter Verwendung der interpolierten Konzentrationen
@@ -23,46 +24,43 @@ def tacr():
         profile = absorption * elimination
         return profile
 
-    # Zeitpunkte für die Modellierung bis zu 4 Stunden (240 Minuten)
-    extended_times = np.arange(0, 200)  # Von 0 bis 240 Minuten
+    # Streamlit App
+    st.title('Tacrolimus-Konzentration und Pharmakokinetik')
 
-    # Streamlit-Anwendung
-    st.title('Pharmakokinetischer Verlauf der Tacrolimus-Konzentration (bis 4 Stunden)')
-
-    # Benutzerdefinierte Werte für die Konzentrationen
-    C0 = st.number_input("Konzentration bei 0 Minuten (ng/mL)", min_value=0.0)
-    C40 = st.number_input("Konzentration bei 40 Minuten (ng/mL)", min_value=0.0)
-    C120 = st.number_input("Konzentration nach 2 Stunden (120 Minuten) (ng/mL)", min_value=0.0)
+    # Benutzerdefinierte Eingaben für die Konzentrationen
+    C0 = st.number_input("Konzentration bei 0 Minuten (ng/mL)", value=0.0)
+    C40 = st.number_input("Konzentration bei 40 Minuten (ng/mL)", value=0.0)
+    C120 = st.number_input("Konzentration nach 2 Stunden (120 Minuten) (ng/mL)", value=0.0)
 
     # Zeitpunkte und Konzentrationen für das Plotting
     times = np.array([0, 40, 120])
     concentrations = np.array([C0, C40, C120])
 
+    # Zeitpunkte für die Modellierung bis zu 4 Stunden (240 Minuten)
+    extended_times = np.arange(0, 240)  # Von 0 bis 240 Minuten
+
     # Berechnen des pharmakokinetischen Profils
     profile = pharmacokinetic_profile(times, concentrations)
 
-    # Berechnen der Durchschnittskonzentration
-    average_concentration = np.mean(profile)
-
-    # Berechnen der Fläche unter der Kurve (AUC)
+    # Berechnen der MPA-AUC
     auc = simps(profile, extended_times)
 
+    # Formel zur Berechnung der MPA-AUC
+    mpa_auc_formula = "-1.86 + 6.7 * C0 + 1.19 * C40 + 4.8 * C120"
+
     # Plotten des Modells
-    fig, ax = plt.subplots()
-    ax.plot(extended_times, profile, label='Pharmakokinetisches Profil', color='blue', linewidth=2)
-    ax.fill_between(extended_times, 0, profile, color='blue', alpha=0.3, label=f'Area under the Curve (AUC) = {auc:.2f}')
-    ax.set_xlabel('Zeit (Minuten)', fontsize=12)
-    ax.set_ylabel('Konzentration (ng/mL)', fontsize=12)
-    ax.set_title('Pharmakokinetischer Verlauf der Tacrolimus-Konzentration (bis 4 Stunden)', fontsize=14)
-    ax.grid(True, which='both', linestyle='--', linewidth=0.5)
+    plt.figure(figsize=(8, 6))
+    plt.plot(extended_times, profile, label='Pharmakokinetisches Profil', color='blue', linewidth=2)
+    plt.fill_between(extended_times, 0, profile, color='blue', alpha=0.3, label=f'MPA-AUC = {auc:.2f}')
+    plt.scatter(times, concentrations, color='red', label='Gemessene Konzentrationen')
+    plt.xlabel('Zeit (Minuten)', fontsize=12)
+    plt.ylabel('Konzentration (ng/mL)', fontsize=12)
+    plt.title('Pharmakokinetischer Verlauf der Tacrolimus-Konzentration (bis 4 Stunden)', fontsize=14)
+    plt.grid(True, which='both', linestyle='--', linewidth=0.5)
+    plt.ylim(bottom=0)  # Sicherstellen, dass die y-Achse nicht unter Null geht
+    st.pyplot(plt)
 
-    # Anzeigen der Durchschnittskonzentration
-    ax.text(0.5, 0.9, f'Durchschnittskonzentration: {average_concentration:.2f} ng/mL', transform=ax.transAxes, fontsize=10, ha='left')
-
-    ax.legend(loc='upper right', fontsize=10)
-
-    # Anzeigen des Plots in Streamlit
-    st.pyplot(fig)
-
-    st.write(f'Durchschnittskonzentration: {average_concentration:.2f} ng/mL')
+    # Ergebnisse anzeigen
+    st.write(f'MPA-AUC: {auc:.2f}')
+    st.write(f'Formel zur Berechnung der MPA-AUC: {mpa_auc_formula}')
 
