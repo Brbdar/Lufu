@@ -306,7 +306,7 @@ from anamnese import anamnese
 from tacr import tacr 
 
 
-# In[20]:
+# In[21]:
 
 
 # Multiselect Box für die Auswahl der Seiten
@@ -395,7 +395,7 @@ if "Renal Failure Index" in selected_pages_nephro:
     rfi()
 
 selected_pages_scores = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Scores & Algorithmen** aus:",
-                                ["HFpEF Score", "Blutkultur","Blutungs vs. Thrombose","Pleuraerguss","Renal Failure Index","Rule out ACS","RV Diastole","Verdacht auf Lungenembolie","TVT Stratifizierung"], key="Scores")
+                                ["HFpEF Score", "Blutkultur","Blutungs vs. Thrombose","Pleuraerguss","Rule out ACS","RV Diastole","Verdacht auf Lungenembolie","TVT Stratifizierung"], key="Scores")
 
 if "HFpEF Score" in selected_pages_scores:
     HFpEF_Score()
