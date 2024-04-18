@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[25]:
+# In[27]:
 
 
 import streamlit as st
@@ -11,6 +11,7 @@ from scipy.integrate import simps
 from scipy.interpolate import interp1d
 
 def tacr():
+
 
     # Definition der Funktion für das pharmakokinetische Profil
     def pharmacokinetic_profile(times, concentrations):
@@ -50,6 +51,7 @@ def tacr():
 
     # Plotten des Modells
     plt.figure(figsize=(8, 6))
+    plt.plot(extended_times, profile, label='Pharmakokinetisches Profil', color='blue', linewidth=2)
     plt.xlabel('Zeit (Minuten)', fontsize=12)
     plt.ylabel('Konzentration (ng/mL)', fontsize=12)
     plt.title('Pharmakokinetischer Verlauf der Tacrolimus-Konzentration (bis 4 Stunden)', fontsize=14)
@@ -67,4 +69,5 @@ def tacr():
     # Ergebnisse anzeigen
     st.write(f'MPA-AUC (Mykophenolsäure-Area under the Curve): {auc:.2f}')
     st.write(f'Formel zur Berechnung der MPA-AUC: {mpa_auc_formula}')
+
 
