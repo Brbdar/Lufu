@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[4]:
+# In[5]:
 
 
 import streamlit as st
@@ -48,17 +48,21 @@ def tacr():
     auc = simps(profile, extended_times)
 
     # Plotten des Modells
-    plt.plot(extended_times, profile, label='Pharmakokinetisches Profil', color='blue', linewidth=2)
-    plt.fill_between(extended_times, 0, profile, color='blue', alpha=0.3, label=f'Area under the Curve (AUC) = {auc:.2f}')
-    plt.xlabel('Zeit (Minuten)', fontsize=12)
-    plt.ylabel('Konzentration (ng/mL)', fontsize=12)
-    plt.title('Pharmakokinetischer Verlauf der Tacrolimus-Konzentration (bis 4 Stunden)', fontsize=14)
-    plt.grid(True, which='both', linestyle='--', linewidth=0.5)
+    fig, ax = plt.subplots()
+    ax.plot(extended_times, profile, label='Pharmakokinetisches Profil', color='blue', linewidth=2)
+    ax.fill_between(extended_times, 0, profile, color='blue', alpha=0.3, label=f'Area under the Curve (AUC) = {auc:.2f}')
+    ax.set_xlabel('Zeit (Minuten)', fontsize=12)
+    ax.set_ylabel('Konzentration (ng/mL)', fontsize=12)
+    ax.set_title('Pharmakokinetischer Verlauf der Tacrolimus-Konzentration (bis 4 Stunden)', fontsize=14)
+    ax.grid(True, which='both', linestyle='--', linewidth=0.5)
 
     # Anzeigen der Durchschnittskonzentration
-    plt.text(0.5, 0.9, f'Durchschnittskonzentration: {average_concentration:.2f} ng/mL', transform=plt.gca().transAxes, fontsize=10, ha='left')
+    ax.text(0.5, 0.9, f'Durchschnittskonzentration: {average_concentration:.2f} ng/mL', transform=ax.transAxes, fontsize=10, ha='left')
 
-    plt.legend(loc='upper right', fontsize=10)
+    ax.legend(loc='upper right', fontsize=10)
+
+    # Anzeigen des Plots in Streamlit
+    st.pyplot(fig)
 
     st.write(f'Durchschnittskonzentration: {average_concentration:.2f} ng/mL')
 
