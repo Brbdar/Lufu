@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[57]:
+# In[1]:
 
 
 import streamlit as st
@@ -479,7 +479,6 @@ def anamnese():
     
      # PDF Erstellung und Download
     if st.button('Bericht als PDF speichern'):
-        anamnese_report = "Hier wird der vollständige Anamnesebericht erstellt."
         pdf_file = create_pdf(anamnese_report)
         with open(pdf_file, "rb") as file:
             st.download_button(

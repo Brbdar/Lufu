@@ -93,7 +93,7 @@
 # if __name__ == "__main__":
 #     main()
 
-# In[19]:
+# In[38]:
 
 
 import streamlit as st
@@ -112,201 +112,188 @@ def display_footer():
     st.markdown("---")  # Draw a horizontal line for separation
     st.caption("© Bruno Brito da Rocha 2024 - Version 2.3 / 18.04.24: Anamnesetool")
 
-def main():
-    """Main function to enhance the Streamlit app design."""
-    configure_page()
-    st.title("Pneumo-App")
-    
-    # If you need to add space manually, use empty write calls or markdown for spaces.
-    st.write("\n\n\n")  # Add some space before the footer
 
-    display_footer()
-
-if __name__ == "__main__":
-    main()
-
-
-# In[ ]:
+# In[6]:
 
 
 from spirometrie_qualitativ import spirometrie_qualitativ
 
 
-# In[ ]:
+# In[7]:
 
 
 from tiffeneau_index_berechnung import tiffeneau_index_berechnung1
 
 
-# In[ ]:
+# In[8]:
 
 
 from Bodyplethysmographie_Residualvolumen import Bodyplethysmographie_Residualvolumen
 
 
-# In[ ]:
+# In[9]:
 
 
 from Bodyplethysmographie_Fluss_Druck_Kurve import Bodyplethysmographie_Fluss_Druck_Kurve
 
 
-# In[ ]:
+# In[10]:
 
 
 from Funktionstests_Broncholyse import Funktionstests_Broncholyse
 
 
-# In[ ]:
+# In[11]:
 
 
 from Funktionstests_Provokation import Funktionstests_Provokation
 
 
-# In[ ]:
+# In[12]:
 
 
 from P0_Atemkraftmessung import P0_Atemkraftmessung
 
 
-# In[ ]:
+# In[13]:
 
 
 from Gasaustausch_Transferfaktor import Gasaustausch_Transferfaktor
 
 
-# In[ ]:
+# In[14]:
 
 
 from Gasaustausch_Blutgasanalyse import Gasaustausch_Blutgasanalyse
 
 
-# In[ ]:
+# In[15]:
 
 
 from Compliancemessung import Compliancemessung
 
 
-# In[ ]:
+# In[16]:
 
 
 from LTOT import LTOT
 
 
-# In[ ]:
+# In[17]:
 
 
 from EKG import EKG
 
 
-# In[ ]:
+# In[18]:
 
 
 from Klinik import Klinik
 
 
-# In[ ]:
+# In[19]:
 
 
 from HFpEF_Score import HFpEF_Score
 
 
-# In[ ]:
+# In[20]:
 
 
 from COPD_Score import COPD_Score
 
 
-# In[ ]:
+# In[21]:
 
 
 from Blutkultur import Blutkultur
 
 
-# In[ ]:
+# In[22]:
 
 
 from chadsvascore import chadsvascore
 
 
-# In[ ]:
+# In[23]:
 
 
 from erguss1 import erguss1
 
 
-# In[ ]:
+# In[24]:
 
 
 from rhkbefund import rhkbefund
 
 
-# In[ ]:
+# In[25]:
 
 
 from rfi import rfi
 
 
-# In[ ]:
+# In[26]:
 
 
 from ane1 import ane1 
 
 
-# In[ ]:
+# In[27]:
 
 
 from ruleout import ruleout
 
 
-# In[ ]:
+# In[28]:
 
 
 from raai import raai
 
 
-# In[ ]:
+# In[29]:
 
 
 from embo import embo
 
 
-# In[ ]:
+# In[30]:
 
 
 from Inhalator import Inhalator
 
 
-# In[ ]:
+# In[31]:
 
 
 from bc import bc
 
 
-# In[ ]:
+# In[32]:
 
 
 from AECOPD import AECOPD
 
 
-# In[ ]:
+# In[33]:
 
 
 from tvt import tvt
 
 
-# In[14]:
+# In[35]:
 
 
 from anamnese import anamnese
 
 
-# In[17]:
+# In[36]:
 
 
 from tacr import tacr 
 
 
-# In[21]:
+# In[37]:
 
 
 # Multiselect Box für die Auswahl der Seiten
