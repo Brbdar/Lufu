@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[50]:
+# In[55]:
 
 
 import streamlit as st
@@ -35,7 +35,7 @@ def anamnese():
     anamnese_report = "Pneumologische Anamnese Bericht:\n\n"
     anamnese_report_extra = ""
 
-    tab_labels = ["ID & Aufnahmegrund", "Medizinische Vorgeschichte", "Sozialanamnese", "Konsum", 
+    tab_labels = ["ID & Aufnahmegrund", "Vorerkrankungen Familienanamnese", "Sozialanamnese", "Konsum", 
                   "Dauertherapie", "Symptome", "Körperliche Untersuchung", "Checkliste", "Anamnesebericht"]
     tabs = st.tabs(tab_labels)
      
@@ -177,7 +177,7 @@ def anamnese():
             defecation_details = f"Beginn und Häufigkeit der Beschwerden: {onset_frequency}. Art der Defäkationsbeschwerden: {defecation_type} "
         anamnese_report += f"\nMiktions- oder Defäkationsbeschwerden: {urination_defecation_symptoms}. {defecation_details}"
     
-    with tabs[5]:
+    with tabs[4]:
         st.header('Heimsauerstoff')
         home_oxygen = st.radio('Wird Heimsauerstoff verwendet?', ['Ja', 'Nein'], index=1, key='home_oxygen')
         if home_oxygen == 'Ja':
@@ -204,7 +204,7 @@ def anamnese():
         else:
             anamnese_report += "Es wird keine Plättchenhemmung durchgeführt. "
 
-    with tabs[4]:
+    with tabs[3]:
         st.subheader('Rauchgewohnheiten')
         smoking_options = ['Keine', 'Zigaretten', 'Shisha', 'Vaping', 'Mehrere Optionen']
         smoking_status = st.radio('Rauchstatus:', options=smoking_options, index=0)
@@ -251,38 +251,48 @@ def anamnese():
 
     with tabs[1]:
         st.subheader('Vorerkrankungen & Familienanamnese')
-        existing_conditions = st.radio('Liegen Informationen zu Vorerkrankungen vor?', ['Liegt in vorherigen Arztberichten vor', 'Neue Angabe erforderlich'])
-        anamnese_report += "Vorerkrankungen:\n"
     
+        # Initialize the anamnese report string
+        anamnese_report = "Vorerkrankungen:\n"
+    
+        # Select box for existing conditions
+        existing_conditions = st.radio('Liegen Informationen zu Vorerkrankungen vor?', 
+                                       ['Liegt in vorherigen Arztberichten vor', 'Neue Angabe erforderlich'], 
+                                       index=0)  # Default to 'Liegt in vorherigen Arztberichten vor'
         if existing_conditions == 'Neue Angabe erforderlich':
             conditions_detail = st.text_area('Bitte geben Sie die Vorerkrankungen an', key='conditions_detail')
             anamnese_report += f"Der Patient hat folgende neue Vorerkrankungen angegeben: {conditions_detail}.\n"
         else:
-            anamnese_report += "Es liegen bereits dokumentierte Vorerkrankungen aus früheren Berichten vor.\n"
+            anamnese_report += "Es liegen bereits dokumentierte Vorerkrankungen aus früheren Arztbriefen im System vor.\n"
     
         anamnese_report += "\nSpezifische Gesundheitsinformationen:\n"
-        
-        malignancy = st.radio('Liegt ein Malignom vor?', ['Ja', 'Nein'], key='malignancy_radio')
+    
+        # Radio button for malignancy
+        malignancy = st.radio('Liegt ein Malignom vor?', ['Nein', 'Ja'], key='malignancy_radio')
         if malignancy == 'Ja':
             malignancy_type = st.text_input('Welches Malignom?', key='malignancy_type')
             anamnese_report += f"Bei dem Patienten wurde ein Malignom diagnostiziert, Typ: {malignancy_type}.\n"
         else:
             anamnese_report += "Es wurde kein Malignom diagnostiziert.\n"
     
-        thrombosis_embolism = st.radio('Gab es in der Vergangenheit Thrombosen oder Embolien?', ['Ja', 'Nein'], key='thrombosis_embolism_radio')
+        # Radio button for thrombosis and embolism
+        thrombosis_embolism = st.radio('Gab es in der Vergangenheit Thrombosen oder Embolien?', 
+                                       ['Nein', 'Ja'], key='thrombosis_embolism_radio')
         if thrombosis_embolism == 'Ja':
             thrombosis_embolism_detail = st.text_input('Details zu Thrombosen oder Embolien:', key='thrombosis_embolism_detail')
             anamnese_report += f"Der Patient berichtete über vergangene Thrombosen oder Embolien. Details: {thrombosis_embolism_detail}.\n"
         else:
             anamnese_report += "Es wurden keine Thrombosen oder Embolien in der Vergangenheit berichtet.\n"
     
-        family_cancer = st.radio('Gibt es Krebsfälle in der Familie?', ['Ja', 'Nein'], key='family_cancer_radio')
+        # Radio button for family cancer history
+        family_cancer = st.radio('Gibt es Krebsfälle in der Familie?', ['Nein', 'Ja'], key='family_cancer_radio')
         if family_cancer == 'Ja':
             family_cancer_detail = st.text_input('Wer in der Familie und wann?', key='family_cancer_detail')
             anamnese_report += f"In der Familie des Patienten wurden Krebsfälle berichtet. Betroffen sind: {family_cancer_detail}.\n"
         else:
             anamnese_report += "In der Familie des Patienten wurden keine Krebsfälle berichtet.\n"
     
+        # Text area for additional information
         additional_info = st.text_area('Weitere Informationen zu Vorerkrankungen und Familienanamnese:', key='additional_info')
         if additional_info:
             anamnese_report += f"Weitere relevante Informationen: {additional_info}\n"
@@ -374,7 +384,7 @@ def anamnese():
     
         # Zusammenfassung des Berichts
         final_report = f"""
-        ### Spezifische Gesundheitsfragen und Körperliche Untersuchung
+        Spezifische Gesundheitsfragen und Körperliche Untersuchung
     
         {edema_info}
         {wound_info}

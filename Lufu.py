@@ -93,7 +93,7 @@
 # if __name__ == "__main__":
 #     main()
 
-# In[76]:
+# In[88]:
 
 
 import streamlit as st
@@ -106,7 +106,7 @@ def configure_page():
     st.set_page_config(
         page_title="Pneumo-App",  # Set the title of the webpage, visible in the browser tab
         page_icon="🌬️",  # Set a fun, related emoji as the page icon
-        layout="wide",  # Use the 'wide' layout for better use of screen space on large and small screens
+        layout="centered",  # Use the 'wide' layout for better use of screen space on large and small screens
         initial_sidebar_state="auto"  # Automatically adjust the visibility of the sidebar based on the screen size
     )
 
@@ -304,67 +304,83 @@ from anamnese import anamnese
 from tacr import tacr 
 
 
-# In[71]:
+# In[87]:
 
 
-# Multiselect Box für die Auswahl der Seiten
-selected_pages_allgemeines = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Allgemeines** aus:",
-                                ["Anamnesetool"], key="anamnese")
+# Button für die Pneumo-Anamnese
+if st.button('Pneumo-Anamnese'):
+    st.subheader('Pneumo-Anamnese')
+    anamnese()  # Funktion zum Starten der Pneumo-Anamnese
 
-# Logik zur Anzeige der ausgewählten Seiten
-if 'Anamnesetool' in selected_pages_allgemeines:
+selected_pages_allgemeines = st.multiselect(
+    "Wählen Sie eine oder mehrere Seiten aus dem Bereich **Allgemeines** aus:",
+    ["Pneumoanamnese"], key="anamnese")
+
+# Logik zur Anzeige der ausgewählten Seiten im Bereich Allgemeines
+if 'Pneumoanamnese' in selected_pages_allgemeines:
     anamnese()
 
-selected_pages_lufu = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Lungenfunktion** aus:",
-                                ["Spirometrie qualitativ", "Spirometrie quantitativ", "Bodyplethysmographie - Residualvolumen",
-                                "Bodyplethysmographie - Fluss-Druck-Kurve", "Funktionstests - Broncholyse", "Funktionstests - Provokation",
-                                "Gasaustausch - Transferfaktor", "Gasaustausch - Blutgasanalyse", "P0-Atemkraftmessung",
-                                "Compliancemessung", "LTOT - Algorithmus"], key="lufu")
+# Multiselect Box für die Auswahl der Seiten im Bereich Lungenfunktion
+selected_pages_lufu = st.multiselect(
+    "Wählen Sie eine oder mehrere Seiten aus dem Bereich **Lungenfunktion** aus:",
+    ["Spirometrie qualitativ", "Spirometrie quantitativ", "Bodyplethysmographie - Residualvolumen",
+     "Bodyplethysmographie - Fluss-Druck-Kurve", "Funktionstests - Broncholyse", "Funktionstests - Provokation",
+     "Gasaustausch - Transferfaktor", "Gasaustausch - Blutgasanalyse", "P0-Atemkraftmessung",
+     "Compliancemessung", "LTOT - Algorithmus"], key="lufu")
 
-# Logik zur Anzeige der ausgewählten Seiten
-if 'Spirometrie Qualitativ' in selected_pages_lufu:
-    spirometrie_qualitativ()
-if 'Spirometrie quantitativ' in selected_pages_lufu:
-    tiffeneau_index_berechnung1()
-if "Bodyplethysmographie - Residualvolumen" in selected_pages_lufu:
-    Bodyplethysmographie_Residualvolumen()
-if "Bodyplethysmographie - Fluss-Druck-Kurve" in selected_pages_lufu:
-    Bodyplethysmographie_Fluss_Druck_Kurve()
-if "Funktionstests - Broncholyse" in selected_pages_lufu:
-    Funktionstests_Broncholyse()
-if "Funktionstests - Provokation" in selected_pages_lufu:
-    Funktionstests_Provokation()
-if "Gasaustausch - Transferfaktor" in selected_pages_lufu:
-    Gasaustausch_Transferfaktor()
-if "Gasaustausch - Blutgasanalyse" in selected_pages_lufu:
-    Gasaustausch_Blutgasanalyse()
-if "P0-Atemkraftmessung" in selected_pages_lufu:
-    P0_Atemkraftmessung()
-if "Compliancemessung" in selected_pages_lufu:
-    Compliancemessung()
-if "LTOT - Algorithmus" in selected_pages_lufu:
-    LTOT()
+# Logik zur Anzeige der ausgewählten Seiten im Bereich Lungenfunktion
+funktions_dict = {
+    "Spirometrie qualitativ": spirometrie_qualitativ,
+    "Spirometrie quantitativ": tiffeneau_index_berechnung1,
+    "Bodyplethysmographie - Residualvolumen": Bodyplethysmographie_Residualvolumen,
+    "Bodyplethysmographie - Fluss-Druck-Kurve": Bodyplethysmographie_Fluss_Druck_Kurve,
+    "Funktionstests - Broncholyse": Funktionstests_Broncholyse,
+    "Funktionstests - Provokation": Funktionstests_Provokation,
+    "Gasaustausch - Transferfaktor": Gasaustausch_Transferfaktor,
+    "Gasaustausch - Blutgasanalyse": Gasaustausch_Blutgasanalyse,
+    "P0-Atemkraftmessung": P0_Atemkraftmessung,
+    "Compliancemessung": Compliancemessung,
+    "LTOT - Algorithmus": LTOT
+}
 
-selected_pages_spiro = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Spiroergometrie** aus:",
-                                ["XXX", "XXX"], key="Spiroergo")
+for seite, funktion in funktions_dict.items():
+    if seite in selected_pages_lufu:
+        funktion()
 
-selected_pages_ph = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **PH Diagnostik** aus:",
-                                ["EKG", "Klinik", "Thorax-Röntgen", "Lungenfunktion und arterielle Gase","der RHK Befund"], key="pulmonalehypertonie")
+# Multiselect Box für die Auswahl der Seiten im Bereich Spiroergometrie
+selected_pages_spiro = st.multiselect(
+    "Wählen Sie eine oder mehrere Seiten aus dem Bereich **Spiroergometrie** aus:",
+    ["Spiroergometrische Analyse", "Leistungsdiagnostik"], key="spiroergo")
 
+# Logik zur Anzeige der ausgewählten Seiten im Bereich Spiroergometrie
+if "Spiroergometrische Analyse" in selected_pages_spiro:
+    spiroergometrische_analyse()
+if "Leistungsdiagnostik" in selected_pages_spiro:
+    leistungsdiagnostik()
+
+# Multiselect Box für die Auswahl der Seiten im Bereich PH Diagnostik
+selected_pages_ph = st.multiselect(
+    "Wählen Sie eine oder mehrere Seiten aus dem Bereich **PH Diagnostik** aus:",
+    ["EKG", "Klinik", "Thorax-Röntgen", "Lungenfunktion und arterielle Gase", "RHK Befund"], key="pulmonalehypertonie")
+
+# Logik zur Anzeige der ausgewählten Seiten im Bereich PH Diagnostik
 if "EKG" in selected_pages_ph:
     EKG()
 if "Klinik" in selected_pages_ph:
     Klinik()
-if "Thorax Röntgen" in selected_pages_ph:
-    Thorax_roentgen()
-if "Lungenfunktion und Blutgase" in selected_pages_ph:
-    Lufu_BGA()   
-if "der RHK Befund" in selected_pages_ph:
-    rhkbefund()
+if "Thorax-Röntgen" in selected_pages_ph:
+    thorax_roentgen()
+if "Lungenfunktion und arterielle Gase" in selected_pages_ph:
+    lufu_bga()
+if "RHK Befund" in selected_pages_ph:
+    rhk_befund()
 
-selected_pages_copd = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **COPD** aus:",
-                                ["COPD Score","Inhalatorenauswahl","Risikostratifizierung der AECOPD"], key="COPD")
+# Multiselect Box für die Auswahl der Seiten im Bereich COPD
+selected_pages_copd = st.multiselect(
+    "Wählen Sie eine oder mehrere Seiten aus dem Bereich **COPD** aus:",
+    ["COPD Score", "Inhalatorenauswahl", "Risikostratifizierung der AECOPD"], key="COPD")
 
+# Logik zur Anzeige der ausgewählten Seiten im Bereich COPD
 if "COPD Score" in selected_pages_copd:
     COPD_Score()
 if "Inhalatorenauswahl" in selected_pages_copd:
@@ -372,45 +388,56 @@ if "Inhalatorenauswahl" in selected_pages_copd:
 if "Risikostratifizierung der AECOPD" in selected_pages_copd:
     AECOPD()
 
-selected_pages_onko = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Bronchialkarzinom** aus:",
-                                ["Malignitäts-Risiko-Score (Mayo Clinic Modell)"], key="BC")
+# Multiselect Box für die Auswahl der Seiten im Bereich Bronchialkarzinom
+selected_pages_onko = st.multiselect(
+    "Wählen Sie eine oder mehrere Seiten aus dem Bereich **Bronchialkarzinom** aus:",
+    ["Malignitäts-Risiko-Score (Mayo Clinic Modell)"], key="BC")
 
+# Logik zur Anzeige der ausgewählten Seiten im Bereich Bronchialkarzinom
 if "Malignitäts-Risiko-Score (Mayo Clinic Modell)" in selected_pages_onko:
     bc()
-    
-selected_pages_ane = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Anämie** aus:",
-                                ["Mikrozytäre Anämie"], key="Anämie")
 
+# Multiselect Box für die Auswahl der Seiten im Bereich Anämie
+selected_pages_ane = st.multiselect(
+    "Wählen Sie eine oder mehrere Seiten aus dem Bereich **Anämie** aus:",
+    ["Mikrozytäre Anämie"], key="Anämie")
+
+# Logik zur Anzeige der ausgewählten Seiten im Bereich Anämie
 if "Mikrozytäre Anämie" in selected_pages_ane:
     ane1()
-    
-selected_pages_nephro = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Nephrologie** aus:",
-                                ["Tacrolimus und Mykophenolat","Renal Failure Index"], key="Nephro")
 
+# Multiselect Box für die Auswahl der Seiten im Bereich Nephrologie
+selected_pages_nephro = st.multiselect(
+    "Wählen Sie eine oder mehrere Seiten aus dem Bereich **Nephrologie** aus:",
+    ["Tacrolimus und Mykophenolat", "Renal Failure Index"], key="Nephro")
+
+# Logik zur Anzeige der ausgewählten Seiten im Bereich Nephrologie
 if "Tacrolimus und Mykophenolat" in selected_pages_nephro:
     tacr()
 if "Renal Failure Index" in selected_pages_nephro:
     rfi()
 
-selected_pages_scores = st.multiselect("Wählen Sie eine oder mehrere Seiten aus dem Bereich **Scores & Algorithmen** aus:",
-                                ["HFpEF Score", "Blutkultur","Blutungs vs. Thrombose","Pleuraerguss","Rule out ACS","RV Diastole","Verdacht auf Lungenembolie","TVT Stratifizierung"], key="Scores")
+# Multiselect Box für die Auswahl der Seiten im Bereich Scores & Algorithmen
+selected_pages_scores = st.multiselect(
+    "Wählen Sie eine oder mehrere Seiten aus dem Bereich **Scores & Algorithmen** aus:",
+    ["HFpEF Score", "Blutkultur", "Blutungs vs. Thrombose", "Pleuraerguss", "Rule out ACS", "RV Diastole",
+     "Verdacht auf Lungenembolie", "TVT Stratifizierung"], key="Scores")
 
-if "HFpEF Score" in selected_pages_scores:
-    HFpEF_Score()
-if "RV Diastole" in selected_pages_scores:
-    raai()
-if "Blutkultur" in selected_pages_scores:
-    Blutkultur()
-if "Blutungs vs. Thrombose" in selected_pages_scores:
-    chadsvascore()
-if "Pleuraerguss" in selected_pages_scores:
-    erguss1()
-if "Rule out ACS" in selected_pages_scores:
-    ruleout()
-if "Verdacht auf Lungenembolie" in selected_pages_scores:
-    embo()
-if "TVT Stratifizierung" in selected_pages_scores:
-    tvt()
+# Logik zur Anzeige der ausgewählten Seiten im Bereich Scores & Algorithmen
+scores_funktionen = {
+    "HFpEF Score": HFpEF_Score,
+    "RV Diastole": raai,
+    "Blutkultur": Blutkultur,
+    "Blutungs vs. Thrombose": chadsvascore,
+    "Pleuraerguss": erguss1,
+    "Rule out ACS": ruleout,
+    "Verdacht auf Lungenembolie": embo,
+    "TVT Stratifizierung": tvt
+}
+
+for score, funktion in scores_funktionen.items():
+    if score in selected_pages_scores:
+        funktion()
 
 with st.expander("Rechtlicher Hinweis"):
 
