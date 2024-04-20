@@ -304,13 +304,8 @@ from anamnese import anamnese
 from tacr import tacr 
 
 
-# In[87]:
+# In[89]:
 
-
-# Button für die Pneumo-Anamnese
-if st.button('Pneumo-Anamnese'):
-    st.subheader('Pneumo-Anamnese')
-    anamnese()  # Funktion zum Starten der Pneumo-Anamnese
 
 selected_pages_allgemeines = st.multiselect(
     "Wählen Sie eine oder mehrere Seiten aus dem Bereich **Allgemeines** aus:",
