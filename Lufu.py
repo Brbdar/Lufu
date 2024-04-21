@@ -93,7 +93,7 @@
 # if __name__ == "__main__":
 #     main()
 
-# In[92]:
+# In[93]:
 
 
 import streamlit as st
@@ -117,7 +117,7 @@ def display_footer():
     """
     st.markdown("---")  # Draw a horizontal line for separation
     # Provide copyright and version information in a compact and readable format
-    st.caption("© Bruno Brito da Rocha 2024 - Version 2.4 / 21.04.24: Diurerikamanagement bei HF, Perfusorrechner, Anamnesetool Update")
+    st.caption("© Bruno Brito da Rocha 2024 - Version 2.4 / 21.04.24: Diuretikamanagement bei HF, Perfusorrechner, Anamnesetool Update")
 
 # Functions to initialize the page configuration and display the footer
 configure_page()
