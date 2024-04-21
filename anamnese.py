@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[55]:
+# In[73]:
 
 
 import streamlit as st
@@ -18,14 +18,14 @@ def calculate_age(born):
 def calculate_pack_years(cigarettes, years_smoked):
     return (cigarettes / 20) * years_smoked
 
-def create_pdf(report, report_extra):
+def create_pdf(report):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
     pdf.cell(0, 10, 'Pneumologischer Anamnesebericht', align='C')
     pdf.ln(20)
     pdf.set_font("Arial", size=10)
-    pdf.multi_cell(0, 10, report + report_extra)
+    pdf.multi_cell(0, 10, report)
     filename = 'Pneumologischer_Anamnesebericht.pdf'
     pdf.output(filename)
     return filename
@@ -33,6 +33,7 @@ def create_pdf(report, report_extra):
 def anamnese():
     st.title('Pneumologische Aufnahme')
     anamnese_report = "Pneumologische Anamnese Bericht:\n\n"
+    anamnese_report_KU = ""
     anamnese_report_extra = ""
 
     tab_labels = ["ID & Aufnahmegrund", "Vorerkrankungen Familienanamnese", "Sozialanamnese", "Konsum", 
@@ -253,7 +254,7 @@ def anamnese():
         st.subheader('Vorerkrankungen & Familienanamnese')
     
         # Initialize the anamnese report string
-        anamnese_report = "Vorerkrankungen:\n"
+        anamnese_report += "Vorerkrankungen:\n"
     
         # Select box for existing conditions
         existing_conditions = st.radio('Liegen Informationen zu Vorerkrankungen vor?', 
@@ -299,32 +300,34 @@ def anamnese():
     
         
     with tabs[2]:
-        st.subheader('Sozialanamnese')
+        st.subheader("Sozialanamnese")
         living_situation = st.radio("Leben Sie alleine?", ['Ja', 'Nein'], key='living_situation')
         mobility = st.radio("Wie ist Ihre Mobilität?", ['Unabhängig', 'Eingeschränkt', 'Stark eingeschränkt'], key='mobility')
         
         living_details = "lebt alleine" if living_situation == 'Ja' else "lebt nicht alleine"
         mobility_status = f"Mobilität ist {'unabhängig' if mobility == 'Unabhängig' else 'eingeschränkt' if mobility == 'Eingeschränkt' else 'stark eingeschränkt'}."
-    
+        
+        anamnese_report += f"Patient {living_details}, {mobility_status}"
+        
         if living_situation == 'Nein':
             family_status = st.radio("Leben Sie mit Ihrer Familie?", ['Ja', 'Nein'], key='family_status')
-            care_info = ""
             if family_status == 'Nein':
                 care_service = st.checkbox("Wird ein Pflegedienst in Anspruch genommen?", key='care_service')
-                care_degree = st.selectbox("Falls ja, welcher Pflegegrad liegt vor?", ['', 'Pflegegrad 1', 'Pflegegrad 2', 'Pflegegrad 3', 'Pflegegrad 4', 'Pflegegrad 5'], index=0, key='care_degree')
                 if care_service:
-                    care_info = f"Pflegedienst: Ja, Pflegegrad: {care_degree}."
+                    care_degree = st.selectbox("Falls ja, welcher Pflegegrad liegt vor?", ['', 'Pflegegrad 1', 'Pflegegrad 2', 'Pflegegrad 3', 'Pflegegrad 4', 'Pflegegrad 5'], index=0, key='care_degree')
+                    care_info = f"Pflegedienst: Ja, Pflegegrad: {care_degree}" if care_degree else "Pflegedienst: Ja, Pflegegrad nicht spezifiziert"
                 else:
                     care_info = "kein Pflegedienst."
                 family_living = "lebt ohne Familie"
+                anamnese_report += f", {family_living}, {care_info}"
             else:
                 family_living = "lebt mit Familie"
-            living_and_care = f"{family_living}, {care_info}"
+                anamnese_report += f", {family_living}"
         else:
-            living_and_care = "lebt alleine"
-    
+            anamnese_report += ", lebt alleine"
+        
         additional_notes = st.text_area("Zusätzliche Notizen:", key='additional_notes')
-        anamnese_report += f"Patient {living_details}, {mobility_status} {living_and_care} Zusätzliche Notizen: {additional_notes}\n"
+        anamnese_report += f" Zusätzliche Notizen: {additional_notes}"
     
         # Berufsanamnese hinzufügen
         st.subheader('Berufsanamnese')
@@ -336,56 +339,69 @@ def anamnese():
         else:
             anamnese_report += f"Beruf: {occupation}. Kein Kontakt zu schädlichen Substanzen.\n"
     
+   # Tab für spezifische Gesundheitsfragen und Körperliche Untersuchung
     with tabs[6]:
-        st.subheader('Spezifische Gesundheitsfragen und Körperliche Untersuchung (KU)')
-    
-        # Abfrage von Ödemen
+        with st.expander('Spezifische Gesundheitsfragen und Körperliche Untersuchung (KU)'):
+            st.subheader('Körperliche Untersuchung -> Pneumologie Fokus')
+        
+            # Pneumologische Untersuchung
+            st.markdown("### Pneumologische Untersuchung")
+            breathing_rate = st.number_input("Atemfrequenz (pro Minute):", min_value=0)
+            breath_rhythm = st.selectbox("Atemrhythmus:", ["Regelmäßig", "Unregelmäßig"])
+            breath_type = st.selectbox("Atemtyp:", ["Normal", "Cheyne-Stokes", "Kussmaul", "Biot"])
+        
+            thorax_inspection = st.text_input("Inspektion des Thorax (z.B. Fassthorax):")
+            thorax_palpation = st.text_input("Palpation des Thorax (Schmerzstellen?):")
+            stimmfremitus = st.text_input("Stimmfremitus:")
+            
+            percussion_notes = st.text_input("Perkussion des Thorax (Klopfschall-Qualität):")
+            lung_borders = st.text_input("Ermittlung der Lungengrenzen:")
+            breath_shift = st.text_input("Atemverschieblichkeit:")
+        
+            auscultation_notes = st.text_area("Auskultation der Lungen (pathologische Atemgeräusche oder Nebengeräusche):", height=150)
+        
+            # Weitere Gesundheitsfragen
+        st.markdown("Körperliche Untersuchung - Auffälligkeiten")
         edemas = st.radio("Gibt es Ödeme?", ['Ja', 'Nein'])
         edema_info = f"Ödeme: Ja, Standort: {st.text_input('Wo befinden sich die Ödeme?')}" if edemas == 'Ja' else "Ödeme: Nein."
     
-        # Abfrage von Wunden
         wounds = st.radio("Gibt es Wunden?", ['Ja', 'Nein'])
         wound_info = f"Wunden: Ja, Standort: {st.text_input('Wo befinden sich die Wunden?')}" if wounds == 'Ja' else "Wunden: Nein."
     
-        # Abfrage von anderen Infektionsherden
         infection_sites = st.radio("Gibt es andere Infektionsherde?", ['Ja', 'Nein'])
         infection_info = f"Andere Infektionsherde: Ja, Details: {st.text_input('Beschreibung der Infektionsherde:')}" if infection_sites == 'Ja' else "Keine anderen Infektionsherde."
     
-        # Blasendauerkatheter
         urinary_catheter = st.radio("Hat der Patient einen Blasendauerkatheter (BDK)?", ['Ja', 'Nein'])
         catheter_info = f"Blasendauerkatheter (BDK): {urinary_catheter}."
     
-        # Abfrage von Gewicht und Körpergröße
+        # Gewicht und Größe
         baseline_weight = st.number_input("Gewicht des Patienten (in kg):", min_value=0.0, format="%.2f")
         height = st.number_input("Körpergröße des Patienten (in cm):", min_value=0.0, format="%.2f")
     
-        # Berechnung des BMI und der BSA
+        # BMI und BSA Berechnungen
         if height > 0 and baseline_weight > 0:
             bmi = baseline_weight / ((height / 100) ** 2)
             bsa = 0.007184 * (height ** 0.725) * (baseline_weight ** 0.425)  # Mosteller Formula
-    
-            # Graduierung des BMI in Adipositasgrade
-            if bmi < 18.5:
-                bmi_classification = "Untergewicht"
-            elif 18.5 <= bmi < 25:
-                bmi_classification = "Normalgewicht"
-            elif 25 <= bmi < 30:
-                bmi_classification = "Übergewicht"
-            elif 30 <= bmi < 35:
-                bmi_classification = "Adipositas Grad I"
-            elif 35 <= bmi < 40:
-                bmi_classification = "Adipositas Grad II"
-            else:
-                bmi_classification = "Adipositas Grad III"
-    
+            bmi_classification = (
+                "Untergewicht" if bmi < 18.5 else
+                "Normalgewicht" if bmi < 25 else
+                "Übergewicht" if bmi < 30 else
+                "Adipositas Grad I" if bmi < 35 else
+                "Adipositas Grad II" if bmi < 40 else
+                "Adipositas Grad III"
+            )
             weight_info = f"BMI: {bmi:.2f} ({bmi_classification}), Körperoberfläche (BSA): {bsa:.2f} m²."
         else:
             weight_info = "BMI und Körperoberfläche können nicht berechnet werden, da Gewicht oder Größe nicht spezifiziert."
     
-        # Zusammenfassung des Berichts
-        final_report = f"""
-        Spezifische Gesundheitsfragen und Körperliche Untersuchung
-    
+        # Zusammenstellung des Abschnittsberichts
+        section_report = f"""
+        Spezifische Gesundheitsfragen und Körperliche Untersuchung:
+        Pneumologische Untersuchung:
+        Atemfrequenz: {breathing_rate}, Atemrhythmus: {breath_rhythm}, Atemtyp: {breath_type},
+        Thoraxinspektion: {thorax_inspection}, Palpation: {thorax_palpation}, Stimmfremitus: {stimmfremitus},
+        Perkussion: {percussion_notes}, Lungengrenzen: {lung_borders}, Atemverschieblichkeit: {breath_shift},
+        Auskultation der Lungen: {auscultation_notes},
         {edema_info}
         {wound_info}
         {infection_info}
@@ -393,18 +409,10 @@ def anamnese():
         Gewicht des Patienten: {baseline_weight} kg, Körpergröße: {height} cm.
         {weight_info}
         """
-    
-        additional_notes = st.text_area("Zusätzliche Notizen:", key='additional_notes_1')
-        if additional_notes:
-            final_report += f"\nZusätzliche Notizen: {additional_notes}"
-    
-        # Ausgabe des kohärenten und lesbaren Textes
-        anamnese_report += final_report
-
-        st.subheader('Notizen zur körperlichen Untersuchung')
-        physical_examination_notes = st.text_area("Freier Textblock für die körperliche Untersuchung und Sonstige Auffälligkeiten", height=150)
-        anamnese_report += f"Notizen zur körperlichen Untersuchung: {physical_examination_notes}\n\n"
-    
+        
+        # Integration in den Hauptanamnesebericht
+        anamnese_report_KU += f"Körperliche Untersuchung: {section_report}\n\n"
+        
         st.subheader('Allergien')
         allergies = st.checkbox("Haben Sie Allergien?")
         allergy_details = ""
@@ -464,11 +472,16 @@ def anamnese():
             schwanger = st.checkbox("Besteht eine Schwangerschaft?")
             pregnancy_status = "Schwanger: Ja" if schwanger else "Schwanger: Nein"
             anamnese_report += f" {pregnancy_status}."
-    
+   
     with tabs[8]:
         st.subheader('Spezifische Gesundheitsfragen')
         if st.button('Bericht als PDF speichern'):
-            pdf_file = create_pdf(anamnese_report, anamnese_report_extra)
+            # Kombinieren der drei Berichtsteile in einen einzigen String
+            combined_report = f"{anamnese_report}\n\n{anamnese_report_extra}\n\n{anamnese_report_KU}"
+    
+            # Übergeben des kombinierten Berichts an die Funktion
+            pdf_file = create_pdf(combined_report)
+    
             with open(pdf_file, "rb") as file:
                 st.download_button(
                     label="Download PDF",
@@ -476,9 +489,10 @@ def anamnese():
                     file_name=pdf_file,
                     mime="application/pdf"
                 )
-        
+    
         st.subheader('Vorläufiger Anamnesebericht')
         st.text_area("", anamnese_report, height=600)
+        st.text_area("", anamnese_report_KU, height=300)
         st.text_area("", anamnese_report_extra, height=300)
     
 if __name__ == "__main__":
