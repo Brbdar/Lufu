@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[2]:
+# In[1]:
 
 
 import streamlit as st
@@ -48,9 +48,6 @@ def Klinik():
     st.markdown('''
     Weitere Informationen finden Sie in den [Leitlinien zur pulmonalen Hypertonie](https://academic.oup.com/eurheartj/article/43/38/3618/6673929?login=false#413902448).
     ''')
-
-    # Hinweis für die Nutzer, wie sie die App verwenden können
-    st.sidebar.info('Nutzen Sie diese App, um durch die verschiedenen Symptome der pulmonalen Hypertonie zu navigieren und lernen Sie mehr über deren Zusammenhang mit der rechten Ventrikeldysfunktion.')
 
 
 # In[ ]:

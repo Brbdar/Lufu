@@ -93,7 +93,7 @@
 # if __name__ == "__main__":
 #     main()
 
-# In[88]:
+# In[92]:
 
 
 import streamlit as st
@@ -117,7 +117,7 @@ def display_footer():
     """
     st.markdown("---")  # Draw a horizontal line for separation
     # Provide copyright and version information in a compact and readable format
-    st.caption("© Bruno Brito da Rocha 2024 - Version 2.3 / 18.04.24: Anamnesetool")
+    st.caption("© Bruno Brito da Rocha 2024 - Version 2.4 / 21.04.24: Diurerikamanagement bei HF, Perfusorrechner, Anamnesetool Update")
 
 # Functions to initialize the page configuration and display the footer
 configure_page()
@@ -304,7 +304,13 @@ from anamnese import anamnese
 from tacr import tacr 
 
 
-# In[89]:
+# In[91]:
+
+
+from nephro_hf import nephro_hf
+
+
+# In[90]:
 
 
 selected_pages_allgemeines = st.multiselect(
@@ -404,13 +410,15 @@ if "Mikrozytäre Anämie" in selected_pages_ane:
 # Multiselect Box für die Auswahl der Seiten im Bereich Nephrologie
 selected_pages_nephro = st.multiselect(
     "Wählen Sie eine oder mehrere Seiten aus dem Bereich **Nephrologie** aus:",
-    ["Tacrolimus und Mykophenolat", "Renal Failure Index"], key="Nephro")
+    ["Tacrolimus und Mykophenolat", "Renal Failure Index","Nierenmanagement bei Herzinsuffizienz"], key="Nephro")
 
 # Logik zur Anzeige der ausgewählten Seiten im Bereich Nephrologie
 if "Tacrolimus und Mykophenolat" in selected_pages_nephro:
     tacr()
 if "Renal Failure Index" in selected_pages_nephro:
     rfi()
+if "Nierenmanagement bei Herzinsuffizienz" in selected_pages_nephro:
+    nephro_hf()
 
 # Multiselect Box für die Auswahl der Seiten im Bereich Scores & Algorithmen
 selected_pages_scores = st.multiselect(
